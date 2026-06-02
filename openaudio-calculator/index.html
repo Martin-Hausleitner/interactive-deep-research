@@ -66,7 +66,7 @@ a{color:var(--accent)}footer{color:var(--muted);font-size:12px;text-align:center
  <div class="slider"><label>Parallele Streams / Batch <b><span id="parv">2</span></b></label><input type="range" id="par" min="1" max="8" value="2"></div>
  <div class="slider"><label>GPU-Anzahl <b><span id="gpuv">2</span></b></label><input type="range" id="gpu" min="1" max="8" value="2"></div>
  <div class="slider"><label>Betrieb pro Tag <b><span id="hrsv">8</span> h</b></label><input type="range" id="hrs" min="1" max="24" value="8"></div>
- <div class="slider"><label>Strompreis <b><span id="elev">0.30</span> €/kWh</b></label><input type="range" id="ele" min="0.10" max="0.60" step="0.01" value="0.30"></div>
+ <div class="slider"><label>Strompreis (DE KMU ~0,27) <b><span id="elev">0.27</span> €/kWh</b></label><input type="range" id="ele" min="0.05" max="0.60" step="0.01" value="0.27"></div>
  <div class="slider"><label>Leistung je GPU <b><span id="powv">280</span> W</b></label><input type="range" id="pow" min="50" max="450" step="10" value="280"></div>
 </div>
 <div class="out">
@@ -104,14 +104,39 @@ a{color:var(--accent)}footer{color:var(--muted);font-size:12px;text-align:center
 <p class="note"><b class="hl">Kernpunkt:</b> Inferenz kostet ~€0,0009/Clip — gegenüber ~€0,041 Marktwert = <b>~98 % Bruttomarge</b>. Das Geld liegt in der <b>Marge zum Marktpreis</b>, nicht im Strom. ElevenLabs ~€0,20/min · Murf ~$0,03/1k Zeichen · PlayHT eingestellt (12/2025).</p></div></div></section>
 
 <section class="card"><h2>💶 Geschäftsmodell &amp; ROI — lohnt sich der Eigenbau?</h2>
-<div id="biztext" class="note" style="margin-bottom:10px">NotebookLM-Deep-Research (Preise/Margen/Break-even) wird hier eingefügt, sobald fertig.</div>
+<div id="biztext" style="margin-bottom:14px"><div class="note" style="margin-bottom:8px">🔬 <b>NotebookLM Deep Research</b> (Notebook 86a3d076) — Geschäftsmodell, Preise, Margen, Break-even (DE-Markt 2026):</div><h2>NotebookLM Deep Research — Break-even &amp; ROI</h2>
+<p>The business model for a self-hosted AI Text-to-Speech (TTS) and voice cloning service in the German market in 2026 presents a highly lucrative opportunity, bridging the gap between expensive human voiceover artists and generic, non-<span class="hl">GDPR</span>-compliant US cloud AI tools. By leveraging the open-source Fish Audio S2 Pro (a 4.4B parameter Dual-AR model with unparalleled emotion tag control and multi-speaker capabilities) [1, 2], you can build a highly profitable localized service.</p>
+<p>Here is a breakdown of the unit economics, pricing strategies, margins, and the specific break-even math against cloud providers.</p>
+<h3>Target Customer Segments</h3>
+<ol><li><strong>E-Learning &amp; Training Providers:</strong> They require vast amounts of audio. Human narration for internal E-learning costs around €350 for the first 5 minutes [3], making AI a massive cost-saver.</li><li><strong>Corporate &amp; Agency Video Producers:</strong> Explainer videos and image films require quick turnarounds. Human rates start around <span class="hl">€30</span>0-€400 for a 2-minute web video [4].</li><li><strong>Audiobook Publishers:</strong> Traditional audiobook narration costs €250–€450 per Final Audio Hour (FAH) [5]. AI cuts this down drastically, appealing to indie publishers [6]. </li><li><strong>Data-Sensitive DACH Enterprises:</strong> Because the General Data Protection Regulation (<span class="hl">GDPR</span>) restricts sending voice prints or corporate IP to US servers [7], a self-hosted, German-based infrastructure becomes your primary Unique Selling Proposition (USP).</li></ol>
+<h3>Market Price Benchmarks &amp; Pricing Strategy</h3>
+<p>To position your service effectively, you must understand both the traditional human rates (from VDS/VPS) and your AI competitors:</p>
+<ul><li><strong>SaaS Competitors (ElevenLabs &amp; Murf):</strong> ElevenLabs charges ~$22/mo for ~100 minutes (Creator) and ~$99/mo for ~500 minutes (Pro) [8, 9]. Murf charges ~$29/mo for 2 hours and ~$99/mo for 20 hours (Business) [10-17]. Overages usually run $0.18 to $0.30 per 1,000 characters [18, 19].</li><li><strong>Realistic Chargeable Rates for Your Service:</strong></li><li><strong>SaaS Tiered Subscriptions:</strong> Match the market but sell the &quot;<span class="hl">GDPR</span>/DACH&quot; premium. €29/mo (Starter: 2 hours), €119/mo (Pro: 10 hours), and Enterprise (Custom API). </li><li><strong>Pay-As-You-Go / Overage:</strong> €0.25 per 1,000 characters. </li><li><strong>&quot;Managed AI Voiceover&quot; (Agency Model):</strong> Instead of SaaS, offer a done-for-you service where you handle the emotional tagging, QA, and mixing. Charge <strong><span class="hl">€30</span>–€60 per finished minute</strong>. This is an 80% discount compared to the <span class="hl">€30</span>0+ VDS human rates [4], but yields incredibly high margins for your business.</li></ul>
+<h3>Gross Margins &amp; Unit Economics</h3>
+<p>Traditional SaaS enjoys 70-90% gross margins, but AI is structurally different [20]. Every time a user generates audio, the &quot;meter runs&quot; on compute (Jevons Paradox, or &quot;LLMflation&quot;, shows that as per-token costs drop, users generate exponentially more) [21].</p>
+<ul><li><strong>The Margin Reality:</strong> AI companies generally operate at <strong>52% to 60% gross margins</strong> [22].</li><li><strong>Inference Costs:</strong> Continuous inference accounts for 80-90% of a model&#x27;s lifetime compute cost [23] and typically consumes ~23% of total revenue for scaling B2B AI companies [24].</li><li><strong>Golden Rule:</strong> To maintain healthy unit economics, your retail price must be roughly <strong>5 to 6 times</strong> the underlying compute cost [25]. </li></ul>
+<p>***</p>
+<h2>Break-even &amp; ROI section: when does self-hosting 2x Titan RTX pay off vs renting cloud GPU (modal.com)?</h2>
+<p>Wenn Sie planen, einen professionellen KI-Voiceover-Dienst in Deutschland anzubieten, ist die Entscheidung zwischen dem Kauf eigener Hardware (2x NVIDIA Titan RTX mit je 24 GB VRAM) und der Miete von Cloud-Ressourcen (z. B. Modal.com) der wichtigste finanzielle Hebel. Fish Speech S2 Pro benötigt für Produktions-Workloads mit Batching 24 GB+ VRAM [26].</p>
+<p>Hier ist die konkrete Berechnung für den deutschen Markt 2026:</p>
+<h3>Die Variablen und Annahmen:</h3>
+<ol><li><strong>Hardware-Investition (CAPEX):</strong> Gebrauchte Titan RTX (24 GB) kosten auf Plattformen wie eBay oder Ricardo ca. 700 € bis 900 € pro Stück [27, 28]. Für 2x Titan RTX kalkulieren wir ca. 1.600 €. Zuzüglich eines soliden Server-Basissystems (CPU, RAM, 1200W Netzteil [29]) von ca. 1.000 € ergibt sich ein <strong>Gesamt-CAPEX von ca. 2.600 €</strong>.</li><li><strong>Stromkosten (OPEX lokal):</strong> Der durchschnittliche KMU-Strompreis in Deutschland liegt bei <strong>0,27 €/kWh</strong> [30]. (Der oft zitierte &quot;5-Cent-Industriestrompreis&quot; gilt nur für die energieintensive Schwerindustrie, nicht für Standard-KMUs [31, 32]). Bei einer Leistungsaufnahme von ca. 700 Watt (2x 280W GPUs + System) unter Last und durchschnittlich 6 Stunden Volllast pro Tag:</li></ol>
+<ul><li>*6h × 0,7 kW × 0,27 € = 1,13 € pro Tag ≈ <strong>34 € Stromkosten pro Monat</strong>.*</li></ul>
+<ol><li><strong>Cloud-Kosten bei Modal.com (OPEX Cloud):</strong> Modal berechnet sekundengenau. Ein direktes 24GB-Äquivalent (z.B. A10G oder L40S) kostet in der Basis etwa 1,10 $ bis 1,95 $ pro Stunde [33, 34]. Nehmen wir optimistisch 1,50 € pro Stunde an.</li></ol>
+<ul><li><strong>Die versteckten Multiplikatoren:</strong> Modal.com hat zwei massive Kosten-Multiplikatoren für echte B2B-Anwendungen. Erstens: Für garantierte Verfügbarkeit ohne Unterbrechungen (&quot;Non-Preemptible Execution&quot;, zwingend für latenzfreie Kunden-APIs) wird ein <strong>3x Multiplikator</strong> fällig [35]. Zweitens: Um <span class="hl">DSGVO</span>-konform zu sein, müssen Sie die EU-Region wählen, was weitere <strong>1,25x bis 2,5x</strong> kostet [36].</li><li>*Reale Cloud-Rate:* 1,50 € × 3 (Non-Preemptible) × 1,5 (EU-Region) = <strong>6,75 € pro Stunde pro GPU</strong> [37, 38].</li><li>Bei 2 GPUs und 6 Stunden täglicher aktiver Auslastung (180 Stunden/Monat):</li><li>*180h × 2 GPUs × 6,75 € = <strong>2.430 € Cloud-Kosten pro Monat</strong>.*</li></ul>
+<h3>Payback-Period (Amortisationszeit) Beispiel:</h3>
+<p>Die Ersparnis durch Self-Hosting bei einer durchschnittlichen Auslastung von 6 Stunden pro Tag ist massiv. </p>
+<ul><li><strong>Monatliche Ersparnis:</strong> 2.430 € (Cloud) minus 34 € (Strom) = <strong><span class="hl">2.396</span> € pro Monat</strong></li><li><strong>ROI / Payback-Periode:</strong> 2.600 € (CAPEX) / <span class="hl">2.396</span> € (Ersparnis/Monat) = <strong><span class="hl">1,08 Monate</span> (ca. 32 Tage)</strong></li></ul>
+<p><strong>Fazit:</strong>  Serverless Cloud-Dienste wie Modal glänzen bei hochgradig variablen Lasten unter 30 % Auslastung (Scale-to-Zero) [39, 40]. Sobald Sie jedoch eine kontinuierliche Auslastung für Kundenprojekte, API-Dienste und Audiobuch-Generierungen (die oft stundenlang rendern) haben, wird die Cloud aufgrund der Multiplikatoren für Ausfallsicherheit und EU-Standort extrem teuer. </p>
+<p>Der Kauf von 2x Titan RTX amortisiert sich bei einer täglichen Nutzung von nur 6 Stunden bereits nach <strong><span class="hl">weniger als 5 Wochen</span></strong>. Da Fish Audio S2 bei inferenz-optimiertem Setup extrem schnell ist (RTF von unter 0,2 [41]), können diese 6 Stunden Server-Last täglich Hunderte von Stunden an finalem Kunden-Audio generieren – was Self-Hosting zur profitabelsten Strategie für Ihr KI-SaaS-Modell macht.</p></div>
 <div class="grid2">
 <div>
  <div class="slider"><label>Verkaufspreis je 1000 Audios <b><span id="p1kv">50</span> €</b></label><input type="range" id="p1k" min="5" max="500" step="5" value="50"></div>
  <div class="slider"><label>Volumen <b><span id="volv">50.000</span> Audios / Monat</b></label><input type="range" id="vol" min="1000" max="1000000" step="1000" value="50000"></div>
  <div class="slider"><label>modal.com GPU-Preis <b>$<span id="modalhv">1.10</span> / h</b></label><input type="range" id="modalh" min="0.40" max="4.00" step="0.05" value="1.10"></div>
  <div class="slider"><label>modal RTF (auf A10G/A100) <b><span id="modalrtfv">0.20</span>×</b></label><input type="range" id="modalrtf" min="0.05" max="1.0" step="0.05" value="0.20"></div>
- <div class="slider"><label>Capex 2× Titan RTX <b><span id="capexv">1.700</span> €</b></label><input type="range" id="capex" min="0" max="8000" step="100" value="1700"></div>
+ <div class="slider"><label>modal B2B-Faktor <b><span id="b2bv">4.5</span>×</b> (Non-Preempt 3× · EU-Region ~1,5×)</label><input type="range" id="b2b" min="1" max="7.5" step="0.5" value="4.5"></div>
+ <div class="slider"><label>Capex 2× Titan + Server <b><span id="capexv">2.600</span> €</b></label><input type="range" id="capex" min="0" max="8000" step="100" value="2600"></div>
  <div class="note">Self-Host-Laufkosten = Strom (oben). modal-Kosten = GPU-Sekunden × Preis (+ ~30% Overhead/Cold-Start). USD→EUR ≈ 0,92.</div>
 </div>
 <div class="out">
@@ -130,14 +155,13 @@ const E2U=0.92, OVER=1.30; // USD→EUR, modal overhead factor
 function fmtE(n){return isFinite(n)?n.toLocaleString("de-DE",{maximumFractionDigits:0}):"–";}
 function biz(){
  const len=+$("len").value, rtfSelf=+$("rtf").value, par=+$("par").value, ele=+$("ele").value, pow=+$("pow").value, gpu=+$("gpu").value;
- const p1k=+$("p1k").value, vol=+$("vol").value, modalh=+$("modalh").value, modalrtf=+$("modalrtf").value, capex=+$("capex").value;
- ["p1k","modalh","modalrtf","capex"].forEach(k=>{});
+ const p1k=+$("p1k").value, vol=+$("vol").value, modalh=+$("modalh").value, modalrtf=+$("modalrtf").value, capex=+$("capex").value, b2b=+$("b2b").value;
  $("p1kv").textContent=p1k; $("volv").textContent=vol.toLocaleString("de-DE"); $("modalhv").textContent=modalh.toFixed(2);
- $("modalrtfv").textContent=modalrtf.toFixed(2); $("capexv").textContent=capex.toLocaleString("de-DE");
+ $("modalrtfv").textContent=modalrtf.toFixed(2); $("capexv").textContent=capex.toLocaleString("de-DE"); $("b2bv").textContent=b2b.toFixed(1);
  // revenue
  const rev = vol/1000*p1k;
- // modal: GPU-seconds per clip = len*modalrtf*overhead; cost = sec*(modalh/3600) USD → EUR
- const modalPerClipEUR = len*modalrtf*OVER*(modalh/3600)*E2U;
+ // modal: GPU-seconds per clip = len*modalrtf*overhead; cost = sec*(modalh/3600) USD → EUR × B2B-Faktor (Non-Preempt × EU)
+ const modalPerClipEUR = len*modalrtf*OVER*(modalh/3600)*E2U*b2b;
  const modalMonth = vol*modalPerClipEUR;
  // self-host electricity: hours to make vol clips on Titan = vol*genClip/3600 ; genClip=len*rtfSelf/par per clip but throughput uses all gpus
  const clipsPerSec = par/(len*rtfSelf)*gpu; const hours = vol/clipsPerSec/3600;
@@ -156,7 +180,7 @@ function biz(){
  $("b_payback").textContent= isFinite(payback)? payback.toFixed(1)+" Monate" : "—";
  $("b_be").textContent= isFinite(beVol)? fmtE(beVol)+" Audios/Mo" : "—";
 }
-["len","rtf","par","gpu","ele","pow","p1k","vol","modalh","modalrtf","capex"].forEach(k=>$(k)&&$(k).addEventListener("input",biz));
+["len","rtf","par","gpu","ele","pow","p1k","vol","modalh","modalrtf","b2b","capex"].forEach(k=>$(k)&&$(k).addEventListener("input",biz));
 biz();})();
 </script>
 </div>
