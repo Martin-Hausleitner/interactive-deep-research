@@ -95,6 +95,29 @@ def test_mock_plan_resume_report_e2e(tmp_path):
         assert (Path(plan["rundir"]) / "content" / f"{key}.md").exists()
 
 
+def test_report_command_regenerates_existing_run(tmp_path):
+    plan = json.loads(run_idr(["plan", "Regenerate report deterministically"], tmp_path).stdout)
+    resume = json.loads(
+        run_idr(
+            [
+                "resume",
+                plan["run_id"],
+                "--answer",
+                "Keep the generated report deterministic and self-contained.",
+            ],
+            tmp_path,
+        ).stdout
+    )
+    report = Path(resume["report"])
+    report.unlink()
+
+    regenerated = json.loads(run_idr(["report", plan["run_id"]], tmp_path).stdout)
+    regenerated_report = Path(regenerated["report"])
+    assert regenerated_report == report
+    assert regenerated_report.exists()
+    assert "Regenerate report deterministically" in regenerated_report.read_text(encoding="utf-8")
+
+
 def test_required_live_rejects_mock_mode(tmp_path):
     result = run_idr_no_check(
         ["plan", "test topic"],

@@ -8,7 +8,7 @@ The repository has two test tiers:
 ## CI-Safe Checks
 
 ```bash
-python3 -m py_compile \
+python3 -B -m py_compile \
   skills/integrative-deep-research/scripts/idr.py \
   skills/askq/scripts/askq.py \
   skills/deep-research-scorecard/scripts/scorecard.py \
@@ -23,8 +23,11 @@ Coverage:
 - `IDR_MOCK=1` plan -> question -> resume -> report.
 - `nlm query` JSON answer parsing.
 - Notebook ID extraction.
-- `askq` non-interactive JSON mode.
-- `scorecard` Markdown and HTML output.
+- `askq` non-interactive JSON mode, `ASKQ_ANSWER`, choices, custom logs, and
+  no-question usage errors.
+- `scorecard` Markdown, HTML, stdin, malformed JSON, and schema errors.
+- `install.sh` smoke test with isolated skill/bin directories.
+- `idr report <run_id>` regeneration from existing run content.
 - Proof-site rebuild from tracked repo artifacts.
 
 ## Live NotebookLM E2E

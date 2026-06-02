@@ -13,7 +13,7 @@ PYTHONDONTWRITEBYTECODE=1 pytest -p no:cacheprovider -m "not live" -q
 Observed result:
 
 ```text
-10 passed, 1 deselected
+17 passed, 1 deselected
 ```
 
 Live NotebookLM E2E:
@@ -43,7 +43,23 @@ cp site/goal_site.html site/index.html
 Observed result:
 
 ```text
-SITE .../site/goal_site.html 77149 bytes
+SITE .../site/goal_site.html 76580 bytes
+```
+
+Browser validation:
+
+```bash
+python3 -m http.server 5181 --directory site
+playwright screenshot --viewport-size=1440,1200 \
+  http://127.0.0.1:5181/goal_site.html /tmp/idr-proof-site.png
+```
+
+Observed result:
+
+```text
+title='Interaktives Deep Research — Verlauf, Output & Beweis'
+h1='Verlauf, Output & Beweis'
+hasPipeline=True hasVoice=True hasMessaging=True bodyLength=39189
 ```
 
 Repository hygiene:

@@ -24,5 +24,7 @@
 - Hardened `idr` fail-closed behavior for required-live mode and missing
   `askq` scripts.
 - Added scorecard spec validation with clean stderr errors and tests.
+- Expanded CI-safe CLI coverage for `askq` env/log behavior, `scorecard`
+  stdin and malformed specs, IDR report regeneration, and `install.sh` smoke.
 - Removed internal handoff/cache artifacts and private infrastructure references
   from tracked public docs and proof-site outputs.
