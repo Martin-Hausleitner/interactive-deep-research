@@ -81,7 +81,84 @@ a{color:var(--accent)}footer{color:var(--muted);font-size:12px;text-align:center
 <p class="note">Modell: Durchsatz = Parallelität ÷ (Audiolänge × RTF) Clips/s je GPU, × GPU-Anzahl. Strom = GPU-Anzahl × Watt × Stunden × €/kWh. RTF/Watt aus den Presets (deine HW) — alles per Slider überschreibbar.</p>
 </section>
 
+<section class="card"><h2>☁️ Cloud-Kosten (modal.com) &amp; Marktpreise</h2>
+<div class="grid2">
+<div><h3 style="font-family:Space Grotesk">modal.com GPU-Preise (per Sekunde abgerechnet)</h3>
+<table><thead><tr><th>GPU</th><th>VRAM</th><th>$/h</th><th>Fit ≥24 GB?</th></tr></thead><tbody>
+<tr><td>T4</td><td>16 GB</td><td>0,59</td><td class="bad">nein</td></tr>
+<tr><td>L4</td><td>24 GB</td><td>0,80</td><td>knapp</td></tr>
+<tr><td><b>A10 / A10G</b></td><td>24 GB</td><td><b>1,10</b></td><td class="hl">billigster Fit</td></tr>
+<tr><td>L40S</td><td>48 GB</td><td>1,95</td><td>ja</td></tr>
+<tr><td>A100 40/80</td><td>40/80 GB</td><td>2,10 / 2,50</td><td>ja</td></tr>
+<tr><td>H100 / H200</td><td>80/141 GB</td><td>3,95 / 4,54</td><td>ja</td></tr>
+</tbody></table>
+<p class="note">Per-Sekunde-Abrechnung · <b>scale-to-zero</b> (kein Idle-Kosten) · $30/Mo Gratis-Credits (Starter), $100 (Team). Cold-Start ~25 s GPU-Zeit bei 5B-Modell.</p></div>
+<div><h3 style="font-family:Space Grotesk">Kosten vs. Marktwert je 1000 Clips (10 s)</h3>
+<table><thead><tr><th>Posten</th><th>€ / 1000 Clips</th></tr></thead><tbody>
+<tr><td><b>modal A10</b> (warm+Overhead)</td><td class="hl">≈ 0,85 €</td></tr>
+<tr><td>modal A10 (+ Cold-Start)</td><td>≈ 0,91 €</td></tr>
+<tr><td>Self-Host Strom (2× Titan)</td><td class="hl">≈ Cent-Bereich</td></tr>
+<tr><td>Marktwert (ElevenLabs ~€0,041/Clip)</td><td>≈ 41 €</td></tr>
+<tr><td>Human-Voiceover (€3–7,6/min)</td><td>≈ 500–1270 €</td></tr>
+</tbody></table>
+<p class="note"><b class="hl">Kernpunkt:</b> Inferenz kostet ~€0,0009/Clip — gegenüber ~€0,041 Marktwert = <b>~98 % Bruttomarge</b>. Das Geld liegt in der <b>Marge zum Marktpreis</b>, nicht im Strom. ElevenLabs ~€0,20/min · Murf ~$0,03/1k Zeichen · PlayHT eingestellt (12/2025).</p></div></div></section>
+
+<section class="card"><h2>💶 Geschäftsmodell &amp; ROI — lohnt sich der Eigenbau?</h2>
+<div id="biztext" class="note" style="margin-bottom:10px">NotebookLM-Deep-Research (Preise/Margen/Break-even) wird hier eingefügt, sobald fertig.</div>
+<div class="grid2">
+<div>
+ <div class="slider"><label>Verkaufspreis je 1000 Audios <b><span id="p1kv">50</span> €</b></label><input type="range" id="p1k" min="5" max="500" step="5" value="50"></div>
+ <div class="slider"><label>Volumen <b><span id="volv">50.000</span> Audios / Monat</b></label><input type="range" id="vol" min="1000" max="1000000" step="1000" value="50000"></div>
+ <div class="slider"><label>modal.com GPU-Preis <b>$<span id="modalhv">1.10</span> / h</b></label><input type="range" id="modalh" min="0.40" max="4.00" step="0.05" value="1.10"></div>
+ <div class="slider"><label>modal RTF (auf A10G/A100) <b><span id="modalrtfv">0.20</span>×</b></label><input type="range" id="modalrtf" min="0.05" max="1.0" step="0.05" value="0.20"></div>
+ <div class="slider"><label>Capex 2× Titan RTX <b><span id="capexv">1.700</span> €</b></label><input type="range" id="capex" min="0" max="8000" step="100" value="1700"></div>
+ <div class="note">Self-Host-Laufkosten = Strom (oben). modal-Kosten = GPU-Sekunden × Preis (+ ~30% Overhead/Cold-Start). USD→EUR ≈ 0,92.</div>
+</div>
+<div class="out">
+ <div class="metric"><div class="v" id="b_rev">–</div><div class="l">Umsatz / Monat</div></div>
+ <div class="metric"><div class="v" id="b_modal">–</div><div class="l">modal.com-Kosten / Monat</div></div>
+ <div class="metric"><div class="v" id="b_self">–</div><div class="l">Self-Host-Strom / Monat</div></div>
+ <div class="metric"><div class="v" id="b_save">–</div><div class="l">Ersparnis/Monat (modal − self-host)</div></div>
+ <div class="metric"><div class="v" id="b_margin">–</div><div class="l">Marge/Monat (self-host, nach Capex-Amort. 24 Mo)</div></div>
+ <div class="metric big"><div class="v" id="b_payback">–</div><div class="l">Amortisation der 2× Titan ggü. modal · Break-even-Volumen: <span id="b_be">–</span></div></div>
+</div></div></section>
+
 <footer>Open-Source · Lizenz egal (Hauptsache OSS) · Fokus Deutsch · generiert <span id="now"></span> · Teil von <a href="http://100.120.120.120:5181/">interactive-deep-research</a></footer>
+<script>
+(function(){const $=id=>document.getElementById(id);
+const E2U=0.92, OVER=1.30; // USD→EUR, modal overhead factor
+function fmtE(n){return isFinite(n)?n.toLocaleString("de-DE",{maximumFractionDigits:0}):"–";}
+function biz(){
+ const len=+$("len").value, rtfSelf=+$("rtf").value, par=+$("par").value, ele=+$("ele").value, pow=+$("pow").value, gpu=+$("gpu").value;
+ const p1k=+$("p1k").value, vol=+$("vol").value, modalh=+$("modalh").value, modalrtf=+$("modalrtf").value, capex=+$("capex").value;
+ ["p1k","modalh","modalrtf","capex"].forEach(k=>{});
+ $("p1kv").textContent=p1k; $("volv").textContent=vol.toLocaleString("de-DE"); $("modalhv").textContent=modalh.toFixed(2);
+ $("modalrtfv").textContent=modalrtf.toFixed(2); $("capexv").textContent=capex.toLocaleString("de-DE");
+ // revenue
+ const rev = vol/1000*p1k;
+ // modal: GPU-seconds per clip = len*modalrtf*overhead; cost = sec*(modalh/3600) USD → EUR
+ const modalPerClipEUR = len*modalrtf*OVER*(modalh/3600)*E2U;
+ const modalMonth = vol*modalPerClipEUR;
+ // self-host electricity: hours to make vol clips on Titan = vol*genClip/3600 ; genClip=len*rtfSelf/par per clip but throughput uses all gpus
+ const clipsPerSec = par/(len*rtfSelf)*gpu; const hours = vol/clipsPerSec/3600;
+ const selfMonth = hours*(gpu*pow/1000)*ele;
+ const save = modalMonth - selfMonth;
+ const margin = rev - selfMonth - capex/24;
+ const payback = save>0 ? capex/save : Infinity;
+ // break-even volume: where revenue covers self-host monthly (elec + capex/24). per-clip cost self ≈ selfMonth/vol
+ const perClipSelf = vol>0?selfMonth/vol:0; const fixed=capex/24;
+ const beVol = (p1k/1000-perClipSelf)>0 ? fixed/((p1k/1000)-perClipSelf) : Infinity;
+ $("b_rev").textContent=fmtE(rev)+" €";
+ $("b_modal").textContent=fmtE(modalMonth)+" €";
+ $("b_self").textContent=fmtE(selfMonth)+" €";
+ $("b_save").textContent=fmtE(save)+" €";
+ $("b_margin").textContent=fmtE(margin)+" €";
+ $("b_payback").textContent= isFinite(payback)? payback.toFixed(1)+" Monate" : "—";
+ $("b_be").textContent= isFinite(beVol)? fmtE(beVol)+" Audios/Mo" : "—";
+}
+["len","rtf","par","gpu","ele","pow","p1k","vol","modalh","modalrtf","capex"].forEach(k=>$(k)&&$(k).addEventListener("input",biz));
+biz();})();
+</script>
 </div>
 <script>
 // HW-Presets (RTF/Watt) — werden mit Recherche-Zahlen kalibriert
