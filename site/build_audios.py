@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""Turn audio_demos.json into an embeddable HTML fragment: <audio> players grouped
-per library, German clips first. Writes to the voice run's content/audios.html."""
+"""Turn site/audio_demos.json into the tracked voice report's audio fragment."""
 import json, os, html, collections
 
-GOAL = os.path.expanduser("~/.local/share/idr/goal_voicecloning")
-OUT = os.path.expanduser("~/.local/share/idr/runs/20260602-015821-def4/content/audios.html")
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
+OUT = os.path.join(ROOT, "reports", "voice", "content", "audios.html")
 BASE = "http://100.120.120.120:5181/audio/"  # local rehost on vcvm
 
 def main():
-    data = json.load(open(os.path.join(GOAL, "audio_demos.json")))
+    data = json.load(open(os.path.join(HERE, "audio_demos.json"), encoding="utf-8"))
     by = collections.OrderedDict()
     for c in data:
         by.setdefault(c["lib"], []).append(c)
@@ -30,6 +30,7 @@ def main():
         blocks.append(f'<div class="audiolib"><div class="alh">{html.escape(lib)} {badge}</div>{"".join(rows)}</div>')
     frag = (f'<p class="dim">Echte Demo-Aufnahmen je Library — <b>deutsche Beispiele zuerst</b> '
             f'({total_de} DE-Clips gesamt). Player laden on-demand.</p>' + "".join(blocks))
+    os.makedirs(os.path.dirname(OUT), exist_ok=True)
     open(OUT, "w", encoding="utf-8").write(frag)
     print("AUDIOS", OUT, len(frag), "bytes,", total_de, "DE clips,", len(by), "libs")
 

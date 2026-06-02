@@ -12,8 +12,7 @@ Flow (matches the requested design):
   3. (human types the answer — via the askq bridge or relayed through the agent)
   4. deep pass— `nlm research start --mode deep --auto-import` on the SAME notebook
                 (reuses sources = efficient), enriched with the human's answer and an
-                explicit instruction to also scout existing flow frameworks
-                (LangGraph, Langflow, CrewAI, …).
+                explicit topic-anchored instruction.
   5. iterate  — a FIXED set of `nlm query` angles (no improvisation).
   6. report   — generate a self-contained HTML website with the plan + Mermaid
                 diagrams. The HTML is built locally with ZERO LLM tokens.
@@ -500,7 +499,7 @@ flowchart TD
   T["Topic"] --> S["1 · Antigravity seed (local)"]
   S --> F["2 · NotebookLM fast pass"]
   F --> Q{{"3 · Clarifying question"}}
-  Q -->|human answer| D["4 · NotebookLM deep pass (+frameworks scout)"]
+  Q -->|human answer| D["4 · NotebookLM deep pass (same notebook)"]
   D --> I["5 · Fixed iteration queries"]
   I --> R["6 · This HTML report"]
   </div>

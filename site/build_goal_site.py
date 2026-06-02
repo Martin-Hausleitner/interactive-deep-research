@@ -2,10 +2,13 @@
 """Polished presentation website: two deep-research examples + chronological Ablauf
 + Q&A, with benchmark/repo links, license chips and winner highlighting. Re-runnable."""
 import os, json, html, datetime, re, sys
-sys.path.insert(0, os.path.expanduser("~/.claude/skills/integrative-deep-research/scripts"))
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
+sys.path.insert(0, os.path.join(ROOT, "skills", "integrative-deep-research", "scripts"))
 import idr
 
-GOAL = os.path.expanduser("~/.local/share/idr/goal_voicecloning")
+GOAL = HERE
 RUNS = os.path.expanduser("~/.local/share/idr/runs")
 ASKQ = os.path.expanduser("~/.askq/history.jsonl")
 CFG = os.path.join(GOAL, "site_config.json")
@@ -53,6 +56,25 @@ def run_state(rid):
     p = os.path.join(RUNS, rid, "state.json")
     return json.load(open(p)) if os.path.exists(p) else None
 
+def report_dir(ex):
+    rd = ex.get("report_dir")
+    if not rd:
+        return None
+    return rd if os.path.isabs(rd) else os.path.normpath(os.path.join(ROOT, rd))
+
+def content_path(ex, st, key):
+    path = ((st or {}).get("content") or {}).get(key)
+    if path and os.path.exists(path):
+        return path
+    rd = report_dir(ex)
+    if not rd:
+        return None
+    for ext in ("html", "md"):
+        candidate = os.path.join(rd, "content", f"{key}.{ext}")
+        if os.path.exists(candidate):
+            return candidate
+    return None
+
 def chipify(s):
     """Color-code license tokens inside rendered HTML (commercial=green, NC=red)."""
     reps = [
@@ -78,18 +100,23 @@ def chipify(s):
 def section_for(ex, idx):
     rid = ex.get("run_id"); st = run_state(rid) if rid else None
     anchor = f"bsp{idx}"
-    if not st:
+    rd = report_dir(ex)
+    if not st and not rd:
         body = f'<p class="dim">⏳ {html.escape(ex.get("status","läuft …"))}</p>'
     else:
         parts = []
         for key in ORDER:
-            path = (st.get("content") or {}).get(key)
-            if path and os.path.exists(path):
-                raw = open(path).read()
-                rendered = raw if key in RAW else colorize(chipify(idr.md_to_html(raw)))
+            path = content_path(ex, st, key)
+            if path:
+                raw = open(path, encoding="utf-8").read()
+                rendered = raw if key in RAW or path.endswith(".html") else colorize(chipify(idr.md_to_html(raw)))
                 parts.append(f'<h3>{ICONS.get(key,"•")} {html.escape(TITLES.get(key,key))}</h3>\n'+rendered)
-        nb = st.get("notebook_id"); deep = (st.get("deep") or {}).get("ok"); deepn = (st.get("deep_nlm") or {}).get("ok")
-        rep = os.path.join(RUNS, rid, "report.html")
+        nb = (st or {}).get("notebook_id") or rid or "repo artifact"
+        deep = ((st or {}).get("deep") or {}).get("ok")
+        deepn = ((st or {}).get("deep_nlm") or {}).get("ok")
+        rep = os.path.join(RUNS, rid, "report.html") if rid else ""
+        if (not rep or not os.path.exists(rep)) and rd:
+            rep = os.path.join(rd, "report.html")
         meta = '<div class="rmeta">'
         meta += f'<span class="pill">📓 {html.escape(str(nb)[:22])}</span>'
         if deep is not None: meta += f'<span class="pill ok">deep_ok ✓</span>'
@@ -245,7 +272,7 @@ footer{{color:var(--muted);font-size:12.5px;text-align:center;margin-top:48px;pa
 <footer>Lokal generiert · 0 LLM-Tokens fürs Layout · interaktiver betreuter Deep-Research-Lauf · live auf vcvm:5181 · {now}</footer>
 </div></body></html>"""
     out = os.path.join(GOAL, "goal_site.html")
-    open(out, "w").write(page)
+    open(out, "w", encoding="utf-8").write(page)
     print("SITE", out, len(page), "bytes")
 
 if __name__ == "__main__":

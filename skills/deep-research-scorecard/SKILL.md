@@ -1,56 +1,71 @@
 ---
 name: deep-research-scorecard
-description: Use during deep research / tool comparisons to turn candidates into a POINTS-scored, weighted ranking that always crowns a winner and explains WHY. Triggers: "score the candidates", "punkte vergeben", "Sieger küren", "weighted comparison", "100-point scorecard", "rank tools and pick a winner with justification".
+description: Use during deep research and tool comparisons to turn researched candidates into a weighted Σ/100 ranking, crown one winner, and explain why the winner beats the runner-up. Triggers: "score the candidates", "punkte vergeben", "Sieger küren", "weighted comparison", "100-point scorecard", "rank tools and pick a winner with justification".
 version: 0.1.0
 license: MIT
 metadata:
   tags: [deep-research, comparison, scorecard, ranking, winner, weighted, decision]
-  related_skills: [integrative-deep-research, comparison-deep-research, tool-comparison-heatmap, askq]
+  related_skills: [interactive-deep-research, integrative-deep-research, askq]
 ---
 
 # deep-research-scorecard
 
-A tiny, dependency-free CLI that makes every deep-research comparison **decisive**:
-score each top candidate per criterion, apply weights, compute a Σ/100, rank
-best-first, and **crown a winner with a data-driven justification**. The math is
-deterministic (in code); the per-criterion scores come from your research.
+`deep-research-scorecard` is a dependency-free ranking utility. Feed it a JSON
+spec with candidates, criteria, weights, and evidence-backed scores; it computes
+a weighted Σ/100, sorts candidates, and crowns one winner with a short rationale.
 
-CLI: `scorecard` (on PATH) or `python3 ~/.claude/skills/deep-research-scorecard/scripts/scorecard.py`
+CLI: `scorecard` on PATH, or:
 
-## How to use in a deep research
+```bash
+python3 ~/.claude/skills/deep-research-scorecard/scripts/scorecard.py
+```
 
-1. Gather candidates + evidence (via NotebookLM / web research).
-2. Pick weighted criteria (the decision drivers — e.g. quality, license, cost).
-3. Score each candidate 0..scale (default 10) per criterion from the evidence.
-4. Run `scorecard spec.json` → paste the markdown into the report (winner row is
-   `**bold**` so renderers highlight it), or `--html` for an embeddable fragment.
+## When To Use
 
-## Spec (JSON)
+Use this after research has identified credible candidates and decision criteria:
+
+1. Define weighted criteria that reflect the user's actual decision.
+2. Score each candidate from evidence on a 0..scale range.
+3. Run `scorecard spec.json` for Markdown or `scorecard spec.json --html` for an
+   embeddable fragment.
+4. Include the weights in the final report; changing weights can change the winner.
+
+## JSON Spec
 
 ```json
 {
   "title": "Best open-source DE+EN voice cloning",
   "scale": 10,
   "criteria": [
-    {"key": "de", "label": "Deutsch-Qualität", "weight": 3},
-    {"key": "license", "label": "Kommerziell nutzbar", "weight": 3}
+    {"key": "de", "label": "German quality", "weight": 3},
+    {"key": "license", "label": "Commercially usable", "weight": 3}
   ],
   "candidates": [
-    {"name": "CosyVoice 3.0", "link": "https://github.com/FunAudioLLM/CosyVoice",
-     "note": "Apache, instruct-Emotion + Non-verbals, nativ DE.",
-     "scores": {"de": 9, "license": 10}}
+    {
+      "name": "CosyVoice 3.0",
+      "link": "https://github.com/FunAudioLLM/CosyVoice",
+      "note": "Apache license; strong multilingual support.",
+      "scores": {"de": 9, "license": 10}
+    }
   ]
 }
 ```
 
-## Output
-- A `Rang | Tool | <criteria…> | Σ/100` table, sorted, winner bolded.
-- The exact weights used.
-- `🏆 Sieger: <name> — <score>/100` + why: its top weighted strengths, the point
-  gap and which criteria it beats the runner-up on, plus its note.
+## Commands
 
-`--html` emits `<table class="scorecard">` + `<div class="winner">` for websites.
+```bash
+scorecard data/voice_scorecard.json
+scorecard data/voice_scorecard.json --html > /tmp/scorecard.html
+cat spec.json | scorecard -
+```
 
-## Notes
-- Always state the weights — they encode the decision. Changing weights changes the winner; that transparency is the point.
-- Pairs with [[integrative-deep-research]] (add a scorecard step) and [[askq]] (let a human confirm the weights).
+Markdown output contains a ranked table and winner explanation. HTML output emits
+`<table class="scorecard">` plus `<div class="winner">` for local reports/sites.
+
+## Guidance
+
+- Scores should come from research evidence, not from the scorecard script.
+- Keep criteria few and decision-relevant.
+- Use `askq` if the human needs to confirm weights before ranking.
+- Pair with `integrative-deep-research` when the report needs a decisive final
+  recommendation instead of a loose comparison.

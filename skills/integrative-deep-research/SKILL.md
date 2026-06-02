@@ -1,67 +1,99 @@
 ---
 name: integrative-deep-research
-description: Use when the user wants a deep, integrative research run that (1) hands a seed to the local Antigravity agent, (2) does a fast NotebookLM pass that returns ONE clarifying question the human answers, (3) escalates to a NotebookLM deep-research pass on the same notebook, (4) iterates with fixed queries, and (5) outputs a polished HTML website report with diagrams. Deterministic and token-frugal — the model fires fixed CLI steps; NotebookLM does the heavy reasoning. Triggers: "integrative deep research", "tiefe Recherche mit Notebook LM und Rückfrage", "deep research website report with diagrams", "Antigravity + NotebookLM research pipeline".
+description: Use when the user wants a deterministic NotebookLM-backed deep research run with one human clarification step and a self-contained HTML report. The driver runs agy scoping, NotebookLM fast research, one askq/chat question, NotebookLM deep research on the same notebook, fixed topic-anchored query angles, and local report rendering. Triggers: "integrative deep research", "interactive deep research", "NotebookLM deep research with one question", "deep research HTML report".
 version: 0.1.0
 license: MIT
 metadata:
   tags: [deep-research, notebooklm, antigravity, deterministic, token-efficient, report, mermaid, human-in-the-loop]
-  related_skills: [askq, notebooklm-mcp-cli, deep-research, comparison-deep-research]
+  related_skills: [interactive-deep-research, askq, deep-research-scorecard]
 ---
 
 # Integrative Deep Research
 
-A **rigid, token-frugal** pipeline. The orchestrating model does almost no reasoning:
-it fires fixed CLI commands and relays exactly one clarifying question. All heavy
-reasoning is delegated to **NotebookLM** (via the `nlm` CLI). The final artifact is a
-self-contained **HTML website report** with Mermaid diagrams, built locally with **zero
-LLM tokens**.
+`integrative-deep-research` is the pipeline driver. It keeps the agent's work
+small and deterministic: fire fixed CLI steps, relay exactly one question to the
+human, and let NotebookLM do the expensive research reasoning.
 
-Driver: `idr` (on PATH) or `python3 ~/.claude/skills/integrative-deep-research/scripts/idr.py`
-Question bridge: the [[askq]] skill.
-
-## The fixed flow
-
-1. **Antigravity seed (local).** Write a research brief and open it in Antigravity (`agy`/`antigravity` CLI) so its local agent gets first crack.
-2. **NotebookLM fast pass.** `nlm research start --mode fast` (~30s) creates a notebook and discovers sources; one `nlm query` asks NotebookLM for the single most important clarifying question.
-3. **Clarifying question → human.** The human answers (deferred until here — no questions before this point).
-4. **NotebookLM deep pass.** `nlm research start --mode deep --auto-import` on the **same notebook** (reuses sources = efficient), enriched with the human's answer and an instruction to also scout existing flow frameworks (LangGraph, Langflow, CrewAI, n8n, Dify).
-5. **Iterate.** A FIXED set of `nlm query` angles (overview, frameworks comparison table, recommendation+plan). No improvisation.
-6. **Report.** Generate `report.html` — a polished website with the plan, a Mermaid flow diagram, the Q&A, findings, a framework comparison table, and sources.
-
-## How to run it (token-efficient, phased — preferred in Claude Code)
+CLI: `idr` on PATH, or:
 
 ```bash
-# Step 1–3: seed + fast pass + clarifying question. Prints JSON {run_id, question, ...}.
-idr plan "<the user's topic>"
+python3 ~/.claude/skills/integrative-deep-research/scripts/idr.py
 ```
-Relay the returned `question` to the human in chat. When they answer:
+
+Run artifacts live in:
+
+```text
+~/.local/share/idr/runs/<run_id>/
+```
+
+## Fixed Flow
+
+1. `agy` scoping seed: write `seed.md`, optionally ask Antigravity for a short
+   NotebookLM-ready brief.
+2. NotebookLM fast pass: `nlm research start --mode fast --auto-import`.
+3. Import stabilization: poll `nlm research status`, then run `nlm research import`.
+4. One clarifying question: ask NotebookLM for the single most important question.
+5. Human answer: relay in chat for agent sessions, or use `askq` in terminals.
+6. NotebookLM deep pass: same notebook, user answer as context, `--force --auto-import`.
+7. Fixed angles: overview, comparison table, recommendation.
+8. Local HTML report: `report.html`, Mermaid-capable, 0 formatting tokens.
+
+## Commands
+
+Phased mode, preferred inside coding/agent environments:
+
 ```bash
-# Step 4–6: deep pass + iterate + build the HTML report. Prints {run_id, report}.
-idr resume <run_id> --answer "<what the human said>"
+idr plan "<topic>"
+idr resume <run_id> --answer "<human answer>"
 ```
-Then open the report: `open "<report path>"`. Optionally regenerate: `idr report <run_id>`.
 
-**Do this and little else.** Don't read source contents or re-summarize — NotebookLM
-already did the reasoning and the HTML is generated locally. That is the whole point:
-minimal tokens, deterministic behavior.
-
-## Full interactive loop (terminal / other AIs)
+Full interactive terminal loop:
 
 ```bash
-idr run "<topic>"     # blocks on askq for the human answer, then finishes end-to-end
+idr run "<topic>"
 ```
 
-## Preflight & auth
-- NotebookLM needs auth: if `nlm` errors, run `nlm login` (or `nlm doctor`).
-- Antigravity is optional; if its CLI is absent the seed file is still written and the pipeline continues.
+Regenerate the report from existing run content:
 
-## Testing / offline
-Set `IDR_MOCK=1` or pass `--mock` to stub Antigravity + NotebookLM with canned content.
-The full loop (plan → question → resume → HTML) runs offline — used by the self-test.
+```bash
+idr report <run_id>
+```
+
+Offline smoke test:
 
 ```bash
 IDR_MOCK=1 idr plan "test topic"
 IDR_MOCK=1 idr resume <run_id> --answer "self-hosted only"
 ```
 
-State lives in `~/.local/share/idr/runs/<run_id>/` (`state.json`, `seed.md`, `content/*.md`, `report.html`).
+`--mock` is equivalent for `plan` and `run`.
+
+## Agent Guidance
+
+- Do not ask clarifying questions before `idr plan`; the pipeline creates the one
+  sanctioned question after source discovery.
+- In non-interactive agent sessions, do not run a bare blocking `askq`. Relay the
+  returned `question` to the user, then call `idr resume`.
+- Keep the `run_id`; it is the stable handle for state, content, and the report.
+- Use `deep-research-scorecard` after research when a comparison needs a decisive
+  weighted winner.
+
+## Preflight
+
+```bash
+nlm doctor
+agy --version
+IDR_MOCK=1 idr plan "smoke test"
+```
+
+`agy` is optional. If it is unavailable or fails, the driver falls back to the
+original topic/brief. `nlm` needs an authenticated NotebookLM session for live runs.
+
+## Gotchas
+
+- `nlm query` returns JSON; parse `.value.answer`.
+- NotebookLM deep research needs `--force` in headless runs.
+- `fast --auto-import` can return before sources are imported; poll and import.
+- `agy` may print leading status lines; strip them before using the answer.
+- Prefix fixed query prompts with `Topic: <topic>` so the notebook stays on-task.
+- Use `IDR_MOCK=1` for CI and smoke tests to avoid auth, network, and quota issues.

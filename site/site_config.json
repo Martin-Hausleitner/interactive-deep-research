@@ -3,6 +3,7 @@
     {
       "tag": "Beispiel A · Audio",
       "title": "Open-Source Voice Cloning — bester DE+EN-Stack",
+      "report_dir": "reports/voice",
       "run_id": "20260602-015821-def4",
       "verdict": "🏆 Bindende Schranke ist DEUTSCH, nicht die Lizenz: echtester + expressivster DE+EN-Open-Source-Stack = CosyVoice 3.0 (Ähnlichkeit ≈ menschliche Aufnahme, Instruct-Emotion, nativ DE — 84,7/100). Englisch/global wären IndexTTS-2 (SIM-o 0,860) bzw. OpenAudio S1 (#1 TTS-Arena) echter — aber beide ohne Deutsch → disqualifiziert. Starke DE-Alternativen: Chatterbox Multilingual & OmniVoice.",
       "status": "✅ 8 Runden · Echtheits-Benchmarks · Lizenz-egal geprüft · konvergiert"
@@ -10,6 +11,7 @@
     {
       "tag": "Beispiel B · Existing",
       "title": "Cross-Channel Messaging-Automation — bester Self-Build-Stack",
+      "report_dir": "reports/messaging",
       "run_id": "20260602-015302-149e",
       "verdict": "🏆 Self-Build: Matrix + Mautrix-Bridges + GoLogin + Claude Computer Use (~$30–60/mo, niedrigstes Bann-Risiko unofficial). Günstigste kommerzielle: Waalaxy; Burner-Rotation: HeyReach; native Multichannel <0.1% Bann: La Growth Machine.",
       "status": "✅ Deep done · 111 Quellen · Report fertig"
