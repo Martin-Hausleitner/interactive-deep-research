@@ -1,0 +1,372 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OpenAudio S2 Pro (Fish) — Hardware, Kosten & Durchsatz-Kalkulator · Fokus Deutsch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070912;--card:#121627;--card2:#0e1220;--ink:#eef0fa;--muted:#959bbb;--accent:#8a9bff;--accent2:#5ee0c4;--good:#4ade80;--warn:#fbbf24;--bad:#fb7185;--line:#252a45}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(1300px 700px at 78% -12%,#1b2348 0,transparent 55%),#070912;color:var(--ink);font-family:Inter,-apple-system,sans-serif;line-height:1.6}
+.wrap{max-width:1060px;margin:0 auto;padding:38px 22px 110px}
+.kicker{color:var(--accent);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:11.5px}
+h1{font-family:"Space Grotesk";font-size:38px;line-height:1.08;margin:.2em 0;background:linear-gradient(92deg,#fff,#9fb0ff 60%,#5ee0c4);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+h2{font-family:"Space Grotesk";font-size:23px;margin:0 0 .4em;border-left:4px solid var(--accent);padding-left:12px}
+.lead{color:var(--muted);max-width:760px}
+.card{background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--line);border-radius:18px;padding:24px 26px;margin:20px 0;box-shadow:0 14px 40px rgba(0,0,0,.3)}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th,td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:10px 12px;text-align:left}th{background:#1b203a;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+td:last-child,th:last-child{border-right:0}tr:last-child td{border-bottom:0}tbody tr:nth-child(even) td{background:#0c1020}
+strong,b{color:#fff;font-weight:800}.hl{color:#5ee0c4;font-weight:800}.warn{color:#fbbf24;font-weight:700}.bad{color:#fb7185;font-weight:700}
+.presets{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:14px 0}
+.preset{background:#11142a;border:1px solid var(--line);border-radius:14px;padding:14px 16px;cursor:pointer;transition:.15s}
+.preset.active{border-color:var(--accent2);box-shadow:0 0 0 1px var(--accent2) inset;background:#0e1c1f}
+.preset h3{margin:.1em 0;font-family:"Space Grotesk";font-size:16px}.preset .sub{color:var(--muted);font-size:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.slider{margin:16px 0}.slider label{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px}.slider label b{font-family:"JetBrains Mono";color:var(--accent2)}
+input[type=range]{width:100%;accent-color:#8a9bff;height:6px}
+.out{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.metric{background:#0e1326;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.metric .v{font-family:"Space Grotesk";font-size:30px;color:var(--accent2);font-weight:700}.metric .l{color:var(--muted);font-size:12.5px}
+.big{grid-column:1/-1;background:linear-gradient(180deg,#0e1c1f,#0c1622);border-color:#1f5048}
+.note{color:var(--muted);font-size:12px}.est{background:#2a2410;color:#fcd34d;border:1px solid #6b5a1f;border-radius:6px;padding:1px 7px;font-size:11px;font-weight:700}
+a{color:var(--accent)}footer{color:var(--muted);font-size:12px;text-align:center;margin-top:40px;border-top:1px solid var(--line);padding-top:18px}
+.pill{background:#0f2a1c;color:var(--good);border:1px solid #2f6b46;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:700}
+code{font-family:"JetBrains Mono";font-size:.88em;background:#0c1020;border:1px solid var(--line);border-radius:5px;padding:1px 5px}
+pre{background:#0a0d18;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:13px 15px;overflow:auto;margin:6px 0}
+pre code{border:0;padding:0;background:none;color:#d6def5;line-height:1.55;font-size:12.5px;white-space:pre}
+.step{color:var(--accent2);font-weight:800;font-family:"Space Grotesk";margin:16px 0 4px;font-size:14px}
+.sev{font-weight:800;font-size:10.5px;border-radius:6px;padding:1px 7px;white-space:nowrap}
+.sev.c{background:#2a1116;color:#fb7185;border:1px solid #6b2f3a}.sev.h{background:#2a2410;color:#fbbf24;border:1px solid #6b5a1f}.sev.m{background:#1b2138;color:#9aa0bf;border:1px solid #2b3566}
+.verdict2{background:linear-gradient(180deg,#241016,#1a0c12);border:1px solid #6b2f3a;border-left:4px solid var(--bad);border-radius:12px;padding:14px 16px;margin-top:12px}
+.pricing{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:10px 0}
+.pcard{background:#11142a;border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column}
+.pcard.feat{border-color:var(--accent2);box-shadow:0 0 0 1px var(--accent2) inset;background:#0e1c1f}
+.pcard .pname{font-family:"Space Grotesk";font-weight:700;font-size:15px}
+.pcard .price{font-family:"Space Grotesk";font-size:27px;color:var(--accent2);font-weight:800;margin-top:6px}
+.pcard .per{color:var(--muted);font-size:12px;margin-bottom:8px}
+.pcard ul{list-style:none;padding:0;margin:6px 0 0;font-size:12.5px;color:#cfd6f5}.pcard li{padding:4px 0;border-top:1px solid var(--line)}
+.pbadge{align-self:flex-start;background:var(--accent2);color:#06231d;font-weight:800;font-size:10px;border-radius:6px;padding:1px 7px;margin-bottom:6px}
+.metric.neg .v{color:var(--bad)}
+@media(max-width:760px){.pricing{grid-template-columns:1fr 1fr}}
+</style></head><body><div class="wrap">
+<div class="kicker">Open-Source Voice Cloning · Self-Hosting</div>
+<h1>OpenAudio S2 Pro (Fish) — Hardware, Kosten &amp; Durchsatz</h1>
+<div class="lead">Was für Hardware brauchst du, was kostet sie, wie lange dauert eine Generierung — und ein interaktiver <b>Durchsatz-/Kosten-Kalkulator</b> für deine <span class="hl">2× Titan RTX (24 GB)</span> und die <span class="hl">16-Core-VM (24 GB RAM, CPU-only)</span>. <b>Fokus: Deutsch.</b> <span class="pill" id="datastate">✓ kalibriert mit Live-Recherche · Stand Juni 2026</span></div>
+
+<section class="card"><h2>🖥️ Hardware-Anforderungen</h2>
+<table id="hwtable"><thead><tr><th>Aufgabe</th><th>VRAM</th><th>RTF / Speed</th><th>Auf deiner HW</th></tr></thead>
+<tbody>
+<tr><td><b>Inferenz S2-Pro (~5B)</b></td><td>min 12 GB · <b>24 GB empfohlen</b> · ~17 GB real beobachtet</td><td>RTF <b>0,195 (H200)</b> · ~0,14 (4090) · ~0,3–0,4 (3060/Turing)</td><td class="hl">Titan RTX 24 GB: <b>passt</b> (fp16 via <code>--half</code>)</td></tr>
+<tr><td><b>16 GB-Karte unquantisiert</b></td><td class="bad">passt NICHT (Issue #1168)</td><td>—</td><td>NF4 4-bit ≈16 GB / FP8 ≈20 GB <span class="est">est.</span></td></tr>
+<tr><td><b>Fine-Tuning (LoRA r8/α16)</b></td><td>24 GB, via batch/grad-accum einstellbar</td><td>~niedrige einstellige GPU-h (kl. Datensatz) <span class="est">est.</span></td><td class="hl">2× Titan ideal</td></tr>
+<tr><td><b>CPU-only (16C/24 GB)</b></td><td>RAM ~16 GB</td><td id="rtf_cpu" class="bad">~10–50× langsamer als Echtzeit <span class="est">est.</span></td><td class="warn">nur S1-mini (0,5B) praktikabel — <b>S2-Pro nicht</b></td></tr>
+</tbody></table>
+<p class="note" id="hwnote">Quellen: docs.fish.audio (24 GB empf., ~10× <code>--compile</code> auf 4090), HF fishaudio/s2-pro (RTF 0,195 H200, ~100 ms TTFA, 3000+ tok/s), GitHub #1168 (16 GB reicht nicht), emelia.io (Consumer-RTF, Schätzungen). <b>Lizenz:</b> Fish Audio Research License (non-commercial) — laut Vorgabe egal, Hauptsache Open Source.</p></section>
+
+<section class="card"><h2>🎓 Training & Daten · 🌍 Sprachen</h2>
+<div class="grid2">
+<div><h3 style="font-family:Space Grotesk">Voice-Cloning / Training</h3>
+<ul id="trainlist">
+<li><b>Zero-Shot-Klon:</b> <span class="hl">~10–30 s</span> sauberes Referenz-Audio (mehr = besser)</li>
+<li><b>Fine-Tuning (LoRA, rank 8 / alpha 16):</b> reale Referenz = <b>55 h</b> Datensatz, nur <b>7,1 M</b> trainierbare Parameter (von 4,6 B), Fast-AR-only; danach LoRA→Base mergen</li>
+<li><b>GPU-Stunden:</b> kleiner Datensatz ≈ niedrige einstellige GPU-h auf 24 GB <span class="est">Schätzung</span></li>
+<li><b>Pretraining-Kontext:</b> Basismodell auf 2 M+ h Audio</li></ul></div>
+<div><h3 style="font-family:Space Grotesk">Sprachen (80+)</h3>
+<p id="langs"><b>Tier 1:</b> EN · ZH · JA. <b>Tier 2 (inkl. <span class="hl">Deutsch</span>):</b> KO · ES · PT · AR · RU · FR · DE. Long-tail: NL · IT · PL · SV · DA · FI · CS · UK …<br><span class="warn">DE-Hinweis:</span> Deutsch voll unterstützt, Qualität knapp unter Tier-1; <b>Emotions-Steuerung</b> aktuell am stärksten für EN/ZH/JA, in DE noch limitiert.</p></div>
+</div></section>
+
+<section class="card"><h2>🧮 Durchsatz- & Kosten-Kalkulator</h2>
+<div class="presets" id="presets"></div>
+<div class="grid2">
+<div>
+ <div class="slider"><label>Ø Audio-Länge <b><span id="lenv">10</span> s</b></label><input type="range" id="len" min="1" max="60" value="10"></div>
+ <div class="slider"><label>RTF (Generierungszeit ÷ Audiodauer) <b><span id="rtfv">0.25</span>×</b></label><input type="range" id="rtf" min="0.05" max="10" step="0.05" value="0.25"></div>
+ <div class="slider"><label>Parallele Streams / Batch <b><span id="parv">2</span></b></label><input type="range" id="par" min="1" max="8" value="2"></div>
+ <div class="slider"><label>GPU-Anzahl <b><span id="gpuv">2</span></b></label><input type="range" id="gpu" min="1" max="8" value="2"></div>
+ <div class="slider"><label>Betrieb pro Tag <b><span id="hrsv">8</span> h</b></label><input type="range" id="hrs" min="1" max="24" value="8"></div>
+ <div class="slider"><label>Strompreis (DE KMU ~0,27) <b><span id="elev">0.27</span> €/kWh</b></label><input type="range" id="ele" min="0.05" max="0.60" step="0.01" value="0.27"></div>
+ <div class="slider"><label>Leistung je GPU <b><span id="powv">280</span> W</b></label><input type="range" id="pow" min="50" max="450" step="10" value="280"></div>
+</div>
+<div class="out">
+ <div class="metric"><div class="v" id="o_clip">–</div><div class="l">Generierungszeit / Clip</div></div>
+ <div class="metric"><div class="v" id="o_min">–</div><div class="l">Audios / Minute (gesamt)</div></div>
+ <div class="metric"><div class="v" id="o_hr">–</div><div class="l">Audios / Stunde (gesamt)</div></div>
+ <div class="metric"><div class="v" id="o_day">–</div><div class="l">Audios / Tag (bei Betrieb)</div></div>
+ <div class="metric"><div class="v" id="o_audioh">–</div><div class="l">Stunden Audio / Tag</div></div>
+ <div class="metric"><div class="v" id="o_cost1k">–</div><div class="l">Stromkosten / 1000 Audios</div></div>
+ <div class="metric big"><div class="v" id="o_perg">–</div><div class="l">Audios / Stunde <b>pro Titan</b> · Tageskosten Strom: <span id="o_daycost">–</span></div></div>
+</div></div>
+<p class="note">Modell: Durchsatz = Parallelität ÷ (Audiolänge × RTF) Clips/s je GPU, × GPU-Anzahl. Strom = GPU-Anzahl × Watt × Stunden × €/kWh. RTF/Watt aus den Presets (deine HW) — alles per Slider überschreibbar.</p>
+</section>
+
+<section class="card"><h2>☁️ Cloud-Kosten (modal.com) &amp; Marktpreise</h2>
+<div class="grid2">
+<div><h3 style="font-family:Space Grotesk">modal.com GPU-Preise (per Sekunde abgerechnet)</h3>
+<table><thead><tr><th>GPU</th><th>VRAM</th><th>$/h</th><th>Fit ≥24 GB?</th></tr></thead><tbody>
+<tr><td>T4</td><td>16 GB</td><td>0,59</td><td class="bad">nein</td></tr>
+<tr><td>L4</td><td>24 GB</td><td>0,80</td><td>knapp</td></tr>
+<tr><td><b>A10 / A10G</b></td><td>24 GB</td><td><b>1,10</b></td><td class="hl">billigster Fit</td></tr>
+<tr><td>L40S</td><td>48 GB</td><td>1,95</td><td>ja</td></tr>
+<tr><td>A100 40/80</td><td>40/80 GB</td><td>2,10 / 2,50</td><td>ja</td></tr>
+<tr><td>H100 / H200</td><td>80/141 GB</td><td>3,95 / 4,54</td><td>ja</td></tr>
+</tbody></table>
+<p class="note">Per-Sekunde-Abrechnung · <b>scale-to-zero</b> (kein Idle-Kosten) · $30/Mo Gratis-Credits (Starter), $100 (Team). Cold-Start ~25 s GPU-Zeit bei 5B-Modell.</p></div>
+<div><h3 style="font-family:Space Grotesk">Kosten vs. Marktwert je 1000 Clips (10 s)</h3>
+<table><thead><tr><th>Posten</th><th>€ / 1000 Clips</th></tr></thead><tbody>
+<tr><td><b>modal A10</b> (warm+Overhead)</td><td class="hl">≈ 0,85 €</td></tr>
+<tr><td>modal A10 (+ Cold-Start)</td><td>≈ 0,91 €</td></tr>
+<tr><td>Self-Host Strom (2× Titan)</td><td class="hl">≈ Cent-Bereich</td></tr>
+<tr><td>Marktwert (ElevenLabs ~€0,041/Clip)</td><td>≈ 41 €</td></tr>
+<tr><td>Human-Voiceover (€3–7,6/min)</td><td>≈ 500–1270 €</td></tr>
+</tbody></table>
+<p class="note"><b class="hl">Kernpunkt:</b> Inferenz kostet ~€0,0009/Clip — gegenüber ~€0,041 Marktwert = <b>~98 % Bruttomarge</b>. Das Geld liegt in der <b>Marge zum Marktpreis</b>, nicht im Strom. ElevenLabs ~€0,20/min · Murf ~$0,03/1k Zeichen · PlayHT eingestellt (12/2025).</p></div></div></section>
+
+<section class="card"><h2>💳 Preisliste (Vorschlag) — Voice-as-a-Service DE</h2>
+<p class="note">Positionierung: <b>GDPR/DACH-Premium</b> gegen US-Cloud, <b>~80 % unter Human-VO</b>. Alle Outputs rechte-geklärt + KI-gekennzeichnet. Marge liegt im <b>Service</b>, nicht im Compute (~€0,0009/Clip).</p>
+<div class="pricing">
+ <div class="pcard"><div class="pname">Starter</div><div class="price">29 €</div><div class="per">/ Monat</div><ul><li>2 h Audio / Monat</li><li>Self-Service (Web)</li><li>DE-Standardstimmen</li><li>KI-Hinweis automatisch</li></ul></div>
+ <div class="pcard feat"><div class="pbadge">BELIEBT</div><div class="pname">Pro</div><div class="price">119 €</div><div class="per">/ Monat</div><ul><li>10 h Audio / Monat</li><li>API-Zugang</li><li>1 eigene (einwilligende) Stimme</li><li>Priorität + Watermark-ID</li></ul></div>
+ <div class="pcard"><div class="pname">Pay-as-you-go</div><div class="price">0,25 €</div><div class="per">/ 1.000 Zeichen</div><ul><li>keine Grundgebühr</li><li>API · sekundengenau</li><li>ideal für schwankende Last</li><li>cloud-skaliert (scale-to-zero)</li></ul></div>
+ <div class="pcard"><div class="pname">Managed Voiceover</div><div class="price">30–60 €</div><div class="per">/ fertige Minute</div><ul><li>Done-for-you: Schnitt · Regie · QA</li><li>rechte-geklärte Stimmen</li><li>DSGVO + AI-Act-konform</li><li>~80 % unter Human-VO (€300+)</li></ul></div>
+</div>
+<p class="note">Marktanker: ElevenLabs ~€0,20/Min · Human-VO €15–2.500/Spot · Murf ~$0,03/1k Zeichen. Empfehlung: Pro-Tier als Anker, Managed für Marge, PAYG für schwankende Last.</p></section>
+
+<section class="card"><h2>💶 Geschäftsmodell &amp; ROI — lohnt sich der Eigenbau?</h2>
+<div id="biztext" style="margin-bottom:14px"><div class="note" style="margin-bottom:8px">🔬 <b>NotebookLM Deep Research</b> (Notebook 86a3d076) — Geschäftsmodell, Preise, Margen, Break-even (DE-Markt 2026):</div><h2>NotebookLM Deep Research — Break-even &amp; ROI</h2>
+<p>The business model for a self-hosted AI Text-to-Speech (TTS) and voice cloning service in the German market in 2026 presents a highly lucrative opportunity, bridging the gap between expensive human voiceover artists and generic, non-<span class="hl">GDPR</span>-compliant US cloud AI tools. By leveraging the open-source Fish Audio S2 Pro (a 4.4B parameter Dual-AR model with unparalleled emotion tag control and multi-speaker capabilities) [1, 2], you can build a highly profitable localized service.</p>
+<p>Here is a breakdown of the unit economics, pricing strategies, margins, and the specific break-even math against cloud providers.</p>
+<h3>Target Customer Segments</h3>
+<ol><li><strong>E-Learning &amp; Training Providers:</strong> They require vast amounts of audio. Human narration for internal E-learning costs around €350 for the first 5 minutes [3], making AI a massive cost-saver.</li><li><strong>Corporate &amp; Agency Video Producers:</strong> Explainer videos and image films require quick turnarounds. Human rates start around <span class="hl">€30</span>0-€400 for a 2-minute web video [4].</li><li><strong>Audiobook Publishers:</strong> Traditional audiobook narration costs €250–€450 per Final Audio Hour (FAH) [5]. AI cuts this down drastically, appealing to indie publishers [6]. </li><li><strong>Data-Sensitive DACH Enterprises:</strong> Because the General Data Protection Regulation (<span class="hl">GDPR</span>) restricts sending voice prints or corporate IP to US servers [7], a self-hosted, German-based infrastructure becomes your primary Unique Selling Proposition (USP).</li></ol>
+<h3>Market Price Benchmarks &amp; Pricing Strategy</h3>
+<p>To position your service effectively, you must understand both the traditional human rates (from VDS/VPS) and your AI competitors:</p>
+<ul><li><strong>SaaS Competitors (ElevenLabs &amp; Murf):</strong> ElevenLabs charges ~$22/mo for ~100 minutes (Creator) and ~$99/mo for ~500 minutes (Pro) [8, 9]. Murf charges ~$29/mo for 2 hours and ~$99/mo for 20 hours (Business) [10-17]. Overages usually run $0.18 to $0.30 per 1,000 characters [18, 19].</li><li><strong>Realistic Chargeable Rates for Your Service:</strong></li><li><strong>SaaS Tiered Subscriptions:</strong> Match the market but sell the &quot;<span class="hl">GDPR</span>/DACH&quot; premium. €29/mo (Starter: 2 hours), €119/mo (Pro: 10 hours), and Enterprise (Custom API). </li><li><strong>Pay-As-You-Go / Overage:</strong> €0.25 per 1,000 characters. </li><li><strong>&quot;Managed AI Voiceover&quot; (Agency Model):</strong> Instead of SaaS, offer a done-for-you service where you handle the emotional tagging, QA, and mixing. Charge <strong><span class="hl">€30</span>–€60 per finished minute</strong>. This is an 80% discount compared to the <span class="hl">€30</span>0+ VDS human rates [4], but yields incredibly high margins for your business.</li></ul>
+<h3>Gross Margins &amp; Unit Economics</h3>
+<p>Traditional SaaS enjoys 70-90% gross margins, but AI is structurally different [20]. Every time a user generates audio, the &quot;meter runs&quot; on compute (Jevons Paradox, or &quot;LLMflation&quot;, shows that as per-token costs drop, users generate exponentially more) [21].</p>
+<ul><li><strong>The Margin Reality:</strong> AI companies generally operate at <strong>52% to 60% gross margins</strong> [22].</li><li><strong>Inference Costs:</strong> Continuous inference accounts for 80-90% of a model&#x27;s lifetime compute cost [23] and typically consumes ~23% of total revenue for scaling B2B AI companies [24].</li><li><strong>Golden Rule:</strong> To maintain healthy unit economics, your retail price must be roughly <strong>5 to 6 times</strong> the underlying compute cost [25]. </li></ul>
+<p>***</p>
+<h2>Break-even &amp; ROI section: when does self-hosting 2x Titan RTX pay off vs renting cloud GPU (modal.com)?</h2>
+<p>Wenn Sie planen, einen professionellen KI-Voiceover-Dienst in Deutschland anzubieten, ist die Entscheidung zwischen dem Kauf eigener Hardware (2x NVIDIA Titan RTX mit je 24 GB VRAM) und der Miete von Cloud-Ressourcen (z. B. Modal.com) der wichtigste finanzielle Hebel. Fish Speech S2 Pro benötigt für Produktions-Workloads mit Batching 24 GB+ VRAM [26].</p>
+<p>Hier ist die konkrete Berechnung für den deutschen Markt 2026:</p>
+<h3>Die Variablen und Annahmen:</h3>
+<ol><li><strong>Hardware-Investition (CAPEX):</strong> Gebrauchte Titan RTX (24 GB) kosten auf Plattformen wie eBay oder Ricardo ca. 700 € bis 900 € pro Stück [27, 28]. Für 2x Titan RTX kalkulieren wir ca. 1.600 €. Zuzüglich eines soliden Server-Basissystems (CPU, RAM, 1200W Netzteil [29]) von ca. 1.000 € ergibt sich ein <strong>Gesamt-CAPEX von ca. 2.600 €</strong>.</li><li><strong>Stromkosten (OPEX lokal):</strong> Der durchschnittliche KMU-Strompreis in Deutschland liegt bei <strong>0,27 €/kWh</strong> [30]. (Der oft zitierte &quot;5-Cent-Industriestrompreis&quot; gilt nur für die energieintensive Schwerindustrie, nicht für Standard-KMUs [31, 32]). Bei einer Leistungsaufnahme von ca. 700 Watt (2x 280W GPUs + System) unter Last und durchschnittlich 6 Stunden Volllast pro Tag:</li></ol>
+<ul><li>*6h × 0,7 kW × 0,27 € = 1,13 € pro Tag ≈ <strong>34 € Stromkosten pro Monat</strong>.*</li></ul>
+<ol><li><strong>Cloud-Kosten bei Modal.com (OPEX Cloud):</strong> Modal berechnet sekundengenau. Ein direktes 24GB-Äquivalent (z.B. A10G oder L40S) kostet in der Basis etwa 1,10 $ bis 1,95 $ pro Stunde [33, 34]. Nehmen wir optimistisch 1,50 € pro Stunde an.</li></ol>
+<ul><li><strong>Die versteckten Multiplikatoren:</strong> Modal.com hat zwei massive Kosten-Multiplikatoren für echte B2B-Anwendungen. Erstens: Für garantierte Verfügbarkeit ohne Unterbrechungen (&quot;Non-Preemptible Execution&quot;, zwingend für latenzfreie Kunden-APIs) wird ein <strong>3x Multiplikator</strong> fällig [35]. Zweitens: Um <span class="hl">DSGVO</span>-konform zu sein, müssen Sie die EU-Region wählen, was weitere <strong>1,25x bis 2,5x</strong> kostet [36].</li><li>*Reale Cloud-Rate:* 1,50 € × 3 (Non-Preemptible) × 1,5 (EU-Region) = <strong>6,75 € pro Stunde pro GPU</strong> [37, 38].</li><li>Bei 2 GPUs und 6 Stunden täglicher aktiver Auslastung (180 Stunden/Monat):</li><li>*180h × 2 GPUs × 6,75 € = <strong>2.430 € Cloud-Kosten pro Monat</strong>.*</li></ul>
+<h3>Payback-Period (Amortisationszeit) Beispiel:</h3>
+<p>Die Ersparnis durch Self-Hosting bei einer durchschnittlichen Auslastung von 6 Stunden pro Tag ist massiv. </p>
+<ul><li><strong>Monatliche Ersparnis:</strong> 2.430 € (Cloud) minus 34 € (Strom) = <strong><span class="hl">2.396</span> € pro Monat</strong></li><li><strong>ROI / Payback-Periode:</strong> 2.600 € (CAPEX) / <span class="hl">2.396</span> € (Ersparnis/Monat) = <strong><span class="hl">1,08 Monate</span> (ca. 32 Tage)</strong></li></ul>
+<p><strong>Fazit:</strong>  Serverless Cloud-Dienste wie Modal glänzen bei hochgradig variablen Lasten unter 30 % Auslastung (Scale-to-Zero) [39, 40]. Sobald Sie jedoch eine kontinuierliche Auslastung für Kundenprojekte, API-Dienste und Audiobuch-Generierungen (die oft stundenlang rendern) haben, wird die Cloud aufgrund der Multiplikatoren für Ausfallsicherheit und EU-Standort extrem teuer. </p>
+<p>Der Kauf von 2x Titan RTX amortisiert sich bei einer täglichen Nutzung von nur 6 Stunden bereits nach <strong><span class="hl">weniger als 5 Wochen</span></strong>. Da Fish Audio S2 bei inferenz-optimiertem Setup extrem schnell ist (RTF von unter 0,2 [41]), können diese 6 Stunden Server-Last täglich Hunderte von Stunden an finalem Kunden-Audio generieren – was Self-Hosting zur profitabelsten Strategie für Ihr KI-SaaS-Modell macht.</p></div>
+<div class="grid2">
+<div>
+ <div class="slider"><label>Verkaufspreis je 1000 Audios <b><span id="p1kv">50</span> €</b></label><input type="range" id="p1k" min="5" max="500" step="5" value="50"></div>
+ <div class="slider"><label>Volumen <b><span id="volv">50.000</span> Audios / Monat</b></label><input type="range" id="vol" min="1000" max="1000000" step="1000" value="50000"></div>
+ <div class="slider"><label>modal.com GPU-Preis <b>$<span id="modalhv">1.10</span> / h</b></label><input type="range" id="modalh" min="0.40" max="4.00" step="0.05" value="1.10"></div>
+ <div class="slider"><label>modal RTF (auf A10G/A100) <b><span id="modalrtfv">0.20</span>×</b></label><input type="range" id="modalrtf" min="0.05" max="1.0" step="0.05" value="0.20"></div>
+ <div class="slider"><label>modal B2B-Faktor <b><span id="b2bv">4.5</span>×</b> (Non-Preempt 3× · EU-Region ~1,5×)</label><input type="range" id="b2b" min="1" max="7.5" step="0.5" value="4.5"></div>
+ <div class="slider"><label>Capex 2× Titan + Server <b><span id="capexv">2.600</span> €</b></label><input type="range" id="capex" min="0" max="8000" step="100" value="2600"></div>
+ <div class="slider"><label>Personal/Betrieb (QA · DevOps) <b><span id="laborv">1.500</span> €/Mo</b></label><input type="range" id="labor" min="0" max="12000" step="100" value="1500"></div>
+ <div class="note">All-in Self-Host = Strom + Capex/24 Mo + Personal. modal = GPU-Sek × Preis × B2B-Faktor (+30 % Overhead). USD→EUR ≈ 0,92.</div>
+</div>
+<div class="out">
+ <div class="metric big" id="m_profit"><div class="v" id="b_profit">–</div><div class="l"><b>Gewinn / Monat</b> · Marge <span id="b_marginpct">–</span> · ROI/Jahr <span id="b_roi">–</span></div></div>
+ <div class="metric"><div class="v" id="b_rev">–</div><div class="l">Umsatz / Monat</div></div>
+ <div class="metric"><div class="v" id="b_cost">–</div><div class="l">All-in-Kosten / Monat</div></div>
+ <div class="metric"><div class="v" id="b_ppa">–</div><div class="l">Verkaufspreis / Audio</div></div>
+ <div class="metric"><div class="v" id="b_cpa">–</div><div class="l">Kosten / Audio (all-in)</div></div>
+ <div class="metric"><div class="v" id="b_gpa">–</div><div class="l">Gewinn / Audio</div></div>
+ <div class="metric"><div class="v" id="b_audiomo">–</div><div class="l">Std. Audio / Monat</div></div>
+ <div class="metric"><div class="v" id="b_modal">–</div><div class="l">modal-Kosten / Monat (Vergleich)</div></div>
+ <div class="metric"><div class="v" id="b_payback">–</div><div class="l">Titan-Amortisation ggü. modal · Break-even: <span id="b_be">–</span></div></div>
+</div></div></section>
+
+<section class="card"><h2>🎯 Go-to-Market — compliance-konformer Managed Voice-as-a-Service (DE)</h2>
+<p class="note"><b>Positionierung:</b> zwischen teurem Human-VO (€300+/Spot) und generischem US-Cloud (ElevenLabs) — <span class="hl">DSGVO/DACH self-hosted</span>, rechte-geklärt + KI-gekennzeichnet, ~80 % günstiger, schneller Turnaround.</p>
+<div class="step">Ideale Kunden (ICP)</div>
+<table><thead><tr><th>Segment</th><th>Warum KI</th><th>Einstiegs-Angebot</th></tr></thead><tbody>
+<tr><td><b>E-Learning / Training</b></td><td>große Audio-Mengen; Human ~€350 / 5 Min</td><td>Managed-Retainer pro Kurs</td></tr>
+<tr><td><b>Agenturen (Erklärvideo/Imagefilm)</b></td><td>schnelle Turnarounds, viele Iterationen</td><td>White-Label PAYG / Pro</td></tr>
+<tr><td><b>Hörbuch-Indie-Verlage</b></td><td>Human €250–450 / Endstunde</td><td>Managed pro Endstunde</td></tr>
+<tr><td><b>DSGVO-DACH-Firmen (IVR · interne Comms)</b></td><td>dürfen Stimmdaten nicht in US-Cloud geben</td><td>Self-hosted Enterprise + AVV</td></tr>
+</tbody></table>
+<div class="step">90-Tage-Plan</div>
+<div class="pricing">
+ <div class="pcard"><div class="pname">Tage 0–30 · Fundament</div><ul><li>Compliance-Setup (Lizenz · DPIA-Vorlage · Watermark)</li><li>3 rechte-geklärte DE-Demo-Stimmen</li><li>Landingpage + Demo-Samples</li></ul></div>
+ <div class="pcard feat"><div class="pbadge">TRACTION</div><div class="pname">Tage 31–60 · Pilots</div><ul><li>10 Outbound-Pilots (E-Learning/Agentur)</li><li>2 Referenz-Cases (gratis 5 Min gegen Logo/Testimonial)</li><li>Pro-Tier + PAYG live</li></ul></div>
+ <div class="pcard"><div class="pname">Tage 61–90 · Umsatz</div><ul><li>erste zahlende Managed-Kunden</li><li>1 White-Label-Partnerschaft (Agentur/Plattform)</li><li>KPIs etabliert · Preise nachjustiert</li></ul></div>
+</div>
+<div class="step">Akquise &amp; Angebots-Leiter</div>
+<ul>
+<li><b>Kanäle:</b> Outbound LinkedIn/E-Mail an L&amp;D- &amp; Marketing-Entscheider · deutscher Demo-Content · Partnerschaften (E-Learning-Plattformen, Agenturen white-label).</li>
+<li><b>Leiter:</b> Gratis-Pilot (5 Min) → <span class="hl">Pro-Abo (€119)</span> → Managed-Retainer (€30–60/Min) → Enterprise (self-hosted + AVV).</li>
+<li><b>Differenzierung vs. ElevenLabs:</b> kein Self-Serve-Commodity, sondern <b>managed + rechte-geklärt + DSGVO + Deutsch-Fokus</b>.</li></ul>
+<div class="step">KPIs</div>
+<p class="note">CAC · Pilot→Paid-Conversion · fertige Audio-Minuten/Mo · Bruttomarge (Ziel <span class="hl">~50–60 %</span>) · LTV/CAC · Net Revenue Retention.</p></section>
+
+<section class="card"><h2>🛡️ Risiken & Realitäts-Check (Red-Team)</h2>
+<p class="note">Adversariale Prüfung des optimistischen Cases (1-Monat-Payback · 98 % Marge · €30–60/Min). <b class="warn">Zwei Risiken sind potenziell geschäftsbeendend — noch bevor die Margenrechnung greift.</b></p>
+<table><thead><tr><th>#</th><th>Risiko</th><th>Schwere</th><th>Warum</th><th>Mitigation</th></tr></thead><tbody>
+<tr><td>1</td><td><b>Kunde klont Person ohne Einwilligung → du haftest</b></td><td><span class="sev c">kritisch</span></td><td>Stimmprofil = besondere Kategorie (DSGVO Art. 9); LG Berlin 8/2025 (2 O 202/24): €4.000 für Klon von Manfred Lehmann; Betrugs-Vektor (CEO-Scam)</td><td>Einwilligungs-Verträge + ID + DPIA je Stimme; keine Dritt-Stimmen; KYC + Haftungsfreistellung</td></tr>
+<tr><td>2</td><td><b>Fish Research License ist NON-COMMERCIAL — Verkauf des Outputs bricht sie wahrscheinlich</b></td><td><span class="sev c">kritisch</span></td><td>„Open Source" = source-available/NC; Output-Klausel unklar → Unterlassungs-/Vertragsrisiko, das den Dienst über Nacht stoppt</td><td>Fish-Kommerz-Lizenz kaufen (laufende Kosten) ODER echtes Apache/MIT-Modell (Chatterbox MIT / CosyVoice Apache)</td></tr>
+<tr><td>3</td><td><b>EU AI Act Art. 50</b> — kein Wasserzeichen/Hinweis</td><td><span class="sev h">hoch</span></td><td>Verbindlich ab 2.8.2026; KI-Audio = „Deepfake" → maschinenlesbare Kennzeichnung + Offenlegung; bis €15 M / 3 % Umsatz (Art. 99)</td><td>Watermark/Metadaten einbetten; Offenlegungspflicht vertraglich an Kunden; Code-of-Practice (6/2026) verfolgen</td></tr>
+<tr><td>4</td><td><b>98 % Marge ist Fiktion → real ~50–60 %</b></td><td><span class="sev h">hoch</span></td><td>Labor (QA/Schnitt/Regie), Strom, DevOps, Compliance, Lizenzgebühr alle ungezählt; €30–60/Min = verkaufte Menschenzeit = COGS</td><td>Unit-Economics mit voller COGS neu rechnen vor jedem Commitment</td></tr>
+<tr><td>5</td><td><b>Auslastungs-Risiko vs. Cloud scale-to-zero</b></td><td><span class="sev h">hoch</span></td><td>1-Monat-Payback braucht 6 h/Tag Dauerlast; bursty Nachfrage → €0-Idle-Cloud gewinnt</td><td>Cloud-first starten; Hardware erst bei nachgewiesener Dauerlast kaufen</td></tr>
+<tr><td>6</td><td><b>Nachfrage/CAC vs. ElevenLabs</b></td><td><span class="sev h">hoch</span></td><td>€30–60/Min = 60–600× Roh-Preis des Incumbents (~€0,10–0,50/Min, Gratis-Tier); Pure-AI-Käufer churnen</td><td><b>Managed Outcome</b> verkaufen (Schnitt, Regie, rechte-geklärte Stimmen), nicht Minuten</td></tr>
+<tr><td>7</td><td><b>Deutsch = Tier-2, schwächere Emotion</b></td><td><span class="sev m">mittel</span></td><td>Premium-VO bleibt bei Menschen (€15–2500/Spot); Emotion-Nuance fehlt</td><td>Auf faktische Bulk-Inhalte zielen (IVR, E-Learning, interne Comms), nicht emotive Premium-VO</td></tr>
+<tr><td>8</td><td><b>Strom ~€110/Mo + alternde Turing-GPUs (2018)</b></td><td><span class="sev m">mittel</span></td><td>€0,27/kWh (nicht 0,05); ~560 W Dauerlast; gebrauchte Karten, kein FP8, kein Redundanz-Budget</td><td>Realen Strom + GPU-Ersatz/Abschreibung budgetieren; neuere Karten erwägen</td></tr>
+</tbody></table>
+<div class="verdict2"><b class="bad">Verdikt:</b> Tragfähig <b>nur</b> als rechte-geklärter, compliance-first <b>Managed-Service</b>: (a) bezahlte Fish-Kommerz-Lizenz <i>oder</i> echtes permissives Modell, (b) nur einwilligende/vertraglich gebundene Sprecher mit DPIA + Wasserzeichen, (c) Ziel = hochvolumige <b>faktische</b> deutsche Inhalte (IVR/E-Learning/interne Comms), (d) gerechnet mit <b>~50–60 % Marge</b>, cloud-first bis Dauerlast bewiesen. <b>Nicht tragfähig</b> als „98 %-Marge, Lizenz-ignorierende Klon-alles-Box" — zwei unabhängig geschäftsbeendende Rechtsrisiken (Dritt-Stimmen-Haftung; NC-Lizenz-Bruch) stehen vor der Margenrechnung. → <b class="hl">Für eine kommerzielle Nutzung lieber Chatterbox (MIT) oder CosyVoice (Apache) statt der NC-Weights von S2-Pro.</b></div>
+<p class="note">Quellen: EU AI Act Art. 50 & 99 · EDPB-Leitlinien 02/2021 (Stimme=Biometrie) · LG Berlin 2 O 202/24 (Kremer Legal) · Fish-Audio-Lizenz-Blog + HF-Card · ElevenLabs-Preise · stimme24 (DE-VO-Sätze) · Bain Capital Ventures (AI-Margen).</p></section>
+
+<section class="card"><h2>✅ Compliance-Setup — so wird der Dienst rechtlich tragfähig</h2>
+<p class="note">Die zwei kritischen Red-Team-Risiken (Dritt-Stimmen-Haftung · NC-Lizenz) sind <b class="hl">vermeidbar</b> — mit dieser Betriebsanleitung. Reihenfolge = Setup-Schritte.</p>
+<div class="step">1 · Modell &amp; Lizenz sauber wählen</div>
+<ul>
+<li>Für <b>kommerziell</b>: <span class="hl">permissives Modell</span> — Chatterbox Multilingual (MIT) oder CosyVoice 3 (Apache). <b>ODER</b> bezahlte Fish-Audio-Kommerz-Lizenz für S2-Pro.</li>
+<li><b class="bad">Nicht</b> die S2-Pro-NC-Weights kommerziell verkaufen, ohne Lizenz — Output-Klausel unklar = Unterlassungsrisiko.</li></ul>
+<div class="step">2 · Einwilligung &amp; Verträge (gegen Dritt-Stimmen-Haftung)</div>
+<ul>
+<li>Nur <b>einwilligende, vertraglich gebundene Sprecher</b> klonen — schriftliche, spezifische Stimm-Klon-Einwilligung.</li>
+<li>AGB: <b>Verbot von Dritt-/Promi-/Wettbewerber-Stimmen</b>; KYC + Identitätsnachweis beim Voice-Upload; Haftungsfreistellung des Kunden.</li></ul>
+<div class="step">3 · DSGVO (Stimmprofil = besondere Kategorie, Art. 9)</div>
+<ul>
+<li><b>Explizite Einwilligung</b> (Art. 9) je geklonter Stimme; <b>DPIA</b> (Art. 35) <i>vor</i> dem ersten Klon — auch im Test.</li>
+<li>EU-Hosting, AVV mit B2B-Kunden, Lösch-/Aufbewahrungskonzept, Verzeichnis der Verarbeitungstätigkeiten.</li></ul>
+<div class="step">4 · EU AI Act Art. 50 (verbindlich ab 2.8.2026)</div>
+<ul>
+<li><b>Maschinenlesbares Wasserzeichen</b> + Metadaten in <i>jedes</i> generierte Audio; Offenlegungs-Hinweis „KI-generiert".</li>
+<li>Kunden (Deployer) vertraglich zur Kennzeichnung verpflichten; Code-of-Practice (6/2026) verfolgen. Strafe sonst bis €15 M / 3 % Umsatz.</li></ul>
+<div class="step">5 · Audit-Trail &amp; Segment</div>
+<ul>
+<li>Pro Generierung protokollieren: Auftraggeber · Einwilligungsnachweis · Quelle der Referenzstimme · Watermark-ID (manipulationssicher).</li>
+<li>Zielsegment = <b>faktische DE-Bulk-Inhalte</b> (IVR · E-Learning · interne Comms); „<b>Managed Outcome</b>" verkaufen, nicht Minuten; Unit-Economics mit voller COGS (<b>~50–60 % Marge</b>), <b>cloud-first</b> bis Dauerlast bewiesen.</li></ul>
+<div class="verdict2" style="background:linear-gradient(180deg,#0d211f,#0c1622);border-color:#1f5048;border-left-color:var(--accent2)"><b class="hl">Minimal-Start legal:</b> permissives Modell (MIT/Apache) · nur eigene/einwilligende Stimme · DPIA + Einwilligungsvorlage · Watermark + „KI-generiert"-Hinweis · faktische Inhalte · COGS-realistische Preise. Damit fallen beide geschäftsbeendenden Risiken weg.</div></section>
+
+<section class="card"><h2>🚀 Deployment-Quickstart — S2 Pro auf 2× Titan RTX (Deutsch)</h2>
+<p class="note">Verifizierte Befehle (fish-speech-Docs). <b class="warn">Turing-Pflicht:</b> Titan RTX (sm_75) kann kein bf16 → überall <code>--half</code> (Docker: <code>-e HALF=1</code>); Flash-Attn/bf16 meiden. <code>--compile</code> = ~10× schneller.</p>
+<div class="step">1 · Modell laden</div>
+<pre><code>pip install "huggingface_hub[cli]"
+hf download fishaudio/s2-pro --local-dir checkpoints/s2-pro</code></pre>
+<div class="step">2 · Schnellster Weg: Docker-API-Server je GPU (beide Titans)</div>
+<pre><code># GPU 0  → Port 8080
+docker run -d --name fish0 --gpus '"device=0"' -p 8080:8080 \
+  -v ./checkpoints:/app/checkpoints -v ./references:/app/references \
+  -e COMPILE=1 -e HALF=1 fishaudio/fish-speech:latest-server-cuda
+# GPU 1  → Port 8081
+docker run -d --name fish1 --gpus '"device=1"' -p 8081:8080 \
+  -v ./checkpoints:/app/checkpoints -v ./references:/app/references \
+  -e COMPILE=1 -e HALF=1 fishaudio/fish-speech:latest-server-cuda</code></pre>
+<p class="note">Kein Tensor-Parallel-Flag → 1 Prozess je Karte (2 Instanzen hinter Load-Balancer). API-Docs unter <code>:8080/docs</code> · WebUI-Image <code>latest-webui-cuda</code> (Port 7860).</p>
+<div class="step">3 · Deutscher Zero-Shot-Klon (Source-Install, 3 Schritte, DAC-Codec)</div>
+<pre><code># a) Referenz-Audio -> Prompt-Tokens (fake.npy)
+python fish_speech/models/dac/inference.py -i referenz_de.wav \
+  --checkpoint-path checkpoints/s2-pro/codec.pth
+# b) Semantik-Tokens fuer DE-Zieltext  (Turing: --half)
+python fish_speech/models/text2semantic/inference.py \
+  --text "Dein deutscher Zieltext." \
+  --prompt-text "Transkript der Referenz" \
+  --prompt-tokens fake.npy --half --compile
+# c) Dekodieren -> Wave
+python fish_speech/models/dac/inference.py -i codes_0.npy</code></pre>
+<div class="step">4 · LoRA-Finetune einer Stimme (rank 8 / alpha 16)</div>
+<pre><code>python tools/vqgan/extract_vq.py data --num-workers 1 --batch-size 16 \
+  --config-name modded_dac_vq --checkpoint-path checkpoints/s2-pro/codec.pth
+python tools/llama/build_dataset.py --input data --output data/protos \
+  --text-extension .lab --num-workers 16
+python fish_speech/train.py --config-name text2semantic_finetune \
+  project=meinevoice +lora@model.model.lora_config=r_8_alpha_16
+python tools/llama/merge_lora.py --lora-config r_8_alpha_16 \
+  --base-weight checkpoints/s2-pro \
+  --lora-weight results/meinevoice/checkpoints/step_000000010.ckpt \
+  --output checkpoints/s2-pro-lora/</code></pre>
+<p class="note">Datensatz = 1 Ordner je Sprecher mit <code>audio</code> + <code>.lab</code> (Transkript); danach Inferenz auf <code>checkpoints/s2-pro-lora/</code> zeigen.</p>
+<div class="step">CPU-VM-Fallback (16C/24 GB, kein GPU) — nur S1-mini</div>
+<pre><code>docker run -d -p 8080:8080 -v ./checkpoints:/app/checkpoints \
+  -e BACKEND=cpu fishaudio/fish-speech:latest-server-cpu
+# nur S1-mini (0,5B) praktikabel — S2-Pro auf CPU ~10-50x langsamer</code></pre>
+<p class="note">Quellen: github.com/fishaudio/fish-speech · docs.fish.audio (running-inference · docker-deployment · finetune) · HF fishaudio/s2-pro.</p></section>
+
+<footer>Open-Source · Lizenz egal (Hauptsache OSS) · Fokus Deutsch · generiert <span id="now"></span> · Teil von <a href="http://100.120.120.120:5181/">interactive-deep-research</a></footer>
+<script>
+(function(){const $=id=>document.getElementById(id);
+const E2U=0.92, OVER=1.30; // USD→EUR, modal overhead factor
+function fmtE(n){return isFinite(n)?n.toLocaleString("de-DE",{maximumFractionDigits:0}):"–";}
+function biz(){
+ const len=+$("len").value, rtfSelf=+$("rtf").value, par=+$("par").value, ele=+$("ele").value, pow=+$("pow").value, gpu=+$("gpu").value;
+ const p1k=+$("p1k").value, vol=+$("vol").value, modalh=+$("modalh").value, modalrtf=+$("modalrtf").value, capex=+$("capex").value, b2b=+$("b2b").value, labor=+$("labor").value;
+ $("p1kv").textContent=p1k; $("volv").textContent=vol.toLocaleString("de-DE"); $("modalhv").textContent=modalh.toFixed(2);
+ $("modalrtfv").textContent=modalrtf.toFixed(2); $("capexv").textContent=capex.toLocaleString("de-DE"); $("b2bv").textContent=b2b.toFixed(1); $("laborv").textContent=labor.toLocaleString("de-DE");
+ const rev = vol/1000*p1k;
+ const modalPerClipEUR = len*modalrtf*OVER*(modalh/3600)*E2U*b2b;
+ const modalMonth = vol*modalPerClipEUR;
+ const clipsPerSec = par/(len*rtfSelf)*gpu; const hours = vol/clipsPerSec/3600;
+ const selfElec = hours*(gpu*pow/1000)*ele;
+ const fixed = capex/24;
+ const totalCost = selfElec + fixed + labor;
+ const profit = rev - totalCost;
+ const marginPct = rev>0 ? profit/rev*100 : 0;
+ const ppa = p1k/1000, cpa = vol>0 ? totalCost/vol : 0, gpa = ppa - cpa;
+ const roiYr = capex>0 ? profit*12/capex*100 : Infinity;
+ const audioMo = vol*len/3600;
+ const save = modalMonth - selfElec;
+ const payback = save>0 ? capex/save : Infinity;
+ const beVol = (ppa-(selfElec/Math.max(vol,1)))>0 ? (fixed+labor)/(ppa-(selfElec/Math.max(vol,1))) : Infinity;
+ const eur=n=>fmtE(n)+" €", c2=n=>(isFinite(n)?n.toFixed(3):"–")+" €";
+ $("b_profit").textContent=eur(profit);
+ $("m_profit").style.borderColor = profit>=0 ? "#1f5048" : "#6b2f3a";
+ $("b_profit").style.color = profit>=0 ? "#5ee0c4" : "#fb7185";
+ $("b_marginpct").textContent=marginPct.toFixed(0)+" %";
+ $("b_roi").textContent= isFinite(roiYr)? roiYr.toFixed(0)+" %" : "—";
+ $("b_rev").textContent=eur(rev);
+ $("b_cost").textContent=eur(totalCost);
+ $("b_ppa").textContent=c2(ppa);
+ $("b_cpa").textContent=c2(cpa);
+ $("b_gpa").textContent=c2(gpa);
+ $("b_audiomo").textContent=fmtE(audioMo)+" h";
+ $("b_modal").textContent=eur(modalMonth);
+ $("b_payback").textContent= isFinite(payback)? payback.toFixed(1)+" Mo" : "—";
+ $("b_be").textContent= isFinite(beVol)? fmtE(beVol)+" Audios/Mo" : "—";
+}
+["len","rtf","par","gpu","ele","pow","p1k","vol","modalh","modalrtf","b2b","capex","labor"].forEach(k=>$(k)&&$(k).addEventListener("input",biz));
+biz();})();
+</script>
+</div>
+<script>
+// HW-Presets (RTF/Watt) — werden mit Recherche-Zahlen kalibriert
+const PRESETS=[
+ {id:"titan1",name:"1× Titan RTX",sub:"24 GB · fp16 (--half)",rtf:0.30,gpu:1,pow:280,par:2},
+ {id:"titan2",name:"2× Titan RTX",sub:"2×24 GB · deine HW",rtf:0.30,gpu:2,pow:280,par:2},
+ {id:"titan2c",name:"2× Titan + sglang/--compile",sub:"~10× schneller",rtf:0.04,gpu:2,pow:300,par:3},
+ {id:"cpuvm",name:"16-Core CPU-VM",sub:"24 GB · CPU · nur S1-mini",rtf:20,gpu:1,pow:150,par:1},
+];
+const $=id=>document.getElementById(id);
+const ids=["len","rtf","par","gpu","hrs","ele","pow"];
+function setPreset(p){ $("rtf").value=p.rtf; $("gpu").value=p.gpu; $("pow").value=p.pow; $("par").value=p.par;
+  document.querySelectorAll(".preset").forEach(e=>e.classList.toggle("active",e.dataset.id===p.id)); calc(); }
+function fmt(n){ if(!isFinite(n))return "–"; if(n>=1000)return Math.round(n).toLocaleString("de-DE"); if(n>=10)return n.toFixed(0); if(n>=1)return n.toFixed(1); return n.toFixed(2);}
+function calc(){
+ const len=+$("len").value, rtf=+$("rtf").value, par=+$("par").value, gpu=+$("gpu").value, hrs=+$("hrs").value, ele=+$("ele").value, pow=+$("pow").value;
+ ["len","rtf","par","gpu","hrs","ele","pow"].forEach(k=>$(k+"v").textContent = (k==="rtf"?(+$(k).value).toFixed(2):(k==="ele"?(+$(k).value).toFixed(2):$(k).value)));
+ const genClip = len*rtf/par;              // s pro Clip (mit Batch)
+ const perGpuPerSec = par/(len*rtf);       // Clips/s je GPU
+ const totPerSec = perGpuPerSec*gpu;
+ const perMin=totPerSec*60, perHr=totPerSec*3600, perDay=perHr*hrs;
+ const audioHrPerDay=perDay*len/3600;
+ const kW=gpu*pow/1000, costHr=kW*ele, cost1k=perHr>0?(1000/perHr)*costHr:0, dayCost=costHr*hrs;
+ const perGpuHr=perHr/gpu;
+ $("o_clip").textContent=fmt(genClip)+" s";
+ $("o_min").textContent=fmt(perMin);
+ $("o_hr").textContent=fmt(perHr);
+ $("o_day").textContent=fmt(perDay);
+ $("o_audioh").textContent=fmt(audioHrPerDay)+" h";
+ $("o_cost1k").textContent=cost1k.toFixed(2)+" €";
+ $("o_perg").textContent=fmt(perGpuHr)+" / h";
+ $("o_daycost").textContent=dayCost.toFixed(2)+" €";
+}
+const pc=$("presets");
+PRESETS.forEach(p=>{const d=document.createElement("div");d.className="preset";d.dataset.id=p.id;
+ d.innerHTML=`<h3>${p.name}</h3><div class="sub">${p.sub}</div><div class="sub">RTF ${p.rtf}× · ${p.pow} W</div>`;
+ d.onclick=()=>setPreset(p);pc.appendChild(d);});
+ids.forEach(k=>$(k).addEventListener("input",calc));
+$("now").textContent=new Date().toISOString().slice(0,10);
+setPreset(PRESETS[1]); // 2× Titan RTX default
+</script></body></html>

@@ -1,0 +1,206 @@
+{
+  "title": "Open-Source Voice Cloning DE+EN — Echtheit & Emotion (Lizenz nicht ausschlaggebend)",
+  "scale": 10,
+  "criteria": [
+    {
+      "key": "de",
+      "label": "Deutsch",
+      "weight": 4
+    },
+    {
+      "key": "en",
+      "label": "Englisch",
+      "weight": 2
+    },
+    {
+      "key": "clone",
+      "label": "Klon-Ähnl.",
+      "weight": 3
+    },
+    {
+      "key": "emo",
+      "label": "Emotion",
+      "weight": 3
+    },
+    {
+      "key": "nonv",
+      "label": "Non-verbals",
+      "weight": 1
+    },
+    {
+      "key": "bench",
+      "label": "Benchmark-Beleg",
+      "weight": 3
+    },
+    {
+      "key": "vram",
+      "label": "VRAM-Effizienz",
+      "weight": 1
+    },
+    {
+      "key": "rtf",
+      "label": "Latenz/RTF",
+      "weight": 1
+    },
+    {
+      "key": "maint",
+      "label": "Wartung 2026",
+      "weight": 1
+    }
+  ],
+  "candidates": [
+    {
+      "name": "CosyVoice 3.0",
+      "link": "https://github.com/FunAudioLLM/CosyVoice",
+      "note": "Apache-2.0, instruct-Emotion + Non-verbals, nativ DE, SOTA cross-lingual; einziger mit publizierter DE-Head-to-Head (EU-Fork schlägt XTTS2 10/12).",
+      "scores": {
+        "de": 9,
+        "en": 9,
+        "clone": 8,
+        "emo": 9,
+        "nonv": 8,
+        "lic": 10,
+        "bench": 8,
+        "vram": 8,
+        "rtf": 7,
+        "maint": 9
+      }
+    },
+    {
+      "name": "Chatterbox Multilingual",
+      "link": "https://github.com/resemble-ai/chatterbox",
+      "note": "MIT, nativ DE, beste Plug&Play-DE-Qualität (~95 vs XTTS 75), schlägt ElevenLabs im A/B; aber nur globaler Emotions-Regler, keine Non-verbals.",
+      "scores": {
+        "de": 9,
+        "en": 9,
+        "clone": 8,
+        "emo": 6,
+        "nonv": 2,
+        "lic": 10,
+        "bench": 7,
+        "vram": 7,
+        "rtf": 7,
+        "maint": 9
+      }
+    },
+    {
+      "name": "OpenAudio S1/S2 (Fish)",
+      "link": "https://github.com/fishaudio/fish-speech",
+      "note": "Höchste Rohqualität (#1 open auf TTS-Arena) + reichste Emotion-Tags; ABER non-commercial Weights.",
+      "scores": {
+        "de": 4,
+        "en": 10,
+        "clone": 9,
+        "emo": 10,
+        "nonv": 10,
+        "lic": 2,
+        "bench": 10,
+        "vram": 7,
+        "rtf": 7,
+        "maint": 9
+      }
+    },
+    {
+      "name": "OmniVoice",
+      "link": "https://github.com/k2-fsa/OmniVoice",
+      "note": "Apache-2.0, höchste publizierte DE-Speaker-Similarity (SIM-o 0,812); Naturalness-Listening noch offen.",
+      "scores": {
+        "de": 8,
+        "en": 8,
+        "clone": 9,
+        "emo": 5,
+        "nonv": 3,
+        "lic": 10,
+        "bench": 8,
+        "vram": 7,
+        "rtf": 7,
+        "maint": 7
+      }
+    },
+    {
+      "name": "Qwen3-TTS",
+      "link": "https://github.com/QwenLM/Qwen3-TTS",
+      "note": "Apache, neu (1/2026), native DE, niedrige Latenz (97ms); DE-Stabilität < EN.",
+      "scores": {
+        "de": 7,
+        "en": 8,
+        "clone": 8,
+        "emo": 6,
+        "nonv": 3,
+        "lic": 9,
+        "bench": 6,
+        "vram": 8,
+        "rtf": 9,
+        "maint": 7
+      }
+    },
+    {
+      "name": "Higgs Audio v2",
+      "link": "https://github.com/boson-ai/higgs-audio",
+      "note": "Exzellente EN-Emotion (SOTA EmergentTTS), DE schwach/unbelegt, braucht ~24GB fürs Cloning.",
+      "scores": {
+        "de": 5,
+        "en": 9,
+        "clone": 7,
+        "emo": 8,
+        "nonv": 5,
+        "lic": 10,
+        "bench": 7,
+        "vram": 4,
+        "rtf": 6,
+        "maint": 8
+      }
+    },
+    {
+      "name": "IndexTTS-2",
+      "link": "https://github.com/index-tts/index-tts",
+      "note": "SOTA-Emotion (entkoppelt, Dauer-Control) — ABER KEIN Deutsch (nur EN/ZH) → disqualifiziert für DE+EN.",
+      "scores": {
+        "de": 1,
+        "en": 9,
+        "clone": 10,
+        "emo": 10,
+        "nonv": 7,
+        "lic": 4,
+        "bench": 9,
+        "vram": 7,
+        "rtf": 7,
+        "maint": 7
+      }
+    },
+    {
+      "name": "XTTS-v2",
+      "link": "https://github.com/coqui-ai/TTS",
+      "note": "Lizenz-Sackgasse (CPML, Coqui tot 12/2025), keine native Emotion.",
+      "scores": {
+        "de": 8,
+        "en": 8,
+        "clone": 7,
+        "emo": 2,
+        "nonv": 1,
+        "lic": 1,
+        "bench": 6,
+        "vram": 9,
+        "rtf": 8,
+        "maint": 4
+      }
+    },
+    {
+      "name": "F5-TTS (+DE-FT)",
+      "link": "https://github.com/SWivid/F5-TTS",
+      "note": "Gutes DE nur via Finetune; die brauchbaren DE-Checkpoints sind CC-BY-NC.",
+      "scores": {
+        "de": 7,
+        "en": 8,
+        "clone": 8,
+        "emo": 3,
+        "nonv": 2,
+        "lic": 2,
+        "bench": 7,
+        "vram": 7,
+        "rtf": 8,
+        "maint": 7
+      }
+    }
+  ]
+}

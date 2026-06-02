@@ -1,0 +1,13 @@
+{"title":"Cross-Channel Messaging-Automation Stack","scale":10,
+"criteria":[
+ {"key":"chan","label":"Kanäle (IG/LI/WA/X/Mail)","weight":2},
+ {"key":"ban","label":"Niedriges Bann-Risiko","weight":3},
+ {"key":"cost","label":"Geringe Kosten","weight":2},
+ {"key":"noapi","label":"Ohne offiz. API","weight":2},
+ {"key":"ctrl","label":"Kontrolle/Self-Host","weight":1},
+ {"key":"ease","label":"Setup-Einfachheit","weight":1}],
+"candidates":[
+ {"name":"Self-Build: Matrix + Mautrix + GoLogin + Claude Computer Use","link":"https://github.com/mautrix","note":"Open-Source-Protokoll + Antidetect-Hybrid: zentralisiert alle DMs via Mautrix-Bridges, Claude steuert visuell im gespooften Browser → umgeht DOM/Headless-Detection. ~$30-60/Monat.","scores":{"chan":10,"ban":8,"cost":10,"noapi":10,"ctrl":9,"ease":4}},
+ {"name":"La Growth Machine","link":"https://lagrowthmachine.com","note":"Bester nativer Multichannel-Sequencer (LinkedIn/X/Email/Voice), Cloud, mimt menschliche Delays.","scores":{"chan":8,"ban":10,"cost":5,"noapi":6,"ctrl":6,"ease":9}},
+ {"name":"HeyReach","link":"https://www.heyreach.io","note":"Cloud, rotiert Volumen über Burner-Profile in eine Inbox; umgeht lokales Fingerprinting.","scores":{"chan":4,"ban":8,"cost":5,"noapi":6,"ctrl":6,"ease":9}},
+ {"name":"Waalaxy","link":"https://www.waalaxy.com","note":"Günstigste kommerzielle Option (Chrome-Extension); aber DOM-Injection → 3-5% Restriction-Rate.","scores":{"chan":5,"ban":3,"cost":9,"noapi":5,"ctrl":4,"ease":9}}]}
