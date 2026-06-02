@@ -54,12 +54,17 @@ PY
 
 git diff --check
 
-if git ls-files | rg '(^|/)__pycache__/|\.pyc$|^(PROGRESS|audio_demos|build_audios|build_goal_site|site_config)\.'; then
+if git ls-files | grep -E '(^|/)__pycache__/|\.pyc$|^(PROGRESS|audio_demos|build_audios|build_goal_site|site_config)\.'; then
   echo "verify: tracked bytecode or root-level proof-site duplicates found" >&2
   exit 1
 fi
 
-if find . -path './.git' -prune -o \( -path '*/__pycache__/*' -o -name '*.pyc' -o -name '*.pyo' \) -print | rg .; then
+local_bytecode="$(
+  find . -path './.git' -prune -o \
+    \( -path '*/__pycache__/*' -o -name '*.pyc' -o -name '*.pyo' \) -print
+)"
+if [ -n "$local_bytecode" ]; then
+  echo "$local_bytecode" >&2
   echo "verify: local Python bytecode artifacts found" >&2
   exit 1
 fi
@@ -78,12 +83,17 @@ private_markers=(
 )
 
 for marker in "${private_markers[@]}"; do
-  if rg -n -F "$marker" \
-    README.md TESTING.md VERIFICATION.md CONTRIBUTING.md GOAL.md CHANGELOG.md \
-    .github skills tests reports site openaudio-calculator scripts; then
-    echo "verify: private machine marker found in public artifacts" >&2
-    exit 1
-  fi
+  while IFS= read -r -d '' file; do
+    if grep -n -F "$marker" "$file"; then
+      echo "verify: private machine marker found in public artifacts" >&2
+      exit 1
+    fi
+  done < <(
+    find README.md TESTING.md VERIFICATION.md CONTRIBUTING.md GOAL.md CHANGELOG.md \
+      .github skills tests reports site openaudio-calculator scripts \
+      \( -path 'site/audio/*' -o -name '*.wav' -o -name '*.flac' -o -name '*.mp3' -o -name '*.aac' \) -prune \
+      -o -type f -print0
+  )
 done
 
 echo "verify: ok"

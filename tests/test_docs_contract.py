@@ -89,6 +89,8 @@ def test_verify_script_is_documented_and_used_by_ci():
     assert "git diff --check" in script_text
     assert "local Python bytecode artifacts" in script_text
     assert "private machine marker" in script_text
+    assert "grep" in script_text
+    assert " rg " not in script_text
 
     assert "./scripts/verify.sh" in read(".github/workflows/ci.yml")
     assert "./scripts/verify.sh" in read("README.md")
