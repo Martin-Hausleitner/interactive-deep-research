@@ -1,0 +1,162 @@
+[
+ {
+  "lib": "CosyVoice 3",
+  "lang": "de",
+  "label": "DE Zero-Shot Prompt (Referenzstimme)",
+  "url": "https://funaudiollm.github.io/cosyvoice3/audio/prompt/zero-shot/de/prompt_audio_1.wav",
+  "source": "https://funaudiollm.github.io/cosyvoice3/",
+  "local": "cosyvoice-3_0.wav"
+ },
+ {
+  "lib": "CosyVoice 3",
+  "lang": "de",
+  "label": "DE Zero-Shot Klon (base)",
+  "url": "https://funaudiollm.github.io/cosyvoice3/audio/c3_base/zero-shot/de/uttid_1.wav",
+  "source": "https://funaudiollm.github.io/cosyvoice3/",
+  "local": "cosyvoice-3_1.wav"
+ },
+ {
+  "lib": "CosyVoice 3",
+  "lang": "de",
+  "label": "DE Zero-Shot Klon (large)",
+  "url": "https://funaudiollm.github.io/cosyvoice3/audio/c3_large/zero-shot/de/uttid_1.wav",
+  "source": "https://funaudiollm.github.io/cosyvoice3/",
+  "local": "cosyvoice-3_2.wav"
+ },
+ {
+  "lib": "CosyVoice2-EU",
+  "lang": "de",
+  "label": "DE Common-Voice Referenz-Prompt",
+  "url": "https://horstmann.tech/cosyvoice2-demo/common_voice_de_41123857.wav",
+  "source": "https://horstmann.tech/cosyvoice2-demo/",
+  "local": "cosyvoice2-eu_3.wav"
+ },
+ {
+  "lib": "CosyVoice2-EU",
+  "lang": "de",
+  "label": "DE Original (Baseline)",
+  "url": "https://horstmann.tech/cosyvoice2-demo/audio/original-de.wav",
+  "source": "https://horstmann.tech/cosyvoice2-demo/",
+  "local": "cosyvoice2-eu_4.wav"
+ },
+ {
+  "lib": "CosyVoice2-EU",
+  "lang": "de",
+  "label": "DE Finetuned SLM+Flow+HifiGAN",
+  "url": "https://horstmann.tech/cosyvoice2-demo/audio/slm_flow_hifigan-de.wav",
+  "source": "https://horstmann.tech/cosyvoice2-demo/",
+  "local": "cosyvoice2-eu_5.wav"
+ },
+ {
+  "lib": "CosyVoice2-EU",
+  "lang": "de",
+  "label": "DE Finetuned Flow+HifiGAN",
+  "url": "https://horstmann.tech/cosyvoice2-demo/audio/flow_hifigan-de.wav",
+  "source": "https://horstmann.tech/cosyvoice2-demo/",
+  "local": "cosyvoice2-eu_6.wav"
+ },
+ {
+  "lib": "F5-TTS-German",
+  "lang": "de",
+  "label": "DE Fontane 'Herr von Ribbeck' (LibriVox)",
+  "url": "https://huggingface.co/spaces/hvoss-techfak/F5-TTS-Deutsch/resolve/main/examples/LibriVox_-_Fontane_Herr_von_Ribbeck.mp3",
+  "source": "https://huggingface.co/spaces/hvoss-techfak/F5-TTS-Deutsch",
+  "local": "f5-tts-german_7.mp3"
+ },
+ {
+  "lib": "Chatterbox Multilingual",
+  "lang": "de",
+  "label": "DE Referenz-Prompt",
+  "url": "https://storage.googleapis.com/chatterbox-demo-samples/mtl_prompts/de/de_prompts1.flac",
+  "source": "https://resemble-ai.github.io/chatterbox_demopage/",
+  "local": "chatterbox-multilingual_8.flac"
+ },
+ {
+  "lib": "Chatterbox Multilingual",
+  "lang": "de",
+  "label": "DE generierte Ausgabe (23-Sprachen-Demo)",
+  "url": "https://storage.googleapis.com/chatterbox-demo-samples/mtl_samples23lang_split/de/concatenated_output.wav",
+  "source": "https://resemble-ai.github.io/chatterbox_demopage/",
+  "local": "chatterbox-multilingual_9.wav"
+ },
+ {
+  "lib": "XTTS-v2",
+  "lang": "de",
+  "label": "DE Stimm-Sample (Coqui XTTS-v2)",
+  "url": "https://huggingface.co/coqui/XTTS-v2/resolve/main/samples/de_sample.wav",
+  "source": "https://huggingface.co/coqui/XTTS-v2/tree/main/samples",
+  "local": "xtts-v2_10.wav"
+ },
+ {
+  "lib": "Thorsten-Voice",
+  "lang": "de",
+  "label": "DE Sample 01 (HifiGAN)",
+  "url": "https://raw.githubusercontent.com/thorstenMueller/Thorsten-Voice/master/docs/samples/sample01-hifigan.wav",
+  "source": "https://github.com/thorstenMueller/Thorsten-Voice/blob/master/docs/audio_compare.md",
+  "local": "thorsten-voice_11.wav"
+ },
+ {
+  "lib": "Thorsten-Voice",
+  "lang": "de",
+  "label": "DE Sample 02 (HifiGAN)",
+  "url": "https://raw.githubusercontent.com/thorstenMueller/Thorsten-Voice/master/docs/samples/sample02-hifigan.wav",
+  "source": "https://github.com/thorstenMueller/Thorsten-Voice/blob/master/docs/audio_compare.md",
+  "local": "thorsten-voice_12.wav"
+ },
+ {
+  "lib": "Thorsten-Voice",
+  "lang": "de",
+  "label": "DE Sample 03 (HifiGAN)",
+  "url": "https://raw.githubusercontent.com/thorstenMueller/Thorsten-Voice/master/docs/samples/sample03-hifigan.wav",
+  "source": "https://github.com/thorstenMueller/Thorsten-Voice/blob/master/docs/audio_compare.md",
+  "local": "thorsten-voice_13.wav"
+ },
+ {
+  "lib": "Thorsten-Voice",
+  "lang": "de",
+  "label": "DE Sample 01 (ForwardTacotron+HifiGAN)",
+  "url": "https://raw.githubusercontent.com/thorstenMueller/Thorsten-Voice/master/docs/samples/sample01-ForwardTacotron-HifiGAN.wav",
+  "source": "https://github.com/thorstenMueller/Thorsten-Voice/blob/master/docs/audio_compare.md",
+  "local": "thorsten-voice_14.wav"
+ },
+ {
+  "lib": "IndexTTS-2",
+  "lang": "zh",
+  "label": "Emotion-Prompt (fear) Referenz",
+  "url": "https://raw.githubusercontent.com/index-tts/index-tts2.github.io/main/ex1/prompt/02_fear_3.aac",
+  "source": "https://index-tts.github.io/index-tts2.github.io/",
+  "local": "indextts-2_15.aac"
+ },
+ {
+  "lib": "IndexTTS-2",
+  "lang": "zh",
+  "label": "IndexTTS2 generierte Ausgabe",
+  "url": "https://raw.githubusercontent.com/index-tts/index-tts2.github.io/main/ex1/out/indextts2/132.aac",
+  "source": "https://index-tts.github.io/index-tts2.github.io/",
+  "local": "indextts-2_16.aac"
+ },
+ {
+  "lib": "Higgs Audio v2",
+  "lang": "en",
+  "label": "EN voice prompt (woman)",
+  "url": "https://raw.githubusercontent.com/boson-ai/higgs-audio/main/examples/voice_prompts/en_woman.wav",
+  "source": "https://github.com/boson-ai/higgs-audio/tree/main/examples",
+  "local": "higgs-audio-v2_17.wav"
+ },
+ {
+  "lib": "Higgs Audio v2",
+  "lang": "en",
+  "label": "EN voice prompt (man)",
+  "url": "https://raw.githubusercontent.com/boson-ai/higgs-audio/main/examples/voice_prompts/en_man.wav",
+  "source": "https://github.com/boson-ai/higgs-audio/tree/main/examples",
+  "local": "higgs-audio-v2_18.wav"
+ },
+ {
+  "lib": "Zonos",
+  "lang": "en",
+  "label": "EN reference audio (Zonos-v0.1)",
+  "url": "https://raw.githubusercontent.com/Zyphra/Zonos/main/assets/exampleaudio.mp3",
+  "source": "https://github.com/Zyphra/Zonos",
+  "local": "zonos_19.mp3"
+ }
+]

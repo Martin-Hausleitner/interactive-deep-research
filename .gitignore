@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.pyc
+
+# idr run artifacts (regenerated locally)
+runs/
+*.log
+*.err
+*.out
+
+# OS
+.DS_Store
