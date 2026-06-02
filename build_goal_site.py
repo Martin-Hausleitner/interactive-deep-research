@@ -223,7 +223,7 @@ strong,b{{color:#fff;font-weight:800}}
 footer{{color:var(--muted);font-size:12.5px;text-align:center;margin-top:48px;padding-top:20px;border-top:1px solid var(--line)}}
 @media(max-width:760px){{.winners{{grid-template-columns:1fr}}h1{{font-size:34px}}}}
 </style></head><body>
-<nav class="top"><span class="b">◆ Deep Research</span>{nav}<a href="#verlauf">Ablauf</a><a href="#qa">Q&amp;A</a><a href="http://100.120.120.120:5105/">B-Seite (5105)↗</a></nav>
+<nav class="top"><span class="b">◆ Deep Research</span>{nav}<a href="#verlauf">Ablauf</a><a href="#qa">Q&amp;A</a><a href="http://100.120.120.120:5182/">🎙️ OpenAudio-Rechner↗</a><a href="http://100.120.120.120:5105/">B-Seite (5105)↗</a></nav>
 <div class="wrap">
 <div class="kicker">Interaktiv · betreut · cross-engine bewiesen</div>
 <h1>Verlauf, Output &amp; Beweis</h1>
