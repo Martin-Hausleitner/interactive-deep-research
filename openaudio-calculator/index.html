@@ -37,6 +37,16 @@ pre code{border:0;padding:0;background:none;color:#d6def5;line-height:1.55;font-
 .sev{font-weight:800;font-size:10.5px;border-radius:6px;padding:1px 7px;white-space:nowrap}
 .sev.c{background:#2a1116;color:#fb7185;border:1px solid #6b2f3a}.sev.h{background:#2a2410;color:#fbbf24;border:1px solid #6b5a1f}.sev.m{background:#1b2138;color:#9aa0bf;border:1px solid #2b3566}
 .verdict2{background:linear-gradient(180deg,#241016,#1a0c12);border:1px solid #6b2f3a;border-left:4px solid var(--bad);border-radius:12px;padding:14px 16px;margin-top:12px}
+.pricing{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:10px 0}
+.pcard{background:#11142a;border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column}
+.pcard.feat{border-color:var(--accent2);box-shadow:0 0 0 1px var(--accent2) inset;background:#0e1c1f}
+.pcard .pname{font-family:"Space Grotesk";font-weight:700;font-size:15px}
+.pcard .price{font-family:"Space Grotesk";font-size:27px;color:var(--accent2);font-weight:800;margin-top:6px}
+.pcard .per{color:var(--muted);font-size:12px;margin-bottom:8px}
+.pcard ul{list-style:none;padding:0;margin:6px 0 0;font-size:12.5px;color:#cfd6f5}.pcard li{padding:4px 0;border-top:1px solid var(--line)}
+.pbadge{align-self:flex-start;background:var(--accent2);color:#06231d;font-weight:800;font-size:10px;border-radius:6px;padding:1px 7px;margin-bottom:6px}
+.metric.neg .v{color:var(--bad)}
+@media(max-width:760px){.pricing{grid-template-columns:1fr 1fr}}
 </style></head><body><div class="wrap">
 <div class="kicker">Open-Source Voice Cloning · Self-Hosting</div>
 <h1>OpenAudio S2 Pro (Fish) — Hardware, Kosten &amp; Durchsatz</h1>
@@ -110,6 +120,16 @@ pre code{border:0;padding:0;background:none;color:#d6def5;line-height:1.55;font-
 </tbody></table>
 <p class="note"><b class="hl">Kernpunkt:</b> Inferenz kostet ~€0,0009/Clip — gegenüber ~€0,041 Marktwert = <b>~98 % Bruttomarge</b>. Das Geld liegt in der <b>Marge zum Marktpreis</b>, nicht im Strom. ElevenLabs ~€0,20/min · Murf ~$0,03/1k Zeichen · PlayHT eingestellt (12/2025).</p></div></div></section>
 
+<section class="card"><h2>💳 Preisliste (Vorschlag) — Voice-as-a-Service DE</h2>
+<p class="note">Positionierung: <b>GDPR/DACH-Premium</b> gegen US-Cloud, <b>~80 % unter Human-VO</b>. Alle Outputs rechte-geklärt + KI-gekennzeichnet. Marge liegt im <b>Service</b>, nicht im Compute (~€0,0009/Clip).</p>
+<div class="pricing">
+ <div class="pcard"><div class="pname">Starter</div><div class="price">29 €</div><div class="per">/ Monat</div><ul><li>2 h Audio / Monat</li><li>Self-Service (Web)</li><li>DE-Standardstimmen</li><li>KI-Hinweis automatisch</li></ul></div>
+ <div class="pcard feat"><div class="pbadge">BELIEBT</div><div class="pname">Pro</div><div class="price">119 €</div><div class="per">/ Monat</div><ul><li>10 h Audio / Monat</li><li>API-Zugang</li><li>1 eigene (einwilligende) Stimme</li><li>Priorität + Watermark-ID</li></ul></div>
+ <div class="pcard"><div class="pname">Pay-as-you-go</div><div class="price">0,25 €</div><div class="per">/ 1.000 Zeichen</div><ul><li>keine Grundgebühr</li><li>API · sekundengenau</li><li>ideal für schwankende Last</li><li>cloud-skaliert (scale-to-zero)</li></ul></div>
+ <div class="pcard"><div class="pname">Managed Voiceover</div><div class="price">30–60 €</div><div class="per">/ fertige Minute</div><ul><li>Done-for-you: Schnitt · Regie · QA</li><li>rechte-geklärte Stimmen</li><li>DSGVO + AI-Act-konform</li><li>~80 % unter Human-VO (€300+)</li></ul></div>
+</div>
+<p class="note">Marktanker: ElevenLabs ~€0,20/Min · Human-VO €15–2.500/Spot · Murf ~$0,03/1k Zeichen. Empfehlung: Pro-Tier als Anker, Managed für Marge, PAYG für schwankende Last.</p></section>
+
 <section class="card"><h2>💶 Geschäftsmodell &amp; ROI — lohnt sich der Eigenbau?</h2>
 <div id="biztext" style="margin-bottom:14px"><div class="note" style="margin-bottom:8px">🔬 <b>NotebookLM Deep Research</b> (Notebook 86a3d076) — Geschäftsmodell, Preise, Margen, Break-even (DE-Markt 2026):</div><h2>NotebookLM Deep Research — Break-even &amp; ROI</h2>
 <p>The business model for a self-hosted AI Text-to-Speech (TTS) and voice cloning service in the German market in 2026 presents a highly lucrative opportunity, bridging the gap between expensive human voiceover artists and generic, non-<span class="hl">GDPR</span>-compliant US cloud AI tools. By leveraging the open-source Fish Audio S2 Pro (a 4.4B parameter Dual-AR model with unparalleled emotion tag control and multi-speaker capabilities) [1, 2], you can build a highly profitable localized service.</p>
@@ -144,15 +164,19 @@ pre code{border:0;padding:0;background:none;color:#d6def5;line-height:1.55;font-
  <div class="slider"><label>modal RTF (auf A10G/A100) <b><span id="modalrtfv">0.20</span>×</b></label><input type="range" id="modalrtf" min="0.05" max="1.0" step="0.05" value="0.20"></div>
  <div class="slider"><label>modal B2B-Faktor <b><span id="b2bv">4.5</span>×</b> (Non-Preempt 3× · EU-Region ~1,5×)</label><input type="range" id="b2b" min="1" max="7.5" step="0.5" value="4.5"></div>
  <div class="slider"><label>Capex 2× Titan + Server <b><span id="capexv">2.600</span> €</b></label><input type="range" id="capex" min="0" max="8000" step="100" value="2600"></div>
- <div class="note">Self-Host-Laufkosten = Strom (oben). modal-Kosten = GPU-Sekunden × Preis (+ ~30% Overhead/Cold-Start). USD→EUR ≈ 0,92.</div>
+ <div class="slider"><label>Personal/Betrieb (QA · DevOps) <b><span id="laborv">1.500</span> €/Mo</b></label><input type="range" id="labor" min="0" max="12000" step="100" value="1500"></div>
+ <div class="note">All-in Self-Host = Strom + Capex/24 Mo + Personal. modal = GPU-Sek × Preis × B2B-Faktor (+30 % Overhead). USD→EUR ≈ 0,92.</div>
 </div>
 <div class="out">
+ <div class="metric big" id="m_profit"><div class="v" id="b_profit">–</div><div class="l"><b>Gewinn / Monat</b> · Marge <span id="b_marginpct">–</span> · ROI/Jahr <span id="b_roi">–</span></div></div>
  <div class="metric"><div class="v" id="b_rev">–</div><div class="l">Umsatz / Monat</div></div>
- <div class="metric"><div class="v" id="b_modal">–</div><div class="l">modal.com-Kosten / Monat</div></div>
- <div class="metric"><div class="v" id="b_self">–</div><div class="l">Self-Host-Strom / Monat</div></div>
- <div class="metric"><div class="v" id="b_save">–</div><div class="l">Ersparnis/Monat (modal − self-host)</div></div>
- <div class="metric"><div class="v" id="b_margin">–</div><div class="l">Marge/Monat (self-host, nach Capex-Amort. 24 Mo)</div></div>
- <div class="metric big"><div class="v" id="b_payback">–</div><div class="l">Amortisation der 2× Titan ggü. modal · Break-even-Volumen: <span id="b_be">–</span></div></div>
+ <div class="metric"><div class="v" id="b_cost">–</div><div class="l">All-in-Kosten / Monat</div></div>
+ <div class="metric"><div class="v" id="b_ppa">–</div><div class="l">Verkaufspreis / Audio</div></div>
+ <div class="metric"><div class="v" id="b_cpa">–</div><div class="l">Kosten / Audio (all-in)</div></div>
+ <div class="metric"><div class="v" id="b_gpa">–</div><div class="l">Gewinn / Audio</div></div>
+ <div class="metric"><div class="v" id="b_audiomo">–</div><div class="l">Std. Audio / Monat</div></div>
+ <div class="metric"><div class="v" id="b_modal">–</div><div class="l">modal-Kosten / Monat (Vergleich)</div></div>
+ <div class="metric"><div class="v" id="b_payback">–</div><div class="l">Titan-Amortisation ggü. modal · Break-even: <span id="b_be">–</span></div></div>
 </div></div></section>
 
 <section class="card"><h2>🛡️ Risiken & Realitäts-Check (Red-Team)</h2>
@@ -245,32 +269,41 @@ const E2U=0.92, OVER=1.30; // USD→EUR, modal overhead factor
 function fmtE(n){return isFinite(n)?n.toLocaleString("de-DE",{maximumFractionDigits:0}):"–";}
 function biz(){
  const len=+$("len").value, rtfSelf=+$("rtf").value, par=+$("par").value, ele=+$("ele").value, pow=+$("pow").value, gpu=+$("gpu").value;
- const p1k=+$("p1k").value, vol=+$("vol").value, modalh=+$("modalh").value, modalrtf=+$("modalrtf").value, capex=+$("capex").value, b2b=+$("b2b").value;
+ const p1k=+$("p1k").value, vol=+$("vol").value, modalh=+$("modalh").value, modalrtf=+$("modalrtf").value, capex=+$("capex").value, b2b=+$("b2b").value, labor=+$("labor").value;
  $("p1kv").textContent=p1k; $("volv").textContent=vol.toLocaleString("de-DE"); $("modalhv").textContent=modalh.toFixed(2);
- $("modalrtfv").textContent=modalrtf.toFixed(2); $("capexv").textContent=capex.toLocaleString("de-DE"); $("b2bv").textContent=b2b.toFixed(1);
- // revenue
+ $("modalrtfv").textContent=modalrtf.toFixed(2); $("capexv").textContent=capex.toLocaleString("de-DE"); $("b2bv").textContent=b2b.toFixed(1); $("laborv").textContent=labor.toLocaleString("de-DE");
  const rev = vol/1000*p1k;
- // modal: GPU-seconds per clip = len*modalrtf*overhead; cost = sec*(modalh/3600) USD → EUR × B2B-Faktor (Non-Preempt × EU)
  const modalPerClipEUR = len*modalrtf*OVER*(modalh/3600)*E2U*b2b;
  const modalMonth = vol*modalPerClipEUR;
- // self-host electricity: hours to make vol clips on Titan = vol*genClip/3600 ; genClip=len*rtfSelf/par per clip but throughput uses all gpus
  const clipsPerSec = par/(len*rtfSelf)*gpu; const hours = vol/clipsPerSec/3600;
- const selfMonth = hours*(gpu*pow/1000)*ele;
- const save = modalMonth - selfMonth;
- const margin = rev - selfMonth - capex/24;
+ const selfElec = hours*(gpu*pow/1000)*ele;
+ const fixed = capex/24;
+ const totalCost = selfElec + fixed + labor;
+ const profit = rev - totalCost;
+ const marginPct = rev>0 ? profit/rev*100 : 0;
+ const ppa = p1k/1000, cpa = vol>0 ? totalCost/vol : 0, gpa = ppa - cpa;
+ const roiYr = capex>0 ? profit*12/capex*100 : Infinity;
+ const audioMo = vol*len/3600;
+ const save = modalMonth - selfElec;
  const payback = save>0 ? capex/save : Infinity;
- // break-even volume: where revenue covers self-host monthly (elec + capex/24). per-clip cost self ≈ selfMonth/vol
- const perClipSelf = vol>0?selfMonth/vol:0; const fixed=capex/24;
- const beVol = (p1k/1000-perClipSelf)>0 ? fixed/((p1k/1000)-perClipSelf) : Infinity;
- $("b_rev").textContent=fmtE(rev)+" €";
- $("b_modal").textContent=fmtE(modalMonth)+" €";
- $("b_self").textContent=fmtE(selfMonth)+" €";
- $("b_save").textContent=fmtE(save)+" €";
- $("b_margin").textContent=fmtE(margin)+" €";
- $("b_payback").textContent= isFinite(payback)? payback.toFixed(1)+" Monate" : "—";
+ const beVol = (ppa-(selfElec/Math.max(vol,1)))>0 ? (fixed+labor)/(ppa-(selfElec/Math.max(vol,1))) : Infinity;
+ const eur=n=>fmtE(n)+" €", c2=n=>(isFinite(n)?n.toFixed(3):"–")+" €";
+ $("b_profit").textContent=eur(profit);
+ $("m_profit").style.borderColor = profit>=0 ? "#1f5048" : "#6b2f3a";
+ $("b_profit").style.color = profit>=0 ? "#5ee0c4" : "#fb7185";
+ $("b_marginpct").textContent=marginPct.toFixed(0)+" %";
+ $("b_roi").textContent= isFinite(roiYr)? roiYr.toFixed(0)+" %" : "—";
+ $("b_rev").textContent=eur(rev);
+ $("b_cost").textContent=eur(totalCost);
+ $("b_ppa").textContent=c2(ppa);
+ $("b_cpa").textContent=c2(cpa);
+ $("b_gpa").textContent=c2(gpa);
+ $("b_audiomo").textContent=fmtE(audioMo)+" h";
+ $("b_modal").textContent=eur(modalMonth);
+ $("b_payback").textContent= isFinite(payback)? payback.toFixed(1)+" Mo" : "—";
  $("b_be").textContent= isFinite(beVol)? fmtE(beVol)+" Audios/Mo" : "—";
 }
-["len","rtf","par","gpu","ele","pow","p1k","vol","modalh","modalrtf","b2b","capex"].forEach(k=>$(k)&&$(k).addEventListener("input",biz));
+["len","rtf","par","gpu","ele","pow","p1k","vol","modalh","modalrtf","b2b","capex","labor"].forEach(k=>$(k)&&$(k).addEventListener("input",biz));
 biz();})();
 </script>
 </div>
