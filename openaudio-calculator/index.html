@@ -34,6 +34,9 @@ code{font-family:"JetBrains Mono";font-size:.88em;background:#0c1020;border:1px 
 pre{background:#0a0d18;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:13px 15px;overflow:auto;margin:6px 0}
 pre code{border:0;padding:0;background:none;color:#d6def5;line-height:1.55;font-size:12.5px;white-space:pre}
 .step{color:var(--accent2);font-weight:800;font-family:"Space Grotesk";margin:16px 0 4px;font-size:14px}
+.sev{font-weight:800;font-size:10.5px;border-radius:6px;padding:1px 7px;white-space:nowrap}
+.sev.c{background:#2a1116;color:#fb7185;border:1px solid #6b2f3a}.sev.h{background:#2a2410;color:#fbbf24;border:1px solid #6b5a1f}.sev.m{background:#1b2138;color:#9aa0bf;border:1px solid #2b3566}
+.verdict2{background:linear-gradient(180deg,#241016,#1a0c12);border:1px solid #6b2f3a;border-left:4px solid var(--bad);border-radius:12px;padding:14px 16px;margin-top:12px}
 </style></head><body><div class="wrap">
 <div class="kicker">Open-Source Voice Cloning · Self-Hosting</div>
 <h1>OpenAudio S2 Pro (Fish) — Hardware, Kosten &amp; Durchsatz</h1>
@@ -151,6 +154,21 @@ pre code{border:0;padding:0;background:none;color:#d6def5;line-height:1.55;font-
  <div class="metric"><div class="v" id="b_margin">–</div><div class="l">Marge/Monat (self-host, nach Capex-Amort. 24 Mo)</div></div>
  <div class="metric big"><div class="v" id="b_payback">–</div><div class="l">Amortisation der 2× Titan ggü. modal · Break-even-Volumen: <span id="b_be">–</span></div></div>
 </div></div></section>
+
+<section class="card"><h2>🛡️ Risiken & Realitäts-Check (Red-Team)</h2>
+<p class="note">Adversariale Prüfung des optimistischen Cases (1-Monat-Payback · 98 % Marge · €30–60/Min). <b class="warn">Zwei Risiken sind potenziell geschäftsbeendend — noch bevor die Margenrechnung greift.</b></p>
+<table><thead><tr><th>#</th><th>Risiko</th><th>Schwere</th><th>Warum</th><th>Mitigation</th></tr></thead><tbody>
+<tr><td>1</td><td><b>Kunde klont Person ohne Einwilligung → du haftest</b></td><td><span class="sev c">kritisch</span></td><td>Stimmprofil = besondere Kategorie (DSGVO Art. 9); LG Berlin 8/2025 (2 O 202/24): €4.000 für Klon von Manfred Lehmann; Betrugs-Vektor (CEO-Scam)</td><td>Einwilligungs-Verträge + ID + DPIA je Stimme; keine Dritt-Stimmen; KYC + Haftungsfreistellung</td></tr>
+<tr><td>2</td><td><b>Fish Research License ist NON-COMMERCIAL — Verkauf des Outputs bricht sie wahrscheinlich</b></td><td><span class="sev c">kritisch</span></td><td>„Open Source" = source-available/NC; Output-Klausel unklar → Unterlassungs-/Vertragsrisiko, das den Dienst über Nacht stoppt</td><td>Fish-Kommerz-Lizenz kaufen (laufende Kosten) ODER echtes Apache/MIT-Modell (Chatterbox MIT / CosyVoice Apache)</td></tr>
+<tr><td>3</td><td><b>EU AI Act Art. 50</b> — kein Wasserzeichen/Hinweis</td><td><span class="sev h">hoch</span></td><td>Verbindlich ab 2.8.2026; KI-Audio = „Deepfake" → maschinenlesbare Kennzeichnung + Offenlegung; bis €15 M / 3 % Umsatz (Art. 99)</td><td>Watermark/Metadaten einbetten; Offenlegungspflicht vertraglich an Kunden; Code-of-Practice (6/2026) verfolgen</td></tr>
+<tr><td>4</td><td><b>98 % Marge ist Fiktion → real ~50–60 %</b></td><td><span class="sev h">hoch</span></td><td>Labor (QA/Schnitt/Regie), Strom, DevOps, Compliance, Lizenzgebühr alle ungezählt; €30–60/Min = verkaufte Menschenzeit = COGS</td><td>Unit-Economics mit voller COGS neu rechnen vor jedem Commitment</td></tr>
+<tr><td>5</td><td><b>Auslastungs-Risiko vs. Cloud scale-to-zero</b></td><td><span class="sev h">hoch</span></td><td>1-Monat-Payback braucht 6 h/Tag Dauerlast; bursty Nachfrage → €0-Idle-Cloud gewinnt</td><td>Cloud-first starten; Hardware erst bei nachgewiesener Dauerlast kaufen</td></tr>
+<tr><td>6</td><td><b>Nachfrage/CAC vs. ElevenLabs</b></td><td><span class="sev h">hoch</span></td><td>€30–60/Min = 60–600× Roh-Preis des Incumbents (~€0,10–0,50/Min, Gratis-Tier); Pure-AI-Käufer churnen</td><td><b>Managed Outcome</b> verkaufen (Schnitt, Regie, rechte-geklärte Stimmen), nicht Minuten</td></tr>
+<tr><td>7</td><td><b>Deutsch = Tier-2, schwächere Emotion</b></td><td><span class="sev m">mittel</span></td><td>Premium-VO bleibt bei Menschen (€15–2500/Spot); Emotion-Nuance fehlt</td><td>Auf faktische Bulk-Inhalte zielen (IVR, E-Learning, interne Comms), nicht emotive Premium-VO</td></tr>
+<tr><td>8</td><td><b>Strom ~€110/Mo + alternde Turing-GPUs (2018)</b></td><td><span class="sev m">mittel</span></td><td>€0,27/kWh (nicht 0,05); ~560 W Dauerlast; gebrauchte Karten, kein FP8, kein Redundanz-Budget</td><td>Realen Strom + GPU-Ersatz/Abschreibung budgetieren; neuere Karten erwägen</td></tr>
+</tbody></table>
+<div class="verdict2"><b class="bad">Verdikt:</b> Tragfähig <b>nur</b> als rechte-geklärter, compliance-first <b>Managed-Service</b>: (a) bezahlte Fish-Kommerz-Lizenz <i>oder</i> echtes permissives Modell, (b) nur einwilligende/vertraglich gebundene Sprecher mit DPIA + Wasserzeichen, (c) Ziel = hochvolumige <b>faktische</b> deutsche Inhalte (IVR/E-Learning/interne Comms), (d) gerechnet mit <b>~50–60 % Marge</b>, cloud-first bis Dauerlast bewiesen. <b>Nicht tragfähig</b> als „98 %-Marge, Lizenz-ignorierende Klon-alles-Box" — zwei unabhängig geschäftsbeendende Rechtsrisiken (Dritt-Stimmen-Haftung; NC-Lizenz-Bruch) stehen vor der Margenrechnung. → <b class="hl">Für eine kommerzielle Nutzung lieber Chatterbox (MIT) oder CosyVoice (Apache) statt der NC-Weights von S2-Pro.</b></div>
+<p class="note">Quellen: EU AI Act Art. 50 & 99 · EDPB-Leitlinien 02/2021 (Stimme=Biometrie) · LG Berlin 2 O 202/24 (Kremer Legal) · Fish-Audio-Lizenz-Blog + HF-Card · ElevenLabs-Preise · stimme24 (DE-VO-Sätze) · Bain Capital Ventures (AI-Margen).</p></section>
 
 <section class="card"><h2>🚀 Deployment-Quickstart — S2 Pro auf 2× Titan RTX (Deutsch)</h2>
 <p class="note">Verifizierte Befehle (fish-speech-Docs). <b class="warn">Turing-Pflicht:</b> Titan RTX (sm_75) kann kein bf16 → überall <code>--half</code> (Docker: <code>-e HALF=1</code>); Flash-Attn/bf16 meiden. <code>--compile</code> = ~10× schneller.</p>
