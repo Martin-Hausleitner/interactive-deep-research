@@ -170,6 +170,30 @@ pre code{border:0;padding:0;background:none;color:#d6def5;line-height:1.55;font-
 <div class="verdict2"><b class="bad">Verdikt:</b> Tragfähig <b>nur</b> als rechte-geklärter, compliance-first <b>Managed-Service</b>: (a) bezahlte Fish-Kommerz-Lizenz <i>oder</i> echtes permissives Modell, (b) nur einwilligende/vertraglich gebundene Sprecher mit DPIA + Wasserzeichen, (c) Ziel = hochvolumige <b>faktische</b> deutsche Inhalte (IVR/E-Learning/interne Comms), (d) gerechnet mit <b>~50–60 % Marge</b>, cloud-first bis Dauerlast bewiesen. <b>Nicht tragfähig</b> als „98 %-Marge, Lizenz-ignorierende Klon-alles-Box" — zwei unabhängig geschäftsbeendende Rechtsrisiken (Dritt-Stimmen-Haftung; NC-Lizenz-Bruch) stehen vor der Margenrechnung. → <b class="hl">Für eine kommerzielle Nutzung lieber Chatterbox (MIT) oder CosyVoice (Apache) statt der NC-Weights von S2-Pro.</b></div>
 <p class="note">Quellen: EU AI Act Art. 50 & 99 · EDPB-Leitlinien 02/2021 (Stimme=Biometrie) · LG Berlin 2 O 202/24 (Kremer Legal) · Fish-Audio-Lizenz-Blog + HF-Card · ElevenLabs-Preise · stimme24 (DE-VO-Sätze) · Bain Capital Ventures (AI-Margen).</p></section>
 
+<section class="card"><h2>✅ Compliance-Setup — so wird der Dienst rechtlich tragfähig</h2>
+<p class="note">Die zwei kritischen Red-Team-Risiken (Dritt-Stimmen-Haftung · NC-Lizenz) sind <b class="hl">vermeidbar</b> — mit dieser Betriebsanleitung. Reihenfolge = Setup-Schritte.</p>
+<div class="step">1 · Modell &amp; Lizenz sauber wählen</div>
+<ul>
+<li>Für <b>kommerziell</b>: <span class="hl">permissives Modell</span> — Chatterbox Multilingual (MIT) oder CosyVoice 3 (Apache). <b>ODER</b> bezahlte Fish-Audio-Kommerz-Lizenz für S2-Pro.</li>
+<li><b class="bad">Nicht</b> die S2-Pro-NC-Weights kommerziell verkaufen, ohne Lizenz — Output-Klausel unklar = Unterlassungsrisiko.</li></ul>
+<div class="step">2 · Einwilligung &amp; Verträge (gegen Dritt-Stimmen-Haftung)</div>
+<ul>
+<li>Nur <b>einwilligende, vertraglich gebundene Sprecher</b> klonen — schriftliche, spezifische Stimm-Klon-Einwilligung.</li>
+<li>AGB: <b>Verbot von Dritt-/Promi-/Wettbewerber-Stimmen</b>; KYC + Identitätsnachweis beim Voice-Upload; Haftungsfreistellung des Kunden.</li></ul>
+<div class="step">3 · DSGVO (Stimmprofil = besondere Kategorie, Art. 9)</div>
+<ul>
+<li><b>Explizite Einwilligung</b> (Art. 9) je geklonter Stimme; <b>DPIA</b> (Art. 35) <i>vor</i> dem ersten Klon — auch im Test.</li>
+<li>EU-Hosting, AVV mit B2B-Kunden, Lösch-/Aufbewahrungskonzept, Verzeichnis der Verarbeitungstätigkeiten.</li></ul>
+<div class="step">4 · EU AI Act Art. 50 (verbindlich ab 2.8.2026)</div>
+<ul>
+<li><b>Maschinenlesbares Wasserzeichen</b> + Metadaten in <i>jedes</i> generierte Audio; Offenlegungs-Hinweis „KI-generiert".</li>
+<li>Kunden (Deployer) vertraglich zur Kennzeichnung verpflichten; Code-of-Practice (6/2026) verfolgen. Strafe sonst bis €15 M / 3 % Umsatz.</li></ul>
+<div class="step">5 · Audit-Trail &amp; Segment</div>
+<ul>
+<li>Pro Generierung protokollieren: Auftraggeber · Einwilligungsnachweis · Quelle der Referenzstimme · Watermark-ID (manipulationssicher).</li>
+<li>Zielsegment = <b>faktische DE-Bulk-Inhalte</b> (IVR · E-Learning · interne Comms); „<b>Managed Outcome</b>" verkaufen, nicht Minuten; Unit-Economics mit voller COGS (<b>~50–60 % Marge</b>), <b>cloud-first</b> bis Dauerlast bewiesen.</li></ul>
+<div class="verdict2" style="background:linear-gradient(180deg,#0d211f,#0c1622);border-color:#1f5048;border-left-color:var(--accent2)"><b class="hl">Minimal-Start legal:</b> permissives Modell (MIT/Apache) · nur eigene/einwilligende Stimme · DPIA + Einwilligungsvorlage · Watermark + „KI-generiert"-Hinweis · faktische Inhalte · COGS-realistische Preise. Damit fallen beide geschäftsbeendenden Risiken weg.</div></section>
+
 <section class="card"><h2>🚀 Deployment-Quickstart — S2 Pro auf 2× Titan RTX (Deutsch)</h2>
 <p class="note">Verifizierte Befehle (fish-speech-Docs). <b class="warn">Turing-Pflicht:</b> Titan RTX (sm_75) kann kein bf16 → überall <code>--half</code> (Docker: <code>-e HALF=1</code>); Flash-Attn/bf16 meiden. <code>--compile</code> = ~10× schneller.</p>
 <div class="step">1 · Modell laden</div>
