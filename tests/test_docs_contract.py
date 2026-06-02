@@ -76,6 +76,14 @@ def test_install_and_ci_cover_all_packaged_skills():
     assert '-m "not live"' in ci
 
 
+def test_ci_uses_node24_ready_github_actions():
+    ci = read(".github/workflows/ci.yml")
+    for action in ("actions/checkout", "actions/setup-python"):
+        match = re.search(rf"uses:\s*{re.escape(action)}@v(\d+)", ci)
+        assert match is not None
+        assert int(match.group(1)) >= 6
+
+
 def test_layout_has_no_tracked_root_site_duplicates_or_bytecode():
     tracked = subprocess_git_ls_files()
     forbidden_roots = {

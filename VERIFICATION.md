@@ -13,7 +13,7 @@ PYTHONDONTWRITEBYTECODE=1 pytest -p no:cacheprovider -m "not live" -q
 Observed result:
 
 ```text
-23 passed, 1 deselected
+24 passed, 1 deselected
 ```
 
 Live NotebookLM E2E:

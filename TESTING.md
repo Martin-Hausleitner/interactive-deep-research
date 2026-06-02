@@ -32,6 +32,8 @@ Coverage:
 - README/Skill documentation contract: Mermaid pipeline + skill invocation,
   privacy/failure-mode sections, install coverage, layout dedupe, and no private
   machine markers in public artifacts.
+- CI workflow contract: GitHub-owned actions must use Node-24-ready major
+  versions so default CI stays ahead of hosted-runner deprecations.
 
 ## Live NotebookLM E2E
 

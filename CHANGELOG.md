@@ -29,5 +29,7 @@
 - Added documentation and public-artifact contract tests for README Mermaid
   diagrams, packaged-skill docs, layout dedupe, proof-site rendering, and
   private machine marker hygiene.
+- Updated GitHub Actions to Node-24-ready major versions and pinned that in the
+  documentation contract test.
 - Removed internal handoff/cache artifacts and private infrastructure references
   from tracked public docs and proof-site outputs.
