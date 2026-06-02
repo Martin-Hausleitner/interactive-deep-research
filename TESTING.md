@@ -15,7 +15,7 @@ python3 -B -m py_compile \
   site/build_goal_site.py \
   site/build_audios.py
 
-pytest -m "not live"
+PYTHONDONTWRITEBYTECODE=1 pytest -p no:cacheprovider -m "not live"
 ```
 
 Coverage:
@@ -29,6 +29,9 @@ Coverage:
 - `install.sh` smoke test with isolated skill/bin directories.
 - `idr report <run_id>` regeneration from existing run content.
 - Proof-site rebuild from tracked repo artifacts.
+- README/Skill documentation contract: Mermaid pipeline + skill invocation,
+  privacy/failure-mode sections, install coverage, layout dedupe, and no private
+  machine markers in public artifacts.
 
 ## Live NotebookLM E2E
 

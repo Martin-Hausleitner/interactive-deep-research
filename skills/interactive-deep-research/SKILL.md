@@ -129,3 +129,19 @@ open site/goal_site.html
 - Use `IDR_MOCK=1` for contributor smoke tests and CI.
 - Avoid secrets or personal data in topics, answers, askq logs, NotebookLM
   notebooks, and rendered reports.
+
+## Privacy / No PII
+
+Treat every topic, answer, scorecard, report, and proof-site artifact as
+potentially publishable. Use synthetic inputs for tests and examples; keep
+private customer data, credentials, account names, internal URLs, and local file
+paths out of committed runs and rendered HTML.
+
+## Failure Modes
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Live run silently degrades | NotebookLM failure fell back to mock text | Use `IDR_REQUIRE_LIVE=1` for proof runs. |
+| Agent session blocks | `idr run` invoked interactive `askq` | Use phased `idr plan` then `idr resume`. |
+| Proof-site links local paths | Run artifacts were rendered from machine-local paths | Rebuild from repo-relative `reports/` and `site/` inputs. |
+| No decisive recommendation | Research stayed qualitative | Add `deep-research-scorecard` with explicit weights. |

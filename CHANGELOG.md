@@ -26,5 +26,8 @@
 - Added scorecard spec validation with clean stderr errors and tests.
 - Expanded CI-safe CLI coverage for `askq` env/log behavior, `scorecard`
   stdin and malformed specs, IDR report regeneration, and `install.sh` smoke.
+- Added documentation and public-artifact contract tests for README Mermaid
+  diagrams, packaged-skill docs, layout dedupe, proof-site rendering, and
+  private machine marker hygiene.
 - Removed internal handoff/cache artifacts and private infrastructure references
   from tracked public docs and proof-site outputs.

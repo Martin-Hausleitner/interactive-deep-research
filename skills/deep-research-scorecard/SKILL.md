@@ -71,6 +71,22 @@ Markdown output contains a ranked table and winner explanation. HTML output emit
 - every score must be numeric and within `0..scale`.
 - missing scores are allowed and treated as `0`; use this deliberately.
 
+## Privacy / No PII
+
+Use public, non-sensitive evidence in scorecard specs. Do not include private
+customer names, personal identifiers, credentials, account IDs, or proprietary
+research notes in `note`, `link`, or candidate names when the scorecard will be
+committed or rendered into a public report.
+
+## Failure Modes
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| `scorecard: error` on stderr | Malformed JSON or invalid spec | Validate JSON and the documented schema. |
+| Unexpected winner | Weights changed the decision | Revisit criteria weights with the human and rerun. |
+| Score renders as `0` | Criterion score is missing | Add the score deliberately or document the absence. |
+| HTML fragment looks unstyled | Caller did not include report CSS | Embed in `idr`/proof-site report or provide table styles. |
+
 ## Guidance
 
 - Scores should come from research evidence, not from the scorecard script.

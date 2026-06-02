@@ -125,6 +125,14 @@ original topic/brief. `nlm` needs an authenticated NotebookLM session for live r
 | `IDR_LIVE_E2E=1` | Used by pytest to enable the opt-in live NotebookLM E2E. |
 | `IDR_LIVE_TOPIC`, `IDR_LIVE_ANSWER` | Override the synthetic live E2E topic/answer. |
 
+## Privacy / No PII
+
+Use synthetic or public topics for tests, CI, and examples. Do not put secrets,
+credentials, personal data, private customer material, account IDs, or internal
+hostnames into topics, human answers, NotebookLM notebooks, `askq` logs, run
+state, content files, or rendered reports. If a live run requires sensitive
+context, keep it outside the repository and do not commit the run directory.
+
 ## Gotchas
 
 - `nlm query` returns JSON; parse `.value.answer`.

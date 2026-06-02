@@ -82,3 +82,12 @@ rm -f ~/.askq/history.jsonl
 
 `askq` is the one-question primitive used by `idr run`; phased `idr plan/resume`
 usually relays the question through chat instead.
+
+## Failure Modes
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| Exit `64` | No question text was supplied | Pass a positional question or `--question`. |
+| Exit `3` | stdin reached EOF before an answer | Use `--answer`, `ASKQ_ANSWER`, or provide piped/TTY input. |
+| Exit `2` | stdin timed out | Increase `--timeout` or switch to non-interactive mode. |
+| Log warning on stderr | History path is not writable | Use `--no-log` or `--log <tmpfile>`. |
