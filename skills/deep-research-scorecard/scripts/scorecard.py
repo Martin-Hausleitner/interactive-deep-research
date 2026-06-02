@@ -28,7 +28,66 @@ Examples:
 from __future__ import annotations
 import argparse, json, sys, html
 
+class SpecError(ValueError):
+    pass
+
+def validate(spec):
+    if not isinstance(spec, dict):
+        raise SpecError("spec must be a JSON object")
+    try:
+        scale = float(spec.get("scale", 10))
+    except (TypeError, ValueError):
+        raise SpecError("scale must be numeric")
+    if scale <= 0:
+        raise SpecError("scale must be > 0")
+    crit = spec.get("criteria")
+    if not isinstance(crit, list) or not crit:
+        raise SpecError("criteria must be a non-empty list")
+    seen = set()
+    for i, c in enumerate(crit):
+        if not isinstance(c, dict):
+            raise SpecError(f"criteria[{i}] must be an object")
+        key = c.get("key")
+        if not isinstance(key, str) or not key:
+            raise SpecError(f"criteria[{i}].key must be a non-empty string")
+        if key in seen:
+            raise SpecError(f"duplicate criterion key: {key}")
+        seen.add(key)
+        if not isinstance(c.get("label"), str) or not c.get("label"):
+            raise SpecError(f"criteria[{i}].label must be a non-empty string")
+        try:
+            weight = float(c.get("weight"))
+        except (TypeError, ValueError):
+            raise SpecError(f"criteria[{i}].weight must be numeric")
+        if weight < 0:
+            raise SpecError(f"criteria[{i}].weight must be >= 0")
+    if sum(float(c["weight"]) for c in crit) <= 0:
+        raise SpecError("at least one criterion weight must be > 0")
+
+    candidates = spec.get("candidates")
+    if not isinstance(candidates, list) or not candidates:
+        raise SpecError("candidates must be a non-empty list")
+    for i, cand in enumerate(candidates):
+        if not isinstance(cand, dict):
+            raise SpecError(f"candidates[{i}] must be an object")
+        if not isinstance(cand.get("name"), str) or not cand.get("name"):
+            raise SpecError(f"candidates[{i}].name must be a non-empty string")
+        scores = cand.get("scores")
+        if not isinstance(scores, dict):
+            raise SpecError(f"candidates[{i}].scores must be an object")
+        for key, value in scores.items():
+            if key not in seen:
+                raise SpecError(f"candidates[{i}].scores has unknown criterion: {key}")
+            try:
+                score = float(value)
+            except (TypeError, ValueError):
+                raise SpecError(f"candidates[{i}].scores.{key} must be numeric")
+            if score < 0 or score > scale:
+                raise SpecError(f"candidates[{i}].scores.{key} must be within 0..{scale:g}")
+    return spec
+
 def compute(spec):
+    validate(spec)
     scale = float(spec.get("scale", 10))
     crit = spec["criteria"]
     wsum = sum(c["weight"] for c in crit) or 1
@@ -107,9 +166,13 @@ def main(argv=None):
     p.add_argument("spec", help="JSON spec file, or - for stdin")
     p.add_argument("--html", action="store_true", help="emit HTML fragment instead of markdown")
     a = p.parse_args(argv)
-    spec = json.load(sys.stdin if a.spec == "-" else open(a.spec, encoding="utf-8"))
-    scale, crit, rows = compute(spec)
-    print(render_html(spec, scale, crit, rows) if a.html else render_md(spec, scale, crit, rows))
+    try:
+        spec = json.load(sys.stdin if a.spec == "-" else open(a.spec, encoding="utf-8"))
+        scale, crit, rows = compute(spec)
+        print(render_html(spec, scale, crit, rows) if a.html else render_md(spec, scale, crit, rows))
+    except (OSError, json.JSONDecodeError, SpecError) as exc:
+        print(f"scorecard: error: {exc}", file=sys.stderr)
+        return 1
     return 0
 
 if __name__ == "__main__":

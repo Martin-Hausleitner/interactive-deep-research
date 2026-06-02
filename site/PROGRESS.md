@@ -1,14 +1,14 @@
 # GOAL — Interactive Deep Research, supervised, with proof — COMPLETE
 
-**Live site (pushed):** http://100.120.120.120:5181/ · **B-side baseline:** http://100.120.120.120:5105/
-**Screenshot proof:** ~/Desktop/goal_site_render.png (rendered from the live vcvm URL)
+**Proof site:** run `python3 -m http.server 5181 --directory site` and open `http://127.0.0.1:5181/`.
+**Screenshot proof:** render the local proof-site URL after rebuilding `site/goal_site.html`.
 
 ## Completion criteria — status
 1. ✅ **Example A (Voice Cloning DE+EN):** 4 interactive rounds, each with independent research threads (R1 agy→NotebookLM-Fast + Web cross-check; R2 German-specific; R3 2026 entrants + licensing; R4 adversarial convergence). Converged → **proof no better stack exists** (HIGH ~85%). report.html built.
 2. ✅ **Example B (messaging-automation stack):** NotebookLM deep pass done, deep_ok=true, **111 sources**, detailed report.html + comparison table.
 3. ✅ Both runs proven (deep_ok / report.html valid).
 4. ✅ Cross-engine: NotebookLM (B primary, 111 src; A fast pass) + 3 independent web engines (A R1/R2/R3/R4) — converged.
-5. ✅ Website presents both outputs + Gedankenverlauf (rounds) + Q&A (askq), pushed live to vcvm:5181, screenshot-verified.
+5. ✅ Website presents both outputs + Gedankenverlauf (rounds) + Q&A (askq), rebuilt as a static proof site, screenshot-verifiable.
 
 ## Proof ledger
 | Example | Notebook | deep_ok | sources | report.html | rounds | no-better-proof |

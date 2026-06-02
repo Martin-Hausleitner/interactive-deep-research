@@ -4,6 +4,7 @@ __pycache__/
 
 # idr run artifacts (regenerated locally)
 runs/
+cache/
 *.log
 *.err
 *.out

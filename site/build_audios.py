@@ -5,7 +5,7 @@ import json, os, html, collections
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 OUT = os.path.join(ROOT, "reports", "voice", "content", "audios.html")
-BASE = "http://100.120.120.120:5181/audio/"  # local rehost on vcvm
+BASE = os.environ.get("AUDIO_BASE_URL", "audio/")
 
 def main():
     data = json.load(open(os.path.join(HERE, "audio_demos.json"), encoding="utf-8"))

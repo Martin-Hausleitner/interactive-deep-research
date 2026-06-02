@@ -33,6 +33,22 @@ def run_idr(args, tmp_path):
     )
 
 
+def run_idr_no_check(args, tmp_path, extra_env=None):
+    env = os.environ.copy()
+    env["IDR_RUNS_DIR"] = str(tmp_path / "runs")
+    env["PYTHONDONTWRITEBYTECODE"] = "1"
+    if extra_env:
+        env.update(extra_env)
+    return subprocess.run(
+        [sys.executable, str(IDR_PATH), *args],
+        cwd=ROOT,
+        env=env,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+
 def test_nlm_query_answer_extracts_value_answer():
     idr = load_idr()
     assert idr._query_answer('{"value":{"answer":"  useful answer  "}}') == "useful answer"
@@ -77,3 +93,23 @@ def test_mock_plan_resume_report_e2e(tmp_path):
     assert state["mock"] is True
     for key in ("overview", "comparison", "recommendation"):
         assert (Path(plan["rundir"]) / "content" / f"{key}.md").exists()
+
+
+def test_required_live_rejects_mock_mode(tmp_path):
+    result = run_idr_no_check(
+        ["plan", "test topic"],
+        tmp_path,
+        {"IDR_MOCK": "1", "IDR_REQUIRE_LIVE": "1"},
+    )
+    assert result.returncode == 1
+    assert "cannot be combined" in result.stderr
+
+
+def test_run_fails_when_askq_script_missing(tmp_path):
+    result = run_idr_no_check(
+        ["run", "test topic"],
+        tmp_path,
+        {"IDR_MOCK": "1", "ASKQ_SCRIPT": str(tmp_path / "missing-askq.py")},
+    )
+    assert result.returncode == 1
+    assert "askq failed" in result.stderr

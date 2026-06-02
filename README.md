@@ -34,6 +34,17 @@ Why this shape:
 - Fixed query angles make output reproducible across topics.
 - HTML rendering is local and dependency-free.
 
+## Requirements
+
+- Python 3.10+.
+- `~/.local/bin` on `PATH` for the installed `idr`, `askq`, and `scorecard`
+  symlinks.
+- `nlm` NotebookLM CLI for live runs; authenticate once with `nlm login` and
+  verify with `nlm doctor`.
+- `agy` Antigravity CLI is optional. If missing or failing, `idr` falls back to
+  the original topic/brief.
+- `pytest` is only needed for contributors and verification.
+
 ## Skills And CLIs
 
 ```mermaid
@@ -83,6 +94,16 @@ The final artifact is written to:
 ~/.local/share/idr/runs/<run_id>/report.html
 ```
 
+Output contracts:
+
+| Command | stdout | Main artifacts |
+| --- | --- | --- |
+| `idr plan "<topic>"` | JSON `{run_id, rundir, notebook_id, question}` | `state.json`, `seed.md`, optional `agy_brief.md` |
+| `idr resume <run_id> --answer "<answer>"` | JSON `{run_id, report, notebook_id}` | `content/{overview,comparison,recommendation}.md`, `report.html` |
+| `idr report <run_id>` | JSON `{report}` | regenerated `report.html` |
+| `askq "..." --answer "..."` | JSON `{id, question, choices, answer, mode, timed_out, ts}` | optional `~/.askq/history.jsonl` |
+| `scorecard spec.json` | Markdown or HTML with `--html` | none |
+
 Automation or terminal-only loop:
 
 ```bash
@@ -126,7 +147,12 @@ python3 site/build_goal_site.py
 open site/goal_site.html
 ```
 
-Live proof site, when connected to the tailnet: <http://100.120.120.120:5181/>
+Serve the proof site locally:
+
+```bash
+python3 -m http.server 5181 --directory site
+open http://127.0.0.1:5181/
+```
 
 ## Verification
 
@@ -168,6 +194,35 @@ Useful environment variables:
 | `ASKQ_SCRIPT=/path/to/askq.py` | Override the `askq` script used by `idr run`. |
 | `IDR_REQUIRE_LIVE=1` | Fail closed if a live NotebookLM step falls back or fails. |
 | `IDR_LIVE_E2E=1` | Enable the opt-in pytest live E2E test. |
+| `IDR_LIVE_TOPIC`, `IDR_LIVE_ANSWER` | Override the synthetic topic/answer used by the opt-in live test. |
+| `ASKQ_ANSWER=...` | Provide a non-interactive answer to `askq`. |
+
+`IDR_REQUIRE_LIVE=1` and `IDR_MOCK=1` are mutually exclusive. Required-live
+mode exists specifically to prove the real NotebookLM path.
+
+## Privacy
+
+Use synthetic, non-sensitive topics for tests and examples. Do not type secrets,
+credentials, personal data, private customer data, or other sensitive material
+into `askq`, `idr`, NotebookLM, or generated reports.
+
+`askq` logs Q&A to `~/.askq/history.jsonl` by default. For sensitive or test
+questions, use `--no-log`, a temporary `--log`, or delete the history file after
+the run. Tests in this repo avoid the default user log.
+
+## Failure Modes
+
+| Symptom | Likely cause | Fix |
+| --- | --- | --- |
+| `nlm` not found | NotebookLM CLI missing from `PATH` | Install/configure `nlm`, then run `nlm doctor`. |
+| NotebookLM auth error | Expired browser/cookie auth | Run `nlm login`, then `nlm doctor`. |
+| Live `plan` has no `notebook_id` | Fast pass failed or output changed | Re-run with `IDR_REQUIRE_LIVE=1` for fail-closed diagnostics. |
+| Canned or weak clarifying question | Sources not imported yet | Ensure status polling and explicit `nlm research import` ran. |
+| Deep pass blocks or aborts | Existing pending research prompt | Use the built-in `--force` path. |
+| 429 or very slow run | NotebookLM quota/backoff | Wait, reduce live runs, use `IDR_MOCK=1` for CI. |
+| `idr run` appears stuck | Bare interactive `askq` is waiting for input | Prefer `idr plan/resume` in agents or pass `ASKQ_ANSWER`. |
+| `idr run` fails with `askq failed` | `ASKQ_SCRIPT` missing or not executable | Run `./install.sh`, set `ASKQ_SCRIPT`, or use phased `idr plan/resume`. |
+| `scorecard` exits non-zero | Invalid JSON/spec, bad weights, scores outside scale | Validate the spec against the documented JSON shape. |
 
 ## Repository Layout
 

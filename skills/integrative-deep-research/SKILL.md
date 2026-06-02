@@ -28,6 +28,18 @@ Run artifacts live in:
 
 ## Fixed Flow
 
+```mermaid
+flowchart TD
+    A["idr plan TOPIC"] --> B["agy seed"]
+    B --> C["NotebookLM fast pass"]
+    C --> D["status + import"]
+    D --> E["one question"]
+    E --> F["idr resume RUN --answer ..."]
+    F --> G["NotebookLM deep pass<br/>same notebook, --force"]
+    G --> H["fixed query angles"]
+    H --> I["report.html"]
+```
+
 1. `agy` scoping seed: write `seed.md`, optionally ask Antigravity for a short
    NotebookLM-ready brief.
 2. NotebookLM fast pass: `nlm research start --mode fast --auto-import`.
@@ -68,6 +80,19 @@ IDR_MOCK=1 idr resume <run_id> --answer "self-hosted only"
 
 `--mock` is equivalent for `plan` and `run`.
 
+## Output Contract
+
+| Command | stdout | Main files |
+| --- | --- | --- |
+| `idr plan` | JSON `{run_id, rundir, notebook_id, question}` | `state.json`, `seed.md`, optional `agy_brief.md` |
+| `idr resume` | JSON `{run_id, report, notebook_id}` | `content/*.md`, `report.html`, updated `state.json` |
+| `idr report` | JSON `{report}` | regenerated `report.html` |
+
+Live verification should set `IDR_REQUIRE_LIVE=1`; this turns missing notebook
+IDs, failed `nlm query`, and failed deep passes into non-zero errors instead of
+falling back to mock text.
+Do not combine `IDR_REQUIRE_LIVE=1` with `IDR_MOCK=1`.
+
 ## Agent Guidance
 
 - Do not ask clarifying questions before `idr plan`; the pipeline creates the one
@@ -97,6 +122,8 @@ original topic/brief. `nlm` needs an authenticated NotebookLM session for live r
 | `IDR_RUNS_DIR=/tmp/idr-runs` | Override the run artifact directory. Use this in tests. |
 | `ASKQ_SCRIPT=/path/to/askq.py` | Override the question bridge used by `idr run`. |
 | `IDR_REQUIRE_LIVE=1` | Fail closed on live NotebookLM failures instead of falling back to mock text. |
+| `IDR_LIVE_E2E=1` | Used by pytest to enable the opt-in live NotebookLM E2E. |
+| `IDR_LIVE_TOPIC`, `IDR_LIVE_ANSWER` | Override the synthetic live E2E topic/answer. |
 
 ## Gotchas
 
@@ -106,3 +133,15 @@ original topic/brief. `nlm` needs an authenticated NotebookLM session for live r
 - `agy` may print leading status lines; strip them before using the answer.
 - Prefix fixed query prompts with `Topic: <topic>` so the notebook stays on-task.
 - Use `IDR_MOCK=1` for CI and smoke tests to avoid auth, network, and quota issues.
+
+## Failure Modes
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| `nlm` missing/auth error | NotebookLM CLI unavailable or login expired | `nlm login`, then `nlm doctor`. |
+| `notebook_id` is empty | Fast pass failed or CLI output changed | Use `IDR_REQUIRE_LIVE=1` and inspect stderr. |
+| Weak/canned question | Sources were not imported | Ensure status wait + explicit import ran. |
+| Deep pass prompt/abort | Pending NotebookLM research | The driver uses `--force`; upgrade `nlm` if behavior changes. |
+| Agent session blocks | `idr run` invoked interactive `askq` | Use `idr plan/resume` or `ASKQ_ANSWER`. |
+| `askq failed` | `ASKQ_SCRIPT` missing/not executable | Install skills or set `ASKQ_SCRIPT` to the repo script. |
+| Quota/429 | NotebookLM quota/backoff | Wait or use `IDR_MOCK=1`. |

@@ -62,6 +62,15 @@ cat spec.json | scorecard -
 Markdown output contains a ranked table and winner explanation. HTML output emits
 `<table class="scorecard">` plus `<div class="winner">` for local reports/sites.
 
+## Validation And Exit Behavior
+
+- stdout is the rendered scorecard only.
+- malformed JSON or an invalid spec exits non-zero with a concise stderr error.
+- `criteria` must be a non-empty list with `key`, `label`, and numeric `weight`.
+- `candidates` must be a non-empty list with `name` and `scores`.
+- every score must be numeric and within `0..scale`.
+- missing scores are allowed and treated as `0`; use this deliberately.
+
 ## Guidance
 
 - Scores should come from research evidence, not from the scorecard script.

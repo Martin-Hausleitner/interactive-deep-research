@@ -13,7 +13,7 @@ PYTHONDONTWRITEBYTECODE=1 pytest -p no:cacheprovider -m "not live" -q
 Observed result:
 
 ```text
-7 passed, 1 deselected
+10 passed, 1 deselected
 ```
 
 Live NotebookLM E2E:
@@ -54,6 +54,11 @@ find . -path '*/__pycache__/*' -o -name '*.pyc'
 ```
 
 Observed result: no tracked bytecode, no local bytecode, and no root-level proof-site duplicates.
+
+Public hygiene:
+
+Observed result: no private host/IP, local-path, account, or local-file URL hits
+in README, docs, skills, tests, reports, proof-site files, or CI config.
 
 GitHub branch:
 

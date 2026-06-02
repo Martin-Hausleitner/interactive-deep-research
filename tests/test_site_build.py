@@ -1,5 +1,6 @@
 import subprocess
 import sys
+import os
 from pathlib import Path
 
 
@@ -7,9 +8,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def test_proof_site_builds_from_repo_artifacts():
+    env = os.environ.copy()
+    env["SITE_BUILD_TS"] = "2026-06-03 00:00"
     result = subprocess.run(
         [sys.executable, "site/build_goal_site.py"],
         cwd=ROOT,
+        env=env,
         text=True,
         capture_output=True,
         check=True,

@@ -47,6 +47,31 @@ Exit codes:
 By default every Q&A is appended to `~/.askq/history.jsonl`. Disable this with
 `--no-log`, or set a custom path with `--log`.
 
+## Privacy / No PII
+
+Do not enter secrets, credentials, personal data, private customer data, or other
+sensitive content into `askq`. The default history file is intentionally simple
+and local, but it is still persistent.
+
+For sensitive or test questions:
+
+```bash
+askq "Constraint?" --answer "self-hosted" --no-log
+askq "Constraint?" --answer "self-hosted" --log /tmp/askq-test.jsonl
+rm -f ~/.askq/history.jsonl
+```
+
+## Flags And Environment
+
+| Name | Effect |
+| --- | --- |
+| `--answer TEXT` | Non-interactive answer; returns immediately. |
+| `ASKQ_ANSWER=TEXT` | Env equivalent of `--answer` when the flag is absent. |
+| `--choices "a|b|c"` | Displays options; answer is returned verbatim. |
+| `--timeout N` | Timeout for stdin in pipe/non-TTY mode; exits `2` if exceeded. |
+| `--log PATH` | Append JSONL history to a custom file. |
+| `--no-log` | Disable history logging for this question. |
+
 ## Agent Guidance
 
 - In terminal workflows, call `askq "..."`, parse stdout JSON, and continue.

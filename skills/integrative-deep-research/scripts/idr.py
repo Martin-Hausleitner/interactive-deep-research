@@ -70,6 +70,11 @@ def _require_live() -> bool:
     return os.environ.get("IDR_REQUIRE_LIVE") == "1"
 
 
+def _validate_mode() -> None:
+    if _require_live() and _mock():
+        raise RuntimeError("IDR_REQUIRE_LIVE=1 cannot be combined with IDR_MOCK=1")
+
+
 def _rundir(run_id: str) -> str:
     return os.path.join(RUNS_DIR, run_id)
 
@@ -356,11 +361,12 @@ def cmd_run_interactive(topic: str) -> dict:
     plan = cmd_plan(topic)
     # Use the askq bridge to pause for the human answer (terminal / other AIs).
     code, out, err = _run([sys.executable, ASKQ, plan["question"], "--context", f"Topic: {topic}"], timeout=86400)
-    answer = topic  # fallback
+    if code != 0:
+        raise RuntimeError(f"askq failed: {err.strip()[:240] or out.strip()[:240]}")
     try:
         answer = json.loads(out).get("answer") or topic
     except json.JSONDecodeError:
-        _eprint("idr: could not parse askq output; using topic as answer")
+        raise RuntimeError("could not parse askq JSON output")
     return cmd_resume(plan["run_id"], answer)
 
 
@@ -591,6 +597,7 @@ def main(argv: list[str] | None = None) -> int:
         os.environ["IDR_MOCK"] = "1"
 
     try:
+        _validate_mode()
         if args.cmd == "plan":
             print(json.dumps(cmd_plan(args.topic), ensure_ascii=False, indent=2))
         elif args.cmd == "resume":

@@ -24,6 +24,16 @@ human clarification, local HTML rendering.
 | `askq` | `askq` | One-question human bridge, JSON stdout, audit log. |
 | `deep-research-scorecard` | `scorecard` | Converts researched candidates into a weighted ranking. |
 
+```mermaid
+flowchart LR
+    U["interactive-deep-research<br/>read first"] --> I["idr<br/>plan/resume/run/report"]
+    U --> Q["askq<br/>JSON question bridge"]
+    U --> S["scorecard<br/>weighted ranking"]
+    I --> R["run dir + report.html"]
+    Q --> L["optional local JSONL log"]
+    S --> O["Markdown/HTML fragment"]
+```
+
 ## Canonical Flow
 
 ```mermaid
@@ -71,6 +81,15 @@ IDR_REQUIRE_LIVE=1 idr resume <run_id> --answer "<synthetic answer>"
 Use `IDR_RUNS_DIR=/tmp/idr-runs` when a test or verifier must avoid writing to
 the user's default run directory.
 
+Verification commands:
+
+```bash
+pytest -m "not live"
+IDR_LIVE_E2E=1 IDR_REQUIRE_LIVE=1 pytest -m live tests/test_live_idr_e2e.py
+```
+
+The live command is opt-in because it uses NotebookLM auth, network, and quota.
+
 Scorecard:
 
 ```bash
@@ -108,3 +127,5 @@ open site/goal_site.html
 - Strip `agy` progress noise before treating its stdout as a brief.
 - Keep query prompts topic-anchored.
 - Use `IDR_MOCK=1` for contributor smoke tests and CI.
+- Avoid secrets or personal data in topics, answers, askq logs, NotebookLM
+  notebooks, and rendered reports.

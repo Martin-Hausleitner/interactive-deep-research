@@ -1,7 +1,7 @@
 # GOAL — Interactive Deep Research (2-Tage-Dauerauftrag)
 
 ## Mission
-Mach das interaktive/integrative Deep-Research-System (idr-Pipeline + die Skills `integrative-deep-research`, `askq`, `interactive-deep-research`, `deep-research-scorecard` + die Beweis-Site) zu einem erstklassigen, sauber dokumentierten, getesteten Open-Source-Repo. End-Zustand: ein modernes README (mit Mermaid: wie die Pipeline funktioniert UND wie man die Skills aufruft), alle Skills sauber dokumentiert + gehärtet, die idr-Pipeline robust + mit echten E2E-Tests abgesichert (live + IDR_MOCK), die Proof-Site neu gerendert + lokal/vcvm bereitgestellt, Repo aufgeräumt (keine Duplikate, kein __pycache__ im Index), committed + gepusht (github Martin-Hausleitner/interactive-deep-research) und `main` als Default-Branch.
+Mach das interaktive/integrative Deep-Research-System (idr-Pipeline + die Skills `integrative-deep-research`, `askq`, `interactive-deep-research`, `deep-research-scorecard` + die Beweis-Site) zu einem erstklassigen, sauber dokumentierten, getesteten Open-Source-Repo. End-Zustand: ein modernes README (mit Mermaid: wie die Pipeline funktioniert UND wie man die Skills aufruft), alle Skills sauber dokumentiert + gehärtet, die idr-Pipeline robust + mit echten E2E-Tests abgesichert (live + IDR_MOCK), die Proof-Site neu gerendert + lokal/remote bereitgestellt, Repo aufgeräumt (keine Duplikate, kein __pycache__ im Index), committed + gepusht (github Martin-Hausleitner/interactive-deep-research) und `main` als Default-Branch.
 
 ## Arbeitsweise (VERBINDLICH)
 - IMMER Subagents + Agent-Teams: ein DOC-Subagent (README/Skills), ein TEST-Subagent (E2E + mock), ein VERIFIER-Subagent der jeden „fertig"-Claim adversarial widerlegt, bevor er zählt. Niemals solo.
@@ -15,7 +15,7 @@ Mach das interaktive/integrative Deep-Research-System (idr-Pipeline + die Skills
 2. **Modernes README.md** mit Mermaid-Diagrammen (Pipeline-Flow + Skill-Aufruf), Quickstart, Install, Proof-Site, Gotchas.
 3. **Skills härten + dokumentieren**: integrative-deep-research, askq, interactive-deep-research (umbrella), deep-research-scorecard — jeweils saubere SKILL.md + scripts, Trigger, Beispiele.
 4. **E2E-Tests**: pytest/bash, die die idr-Pipeline live (kleiner echter Lauf) + mock durchspielen; askq + scorecard mit echten Inputs; CI-tauglich.
-5. **Proof-Site** neu bauen (build_goal_site.py) + lokal/vcvm servieren; `<title>` nach Push verifizieren.
+5. **Proof-Site** neu bauen (build_goal_site.py) + lokal/remote servieren; `<title>` nach Push verifizieren.
 6. **Push + Default-Branch main** (gh repo edit --default-branch main); README-Badges/Links prüfen.
 7. **Hardening**: nlm-Fehlerpfade (login/timeout/--force), agy-Fallback, robuste Query-Parsing (.value.answer), Doku der Live-Learnings.
 

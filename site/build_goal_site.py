@@ -63,16 +63,15 @@ def report_dir(ex):
     return rd if os.path.isabs(rd) else os.path.normpath(os.path.join(ROOT, rd))
 
 def content_path(ex, st, key):
+    rd = report_dir(ex)
+    if rd:
+        for ext in ("html", "md"):
+            candidate = os.path.join(rd, "content", f"{key}.{ext}")
+            if os.path.exists(candidate):
+                return candidate
     path = ((st or {}).get("content") or {}).get(key)
     if path and os.path.exists(path):
         return path
-    rd = report_dir(ex)
-    if not rd:
-        return None
-    for ext in ("html", "md"):
-        candidate = os.path.join(rd, "content", f"{key}.{ext}")
-        if os.path.exists(candidate):
-            return candidate
     return None
 
 def chipify(s):
@@ -252,7 +251,7 @@ strong,b{{color:#fff;font-weight:800}}
 footer{{color:var(--muted);font-size:12.5px;text-align:center;margin-top:48px;padding-top:20px;border-top:1px solid var(--line)}}
 @media(max-width:760px){{.winners{{grid-template-columns:1fr}}h1{{font-size:34px}}}}
 </style></head><body>
-<nav class="top"><span class="b">◆ Deep Research</span>{nav}<a href="#verlauf">Ablauf</a><a href="#qa">Q&amp;A</a><a href="http://100.120.120.120:5182/">🎙️ OpenAudio-Rechner↗</a><a href="http://100.120.120.120:5105/">B-Seite (5105)↗</a></nav>
+<nav class="top"><span class="b">◆ Deep Research</span>{nav}<a href="#verlauf">Ablauf</a><a href="#qa">Q&amp;A</a><span class="dim">OpenAudio-Rechner: openaudio-calculator/</span></nav>
 <div class="wrap">
 <div class="kicker">Interaktiv · betreut · cross-engine bewiesen</div>
 <h1>Verlauf, Output &amp; Beweis</h1>
@@ -271,7 +270,7 @@ footer{{color:var(--muted);font-size:12.5px;text-align:center;margin-top:48px;pa
 
 <section id="verlauf" class="card"><h2>🧠 Chronologischer Ablauf</h2><ul class="tl">{timeline(cfg)}</ul></section>
 <section id="qa" class="card"><h2>💬 Rückfragen &amp; Antworten</h2>{qa_panel()}</section>
-<footer>Lokal generiert · 0 LLM-Tokens fürs Layout · interaktiver betreuter Deep-Research-Lauf · live auf vcvm:5181 · {now}</footer>
+<footer>Lokal generiert · 0 LLM-Tokens fürs Layout · interaktiver betreuter Deep-Research-Lauf · Proof-Site statisch servierbar · {now}</footer>
 </div></body></html>"""
     out = os.path.join(GOAL, "goal_site.html")
     open(out, "w", encoding="utf-8").write(page)

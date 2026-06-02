@@ -24,7 +24,7 @@
     },
     {
       "round": "A·R1",
-      "note": "Voice-Cloning-Plan gestartet (XTTS-v2/F5/Fish/StyleTTS2/… DE+EN); Baseline = 5105 B-Seite."
+      "note": "Voice-Cloning-Plan gestartet (XTTS-v2/F5/Fish/StyleTTS2/… DE+EN); gegen ein internes Baseline-Artefakt abgeglichen."
     },
     {
       "round": "A·R1",
@@ -64,7 +64,7 @@
     },
     {
       "round": "A·R9 (Demo-Audios)",
-      "note": "Pro Library echte Demo-Audios eingebettet — 15 deutsche Clips (CosyVoice 3 ×3, CosyVoice2-EU ×4, Thorsten-Voice ×4, Chatterbox ×2, F5-TTS-German, XTTS-v2) + EN/ZH wo kein DE-Demo. Auf vcvm rehostet → zuverlässige Wiedergabe."
+      "note": "Pro Library echte Demo-Audios eingebettet — 15 deutsche Clips (CosyVoice 3 ×3, CosyVoice2-EU ×4, Thorsten-Voice ×4, Chatterbox ×2, F5-TTS-German, XTTS-v2) + EN/ZH wo kein DE-Demo. Lokal unter site/audio/ gespiegelt → zuverlässige Wiedergabe."
     }
   ]
 }

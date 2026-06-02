@@ -18,3 +18,11 @@
   can isolate artifacts and live verification fails closed.
 - Added contributor, testing, CI, and verification docs for the mock/live E2E
   matrix and proof-site evidence.
+- Hardened README and skill docs with privacy guidance, command output
+  contracts, environment contracts, failure-mode tables, and extra Mermaid
+  diagrams for packaged-skill usage.
+- Hardened `idr` fail-closed behavior for required-live mode and missing
+  `askq` scripts.
+- Added scorecard spec validation with clean stderr errors and tests.
+- Removed internal handoff/cache artifacts and private infrastructure references
+  from tracked public docs and proof-site outputs.
