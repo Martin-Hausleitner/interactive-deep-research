@@ -66,14 +66,34 @@ def test_packaged_skills_have_oss_documentation_contract():
 def test_install_and_ci_cover_all_packaged_skills():
     install = read("install.sh")
     ci = read(".github/workflows/ci.yml")
+    verify = read("scripts/verify.sh")
     for skill in SKILLS:
         assert skill in install
         assert (ROOT / "skills" / skill / "SKILL.md").exists()
     for driver in ("idr.py", "askq.py", "scorecard.py"):
         assert driver in install
-        assert driver in ci
-    assert "pytest" in ci
-    assert '-m "not live"' in ci
+        assert driver in verify
+    assert "./scripts/verify.sh" in ci
+    assert "pytest" in verify
+    assert '-m "not live"' in verify
+
+
+def test_verify_script_is_documented_and_used_by_ci():
+    script = ROOT / "scripts" / "verify.sh"
+    assert script.exists()
+    assert script.stat().st_mode & 0o111
+
+    script_text = script.read_text(encoding="utf-8")
+    assert "pytest -p no:cacheprovider -m \"not live\"" in script_text
+    assert "SITE_BUILD_TS" in script_text
+    assert "git diff --check" in script_text
+    assert "local Python bytecode artifacts" in script_text
+    assert "private machine marker" in script_text
+
+    assert "./scripts/verify.sh" in read(".github/workflows/ci.yml")
+    assert "./scripts/verify.sh" in read("README.md")
+    assert "./scripts/verify.sh" in read("TESTING.md")
+    assert "./scripts/verify.sh" in read("CONTRIBUTING.md")
 
 
 def test_ci_uses_node24_ready_github_actions():

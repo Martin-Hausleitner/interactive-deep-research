@@ -8,15 +8,13 @@ The repository has two test tiers:
 ## CI-Safe Checks
 
 ```bash
-python3 -B -m py_compile \
-  skills/integrative-deep-research/scripts/idr.py \
-  skills/askq/scripts/askq.py \
-  skills/deep-research-scorecard/scripts/scorecard.py \
-  site/build_goal_site.py \
-  site/build_audios.py
-
-PYTHONDONTWRITEBYTECODE=1 pytest -p no:cacheprovider -m "not live"
+./scripts/verify.sh
 ```
+
+The verifier runs syntax checks, `PYTHONDONTWRITEBYTECODE=1 pytest -p
+no:cacheprovider -m "not live"`, deterministic proof-site rendering with a fixed
+`SITE_BUILD_TS`, `git diff --check`, layout dedupe checks, local/tracked bytecode
+checks, and private machine marker scans. Default CI calls the same script.
 
 Coverage:
 

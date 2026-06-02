@@ -159,8 +159,11 @@ open http://127.0.0.1:5181/
 Mock and CI-safe verification:
 
 ```bash
-pytest -m "not live"
+./scripts/verify.sh
 ```
+
+This runs syntax checks, the non-live pytest suite, deterministic proof-site
+rendering, whitespace checks, layout/bytecode hygiene, and private-marker scans.
 
 Opt-in live NotebookLM E2E verification, which spends quota and requires an
 authenticated `nlm` CLI:
@@ -230,6 +233,8 @@ the run. Tests in this repo avoid the default user log.
 interactive-deep-research/
 ├── README.md
 ├── install.sh
+├── scripts/
+│   └── verify.sh
 ├── skills/
 │   ├── interactive-deep-research/
 │   ├── integrative-deep-research/

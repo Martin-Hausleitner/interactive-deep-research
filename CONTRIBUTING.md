@@ -6,9 +6,11 @@ Keep changes deterministic, testable, and free of personal data.
 
 ```bash
 ./install.sh
-pytest -m "not live"
-python3 site/build_goal_site.py
+./scripts/verify.sh
 ```
+
+Run the verifier before opening a PR. It mirrors default CI and also checks
+layout, proof-site determinism, bytecode hygiene, and private machine markers.
 
 Use `IDR_MOCK=1` for normal development:
 

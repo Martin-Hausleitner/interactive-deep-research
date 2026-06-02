@@ -7,13 +7,14 @@ Last updated: 2026-06-03.
 CI-safe suite:
 
 ```bash
-PYTHONDONTWRITEBYTECODE=1 pytest -p no:cacheprovider -m "not live" -q
+./scripts/verify.sh
 ```
 
 Observed result:
 
 ```text
-24 passed, 1 deselected
+25 passed, 1 deselected
+verify: ok
 ```
 
 Live NotebookLM E2E:

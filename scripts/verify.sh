@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+
+export PYTHONDONTWRITEBYTECODE=1
+export SITE_BUILD_TS="${SITE_BUILD_TS:-2026-06-03 00:00}"
+
+tmp_pycache="$(mktemp -d)"
+cleanup() {
+  rm -rf "$tmp_pycache"
+}
+trap cleanup EXIT
+
+PYTHONPYCACHEPREFIX="$tmp_pycache" python3 -B -m py_compile \
+  skills/integrative-deep-research/scripts/idr.py \
+  skills/askq/scripts/askq.py \
+  skills/deep-research-scorecard/scripts/scorecard.py \
+  site/build_goal_site.py \
+  site/build_audios.py
+
+pytest -p no:cacheprovider -m "not live"
+
+python3 site/build_goal_site.py
+test -s site/goal_site.html
+cmp -s site/goal_site.html site/index.html
+
+python3 - <<'PY'
+from pathlib import Path
+
+html = Path("site/goal_site.html").read_text(encoding="utf-8")
+required = (
+    "<title>Interaktives Deep Research",
+    "Verlauf, Output &amp; Beweis",
+    "Pipeline-Flow",
+    "Voice Cloning",
+    "Cross-Channel Messaging",
+    "reports/voice/report.html",
+    "reports/messaging/report.html",
+)
+missing = [marker for marker in required if marker not in html]
+if missing:
+    raise SystemExit(f"verify: proof site missing markers: {missing}")
+PY
+
+git diff --check
+
+if git ls-files | rg '(^|/)__pycache__/|\.pyc$|^(PROGRESS|audio_demos|build_audios|build_goal_site|site_config)\.'; then
+  echo "verify: tracked bytecode or root-level proof-site duplicates found" >&2
+  exit 1
+fi
+
+if find . -path './.git' -prune -o \( -path '*/__pycache__/*' -o -name '*.pyc' -o -name '*.pyo' \) -print | rg .; then
+  echo "verify: local Python bytecode artifacts found" >&2
+  exit 1
+fi
+
+private_markers=(
+  "100"".120"
+  "510""7"
+  "510""5"
+  "518""2"
+  "file""://"
+  "/Users/""mh"
+  "Account"":"
+  "mart""iking"
+  "vc""vm"
+  "tail""net"
+)
+
+for marker in "${private_markers[@]}"; do
+  if rg -n -F "$marker" \
+    README.md TESTING.md VERIFICATION.md CONTRIBUTING.md GOAL.md CHANGELOG.md \
+    .github skills tests reports site openaudio-calculator scripts; then
+    echo "verify: private machine marker found in public artifacts" >&2
+    exit 1
+  fi
+done
+
+echo "verify: ok"
