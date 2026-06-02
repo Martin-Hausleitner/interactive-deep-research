@@ -10,14 +10,14 @@ RUNS = os.path.expanduser("~/.local/share/idr/runs")
 ASKQ = os.path.expanduser("~/.askq/history.jsonl")
 CFG = os.path.join(GOAL, "site_config.json")
 
-ORDER = ["overview","scorecard","authenticity","comparison","notebooklm","emotion","links","recommendation","questions","weaknesses","diagnosis","system_prompt"]
-RAW = {"scorecard"}  # inline as raw HTML (already styled), not markdown
-TITLES = {"overview":"Überblick & Findings","scorecard":"Punkte-Scorecard · Sieger gekürt","authenticity":"Echtheits-Leaderboard (SIM-o · MOS · WER · Elo · Emotion)","comparison":"Vergleich · Benchmarks · Repo-Links",
+ORDER = ["overview","scorecard","audios","authenticity","comparison","notebooklm","emotion","links","recommendation","questions","weaknesses","diagnosis","system_prompt"]
+RAW = {"scorecard","audios"}  # inline as raw HTML (already styled), not markdown
+TITLES = {"overview":"Überblick & Findings","scorecard":"Punkte-Scorecard · Sieger gekürt","audios":"Demo-Audios (Deutsch) pro Library","authenticity":"Echtheits-Leaderboard (SIM-o · MOS · WER · Elo · Emotion)","comparison":"Vergleich · Benchmarks · Repo-Links",
           "notebooklm":"NotebookLM Deep Research (echter Deep-Pass)","emotion":"Emotion & Expressivität (DE+EN)",
           "links":"Komponenten · Benchmarks · Links",
           "recommendation":"Empfehlung & Beweis","questions":"Kritische Fragen","weaknesses":"Schwachstellen",
           "diagnosis":"Diagnose","system_prompt":"System-Prompt"}
-ICONS = {"overview":"📋","scorecard":"🥇","authenticity":"🎚️","comparison":"📊","notebooklm":"🔬","emotion":"🎭","links":"🔗","recommendation":"🏆",
+ICONS = {"overview":"📋","scorecard":"🥇","audios":"🔊","authenticity":"🎚️","comparison":"📊","notebooklm":"🔬","emotion":"🎭","links":"🔗","recommendation":"🏆",
          "questions":"❓","weaknesses":"⚠️","diagnosis":"🧭","system_prompt":"📜"}
 
 def colorize(s):
@@ -210,6 +210,15 @@ strong,b{{color:#fff;font-weight:800}}
 .scorecard tr.win td{{background:rgba(94,224,196,.12);box-shadow:inset 3px 0 0 var(--accent2)}}
 .winner{{margin-top:12px;background:linear-gradient(180deg,#0d211f,#0c1622);border:1px solid #1f5048;border-left:4px solid var(--accent2);border-radius:12px;padding:14px 16px;font-size:15px;line-height:1.6}}
 .winner .crown{{display:block;color:#5ee0c4;font-weight:800;font-size:17px;font-family:"Space Grotesk";margin-bottom:4px}}
+.audiolib{{background:#0f1326;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:12px 0}}
+.alh{{font-weight:800;font-family:"Space Grotesk";font-size:15px;margin-bottom:8px;display:flex;gap:10px;align-items:center}}
+.ade{{background:#0f2a1c;color:var(--good);border:1px solid #2f6b46;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:700}}
+.aen{{background:#2a1116;color:var(--bad);border:1px solid #6b2f3a;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:700}}
+.clip{{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:7px 0;border-top:1px solid var(--line)}}
+.clip audio{{height:32px;margin-left:auto;max-width:260px}}
+.clab{{color:#dfe8ff}}
+.langbadge{{font-family:"JetBrains Mono";font-size:10.5px;font-weight:700;border-radius:5px;padding:1px 6px}}
+.langbadge.de{{background:#0f2a1c;color:#86efac;border:1px solid #2f6b46}}.langbadge.ot{{background:#1b2138;color:var(--muted);border:1px solid var(--line)}}
 .badges{{display:flex;gap:7px;flex-wrap:wrap;margin:2px 0 16px}}.badges img{{height:20px;display:block}}
 footer{{color:var(--muted);font-size:12.5px;text-align:center;margin-top:48px;padding-top:20px;border-top:1px solid var(--line)}}
 @media(max-width:760px){{.winners{{grid-template-columns:1fr}}h1{{font-size:34px}}}}

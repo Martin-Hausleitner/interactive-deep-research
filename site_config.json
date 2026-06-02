@@ -59,6 +59,10 @@
     {
       "round": "A·R8 (Echtheit-Benchmarks)",
       "note": "Harte Authentizitäts-Zahlen (SIM-o/MOS/WER/Arena-Elo/Emotion): objektiv echteste Modelle IndexTTS-2 (0,860) & OpenAudio S1 (#1 Arena) können KEIN Deutsch → für DE+EN raus. Deutsch (nicht Lizenz) ist die bindende Schranke → CosyVoice 3.0 bleibt DE+EN-Sieger (Ähnlichkeit ≈ Mensch). Scorecard mit echten Zahlen + Deutsch×4 neu gerechnet."
+    },
+    {
+      "round": "A·R9 (Demo-Audios)",
+      "note": "Pro Library echte Demo-Audios eingebettet — 15 deutsche Clips (CosyVoice 3 ×3, CosyVoice2-EU ×4, Thorsten-Voice ×4, Chatterbox ×2, F5-TTS-German, XTTS-v2) + EN/ZH wo kein DE-Demo. Auf vcvm rehostet → zuverlässige Wiedergabe."
     }
   ]
 }
