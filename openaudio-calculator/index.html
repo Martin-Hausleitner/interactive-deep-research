@@ -30,6 +30,10 @@ input[type=range]{width:100%;accent-color:#8a9bff;height:6px}
 .note{color:var(--muted);font-size:12px}.est{background:#2a2410;color:#fcd34d;border:1px solid #6b5a1f;border-radius:6px;padding:1px 7px;font-size:11px;font-weight:700}
 a{color:var(--accent)}footer{color:var(--muted);font-size:12px;text-align:center;margin-top:40px;border-top:1px solid var(--line);padding-top:18px}
 .pill{background:#0f2a1c;color:var(--good);border:1px solid #2f6b46;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:700}
+code{font-family:"JetBrains Mono";font-size:.88em;background:#0c1020;border:1px solid var(--line);border-radius:5px;padding:1px 5px}
+pre{background:#0a0d18;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:13px 15px;overflow:auto;margin:6px 0}
+pre code{border:0;padding:0;background:none;color:#d6def5;line-height:1.55;font-size:12.5px;white-space:pre}
+.step{color:var(--accent2);font-weight:800;font-family:"Space Grotesk";margin:16px 0 4px;font-size:14px}
 </style></head><body><div class="wrap">
 <div class="kicker">Open-Source Voice Cloning · Self-Hosting</div>
 <h1>OpenAudio S2 Pro (Fish) — Hardware, Kosten &amp; Durchsatz</h1>
@@ -147,6 +151,50 @@ a{color:var(--accent)}footer{color:var(--muted);font-size:12px;text-align:center
  <div class="metric"><div class="v" id="b_margin">–</div><div class="l">Marge/Monat (self-host, nach Capex-Amort. 24 Mo)</div></div>
  <div class="metric big"><div class="v" id="b_payback">–</div><div class="l">Amortisation der 2× Titan ggü. modal · Break-even-Volumen: <span id="b_be">–</span></div></div>
 </div></div></section>
+
+<section class="card"><h2>🚀 Deployment-Quickstart — S2 Pro auf 2× Titan RTX (Deutsch)</h2>
+<p class="note">Verifizierte Befehle (fish-speech-Docs). <b class="warn">Turing-Pflicht:</b> Titan RTX (sm_75) kann kein bf16 → überall <code>--half</code> (Docker: <code>-e HALF=1</code>); Flash-Attn/bf16 meiden. <code>--compile</code> = ~10× schneller.</p>
+<div class="step">1 · Modell laden</div>
+<pre><code>pip install "huggingface_hub[cli]"
+hf download fishaudio/s2-pro --local-dir checkpoints/s2-pro</code></pre>
+<div class="step">2 · Schnellster Weg: Docker-API-Server je GPU (beide Titans)</div>
+<pre><code># GPU 0  → Port 8080
+docker run -d --name fish0 --gpus '"device=0"' -p 8080:8080 \
+  -v ./checkpoints:/app/checkpoints -v ./references:/app/references \
+  -e COMPILE=1 -e HALF=1 fishaudio/fish-speech:latest-server-cuda
+# GPU 1  → Port 8081
+docker run -d --name fish1 --gpus '"device=1"' -p 8081:8080 \
+  -v ./checkpoints:/app/checkpoints -v ./references:/app/references \
+  -e COMPILE=1 -e HALF=1 fishaudio/fish-speech:latest-server-cuda</code></pre>
+<p class="note">Kein Tensor-Parallel-Flag → 1 Prozess je Karte (2 Instanzen hinter Load-Balancer). API-Docs unter <code>:8080/docs</code> · WebUI-Image <code>latest-webui-cuda</code> (Port 7860).</p>
+<div class="step">3 · Deutscher Zero-Shot-Klon (Source-Install, 3 Schritte, DAC-Codec)</div>
+<pre><code># a) Referenz-Audio -> Prompt-Tokens (fake.npy)
+python fish_speech/models/dac/inference.py -i referenz_de.wav \
+  --checkpoint-path checkpoints/s2-pro/codec.pth
+# b) Semantik-Tokens fuer DE-Zieltext  (Turing: --half)
+python fish_speech/models/text2semantic/inference.py \
+  --text "Dein deutscher Zieltext." \
+  --prompt-text "Transkript der Referenz" \
+  --prompt-tokens fake.npy --half --compile
+# c) Dekodieren -> Wave
+python fish_speech/models/dac/inference.py -i codes_0.npy</code></pre>
+<div class="step">4 · LoRA-Finetune einer Stimme (rank 8 / alpha 16)</div>
+<pre><code>python tools/vqgan/extract_vq.py data --num-workers 1 --batch-size 16 \
+  --config-name modded_dac_vq --checkpoint-path checkpoints/s2-pro/codec.pth
+python tools/llama/build_dataset.py --input data --output data/protos \
+  --text-extension .lab --num-workers 16
+python fish_speech/train.py --config-name text2semantic_finetune \
+  project=meinevoice +lora@model.model.lora_config=r_8_alpha_16
+python tools/llama/merge_lora.py --lora-config r_8_alpha_16 \
+  --base-weight checkpoints/s2-pro \
+  --lora-weight results/meinevoice/checkpoints/step_000000010.ckpt \
+  --output checkpoints/s2-pro-lora/</code></pre>
+<p class="note">Datensatz = 1 Ordner je Sprecher mit <code>audio</code> + <code>.lab</code> (Transkript); danach Inferenz auf <code>checkpoints/s2-pro-lora/</code> zeigen.</p>
+<div class="step">CPU-VM-Fallback (16C/24 GB, kein GPU) — nur S1-mini</div>
+<pre><code>docker run -d -p 8080:8080 -v ./checkpoints:/app/checkpoints \
+  -e BACKEND=cpu fishaudio/fish-speech:latest-server-cpu
+# nur S1-mini (0,5B) praktikabel — S2-Pro auf CPU ~10-50x langsamer</code></pre>
+<p class="note">Quellen: github.com/fishaudio/fish-speech · docs.fish.audio (running-inference · docker-deployment · finetune) · HF fishaudio/s2-pro.</p></section>
 
 <footer>Open-Source · Lizenz egal (Hauptsache OSS) · Fokus Deutsch · generiert <span id="now"></span> · Teil von <a href="http://100.120.120.120:5181/">interactive-deep-research</a></footer>
 <script>
