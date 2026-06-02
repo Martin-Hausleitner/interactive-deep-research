@@ -4,8 +4,8 @@
       "tag": "Beispiel A · Audio",
       "title": "Open-Source Voice Cloning — bester DE+EN-Stack",
       "run_id": "20260602-015821-def4",
-      "verdict": "🏆 Lizenz NICHT ausschlaggebend (Hauptsache Open Source): bester Echtheits-/Emotions-Stack = OpenAudio S1/S2 (Fish-Speech) — #1 auf der TTS-Arena, reichste Emotion-Tags, nativ DE (89,4/100). CosyVoice 3.0 (Apache) = stärkste Alternative + einzige publizierte DE-Head-to-Head. IndexTTS-2 bleibt raus (kein Deutsch).",
-      "status": "✅ 7 Runden · Lizenz-egal-Re-Scoring · Echtheit/Emotion-Benchmarks laufen"
+      "verdict": "🏆 Bindende Schranke ist DEUTSCH, nicht die Lizenz: echtester + expressivster DE+EN-Open-Source-Stack = CosyVoice 3.0 (Ähnlichkeit ≈ menschliche Aufnahme, Instruct-Emotion, nativ DE — 84,7/100). Englisch/global wären IndexTTS-2 (SIM-o 0,860) bzw. OpenAudio S1 (#1 TTS-Arena) echter — aber beide ohne Deutsch → disqualifiziert. Starke DE-Alternativen: Chatterbox Multilingual & OmniVoice.",
+      "status": "✅ 8 Runden · Echtheits-Benchmarks · Lizenz-egal geprüft · konvergiert"
     },
     {
       "tag": "Beispiel B · Existing",
@@ -55,6 +55,10 @@
     {
       "round": "A·R7 (Lizenz egal)",
       "note": "User: Lizenz egal, Hauptsache Open Source. Lizenz-Kriterium entfernt + Echtheit/Emotion/Benchmark höher gewichtet → Scorecard kürt OpenAudio S1/S2 (Fish, 89,4/100) vor CosyVoice 3.0. Authentizitäts-Benchmark-Deep-Research (SIM-o/MOS/WER/Emotion) zur Verfeinerung gestartet."
+    },
+    {
+      "round": "A·R8 (Echtheit-Benchmarks)",
+      "note": "Harte Authentizitäts-Zahlen (SIM-o/MOS/WER/Arena-Elo/Emotion): objektiv echteste Modelle IndexTTS-2 (0,860) & OpenAudio S1 (#1 Arena) können KEIN Deutsch → für DE+EN raus. Deutsch (nicht Lizenz) ist die bindende Schranke → CosyVoice 3.0 bleibt DE+EN-Sieger (Ähnlichkeit ≈ Mensch). Scorecard mit echten Zahlen + Deutsch×4 neu gerechnet."
     }
   ]
 }

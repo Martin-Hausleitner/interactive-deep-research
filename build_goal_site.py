@@ -10,14 +10,14 @@ RUNS = os.path.expanduser("~/.local/share/idr/runs")
 ASKQ = os.path.expanduser("~/.askq/history.jsonl")
 CFG = os.path.join(GOAL, "site_config.json")
 
-ORDER = ["overview","scorecard","comparison","notebooklm","emotion","links","recommendation","questions","weaknesses","diagnosis","system_prompt"]
+ORDER = ["overview","scorecard","authenticity","comparison","notebooklm","emotion","links","recommendation","questions","weaknesses","diagnosis","system_prompt"]
 RAW = {"scorecard"}  # inline as raw HTML (already styled), not markdown
-TITLES = {"overview":"Überblick & Findings","scorecard":"Punkte-Scorecard · Sieger gekürt","comparison":"Vergleich · Benchmarks · Repo-Links",
+TITLES = {"overview":"Überblick & Findings","scorecard":"Punkte-Scorecard · Sieger gekürt","authenticity":"Echtheits-Leaderboard (SIM-o · MOS · WER · Elo · Emotion)","comparison":"Vergleich · Benchmarks · Repo-Links",
           "notebooklm":"NotebookLM Deep Research (echter Deep-Pass)","emotion":"Emotion & Expressivität (DE+EN)",
           "links":"Komponenten · Benchmarks · Links",
           "recommendation":"Empfehlung & Beweis","questions":"Kritische Fragen","weaknesses":"Schwachstellen",
           "diagnosis":"Diagnose","system_prompt":"System-Prompt"}
-ICONS = {"overview":"📋","scorecard":"🥇","comparison":"📊","notebooklm":"🔬","emotion":"🎭","links":"🔗","recommendation":"🏆",
+ICONS = {"overview":"📋","scorecard":"🥇","authenticity":"🎚️","comparison":"📊","notebooklm":"🔬","emotion":"🎭","links":"🔗","recommendation":"🏆",
          "questions":"❓","weaknesses":"⚠️","diagnosis":"🧭","system_prompt":"📜"}
 
 def colorize(s):

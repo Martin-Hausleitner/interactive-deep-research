@@ -5,7 +5,7 @@
     {
       "key": "de",
       "label": "Deutsch",
-      "weight": 3
+      "weight": 4
     },
     {
       "key": "en",
@@ -56,7 +56,7 @@
       "scores": {
         "de": 9,
         "en": 9,
-        "clone": 9,
+        "clone": 8,
         "emo": 9,
         "nonv": 8,
         "lic": 10,
@@ -73,7 +73,7 @@
       "scores": {
         "de": 9,
         "en": 9,
-        "clone": 9,
+        "clone": 8,
         "emo": 6,
         "nonv": 2,
         "lic": 10,
@@ -88,10 +88,10 @@
       "link": "https://github.com/fishaudio/fish-speech",
       "note": "Höchste Rohqualität (#1 open auf TTS-Arena) + reichste Emotion-Tags; ABER non-commercial Weights.",
       "scores": {
-        "de": 8,
+        "de": 4,
         "en": 10,
         "clone": 9,
-        "emo": 9,
+        "emo": 10,
         "nonv": 10,
         "lic": 2,
         "bench": 10,
@@ -111,7 +111,7 @@
         "emo": 5,
         "nonv": 3,
         "lic": 10,
-        "bench": 7,
+        "bench": 8,
         "vram": 7,
         "rtf": 7,
         "maint": 7
@@ -141,7 +141,7 @@
       "scores": {
         "de": 5,
         "en": 9,
-        "clone": 8,
+        "clone": 7,
         "emo": 8,
         "nonv": 5,
         "lic": 10,
@@ -158,11 +158,11 @@
       "scores": {
         "de": 1,
         "en": 9,
-        "clone": 9,
+        "clone": 10,
         "emo": 10,
         "nonv": 7,
         "lic": 4,
-        "bench": 8,
+        "bench": 9,
         "vram": 7,
         "rtf": 7,
         "maint": 7
@@ -175,7 +175,7 @@
       "scores": {
         "de": 8,
         "en": 8,
-        "clone": 8,
+        "clone": 7,
         "emo": 2,
         "nonv": 1,
         "lic": 1,
@@ -192,11 +192,11 @@
       "scores": {
         "de": 7,
         "en": 8,
-        "clone": 7,
+        "clone": 8,
         "emo": 3,
         "nonv": 2,
         "lic": 2,
-        "bench": 6,
+        "bench": 7,
         "vram": 7,
         "rtf": 8,
         "maint": 7
