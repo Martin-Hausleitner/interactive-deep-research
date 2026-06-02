@@ -89,6 +89,15 @@ IDR_MOCK=1 idr plan "smoke test"
 `agy` is optional. If it is unavailable or fails, the driver falls back to the
 original topic/brief. `nlm` needs an authenticated NotebookLM session for live runs.
 
+## Environment Contract
+
+| Variable | Effect |
+| --- | --- |
+| `IDR_MOCK=1` | Stub `agy` and NotebookLM; full plan/resume/report flow runs offline. |
+| `IDR_RUNS_DIR=/tmp/idr-runs` | Override the run artifact directory. Use this in tests. |
+| `ASKQ_SCRIPT=/path/to/askq.py` | Override the question bridge used by `idr run`. |
+| `IDR_REQUIRE_LIVE=1` | Fail closed on live NotebookLM failures instead of falling back to mock text. |
+
 ## Gotchas
 
 - `nlm query` returns JSON; parse `.value.answer`.

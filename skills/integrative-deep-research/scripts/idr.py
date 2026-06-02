@@ -40,8 +40,8 @@ import subprocess
 import sys
 import uuid
 
-RUNS_DIR = os.path.expanduser("~/.local/share/idr/runs")
-ASKQ = os.path.expanduser("~/.claude/skills/askq/scripts/askq.py")
+RUNS_DIR = os.path.expanduser(os.environ.get("IDR_RUNS_DIR", "~/.local/share/idr/runs"))
+ASKQ = os.path.expanduser(os.environ.get("ASKQ_SCRIPT", "~/.claude/skills/askq/scripts/askq.py"))
 
 # Fixed iteration angles — deterministic, no model improvisation. Topic-agnostic:
 # cmd_resume prepends the run's topic so NotebookLM stays anchored to the right
@@ -63,6 +63,11 @@ def _eprint(*a: object) -> None:
 
 def _mock() -> bool:
     return os.environ.get("IDR_MOCK") == "1"
+
+
+def _require_live() -> bool:
+    """Fail closed instead of falling back when a caller is proving live E2E."""
+    return os.environ.get("IDR_REQUIRE_LIVE") == "1"
 
 
 def _rundir(run_id: str) -> str:
@@ -197,6 +202,8 @@ def _nlm_query(notebook_id: str, prompt: str, mock_text: str) -> str:
     code, out, err = _run(["nlm", "query", "notebook", notebook_id, prompt], timeout=300)
     if code == 0 and out.strip():
         return _query_answer(out)
+    if _require_live():
+        raise RuntimeError(f"nlm query failed in required-live mode: {err.strip()[:240]}")
     return mock_text + f"\n\n> _(nlm query failed: {err.strip()[:160]})_"
 
 
@@ -268,6 +275,11 @@ def cmd_plan(topic: str) -> dict:
     seed = _seed_antigravity(rundir, topic)
     fast = _nlm_fast_research(seed.get("brief") or topic, title=f"IDR: {topic[:60]}")
     notebook_id = fast.get("notebook_id")
+    if _require_live() and not notebook_id:
+        raise RuntimeError(
+            "IDR_REQUIRE_LIVE=1 but NotebookLM fast pass did not return a notebook_id: "
+            + str(fast.get("raw") or fast)
+        )
 
     question = MOCK_QUESTION if _mock() or not notebook_id else _nlm_query(
         notebook_id,
@@ -315,6 +327,11 @@ def cmd_resume(run_id: str, answer: str) -> dict:
     enriched = agy_q or fallback
     deep = _nlm_deep_research(enriched, notebook_id)
     state["deep"] = deep
+    if _require_live() and not deep.get("ok"):
+        raise RuntimeError(
+            "IDR_REQUIRE_LIVE=1 but NotebookLM deep pass failed: "
+            + str(deep.get("raw") or deep)
+        )
 
     content = {}
     for key, prompt in QUERY_ANGLES:
@@ -573,15 +590,19 @@ def main(argv: list[str] | None = None) -> int:
     if getattr(args, "mock", False):
         os.environ["IDR_MOCK"] = "1"
 
-    if args.cmd == "plan":
-        print(json.dumps(cmd_plan(args.topic), ensure_ascii=False, indent=2))
-    elif args.cmd == "resume":
-        print(json.dumps(cmd_resume(args.run_id, args.answer), ensure_ascii=False, indent=2))
-    elif args.cmd == "report":
-        print(json.dumps({"report": _build_report(args.run_id)}, ensure_ascii=False, indent=2))
-    elif args.cmd == "run":
-        print(json.dumps(cmd_run_interactive(args.topic), ensure_ascii=False, indent=2))
-    return 0
+    try:
+        if args.cmd == "plan":
+            print(json.dumps(cmd_plan(args.topic), ensure_ascii=False, indent=2))
+        elif args.cmd == "resume":
+            print(json.dumps(cmd_resume(args.run_id, args.answer), ensure_ascii=False, indent=2))
+        elif args.cmd == "report":
+            print(json.dumps({"report": _build_report(args.run_id)}, ensure_ascii=False, indent=2))
+        elif args.cmd == "run":
+            print(json.dumps(cmd_run_interactive(args.topic), ensure_ascii=False, indent=2))
+        return 0
+    except Exception as exc:
+        _eprint(f"idr: error: {exc}")
+        return 1
 
 
 if __name__ == "__main__":

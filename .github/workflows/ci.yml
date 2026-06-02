@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test runner
+        run: python -m pip install --upgrade pip pytest
+      - name: Syntax check
+        run: |
+          python -m py_compile \
+            skills/integrative-deep-research/scripts/idr.py \
+            skills/askq/scripts/askq.py \
+            skills/deep-research-scorecard/scripts/scorecard.py \
+            site/build_goal_site.py \
+            site/build_audios.py
+      - name: Mock and utility tests
+        run: pytest -m "not live"

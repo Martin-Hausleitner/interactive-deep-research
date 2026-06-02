@@ -114,14 +114,16 @@ def section_for(ex, idx):
         nb = (st or {}).get("notebook_id") or rid or "repo artifact"
         deep = ((st or {}).get("deep") or {}).get("ok")
         deepn = ((st or {}).get("deep_nlm") or {}).get("ok")
-        rep = os.path.join(RUNS, rid, "report.html") if rid else ""
-        if (not rep or not os.path.exists(rep)) and rd:
-            rep = os.path.join(rd, "report.html")
+        public_rep = os.path.join(rd, "report.html") if rd else ""
+        local_rep = os.path.join(RUNS, rid, "report.html") if rid else ""
+        rep = public_rep if public_rep and os.path.exists(public_rep) else local_rep
         meta = '<div class="rmeta">'
         meta += f'<span class="pill">📓 {html.escape(str(nb)[:22])}</span>'
         if deep is not None: meta += f'<span class="pill ok">deep_ok ✓</span>'
         if deepn: meta += f'<span class="pill ok">NotebookLM-deep ✓</span>'
-        if os.path.exists(rep): meta += f'<span class="pill"><a href="file://{rep}">Einzelreport ↗</a></span>'
+        if os.path.exists(rep):
+            label = os.path.relpath(rep, ROOT) if rep.startswith(ROOT) else "report.html"
+            meta += f'<span class="pill">Einzelreport: {html.escape(label)}</span>'
         meta += '</div>'
         body = meta + badge_strip(rid) + ("\n".join(parts) or '<p class="dim">in Arbeit …</p>')
     verdict = f'<div class="verdict"><span class="vlabel">Verdict</span>{idr._inline(ex.get("verdict",""))}</div>' if ex.get("verdict") else ""
@@ -162,7 +164,7 @@ def main():
     exs = cfg.get("examples", [])
     secs = "\n".join(section_for(ex, i) for i, ex in enumerate(exs, 1))
     nav = "".join(f'<a href="#bsp{i}">{html.escape(ex.get("tag","Bsp"))}</a>' for i, ex in enumerate(exs, 1))
-    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    now = os.environ.get("SITE_BUILD_TS", datetime.datetime.now().strftime("%Y-%m-%d %H:%M"))
     sp = os.path.join(GOAL, "agy_summary.txt")
     summ = open(sp).read().strip() if os.path.exists(sp) else ""
     # strip agy status noise lines

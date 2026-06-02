@@ -61,6 +61,16 @@ IDR_MOCK=1 idr plan "test topic"
 IDR_MOCK=1 idr resume <run_id> --answer "self-hosted only"
 ```
 
+Live proof mode:
+
+```bash
+IDR_REQUIRE_LIVE=1 idr plan "<small synthetic topic>"
+IDR_REQUIRE_LIVE=1 idr resume <run_id> --answer "<synthetic answer>"
+```
+
+Use `IDR_RUNS_DIR=/tmp/idr-runs` when a test or verifier must avoid writing to
+the user's default run directory.
+
 Scorecard:
 
 ```bash

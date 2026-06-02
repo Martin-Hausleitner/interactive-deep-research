@@ -1,5 +1,9 @@
 # Interactive Deep Research
 
+[![CI](https://github.com/Martin-Hausleitner/interactive-deep-research/actions/workflows/ci.yml/badge.svg)](https://github.com/Martin-Hausleitner/interactive-deep-research/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
+
 Deterministic, token-frugal deep research with one human clarification step.
 NotebookLM does the heavy research and synthesis; this repository provides the
 local orchestration, question bridge, scorecard utility, packaged skills, and
@@ -123,6 +127,47 @@ open site/goal_site.html
 ```
 
 Live proof site, when connected to the tailnet: <http://100.120.120.120:5181/>
+
+## Verification
+
+Mock and CI-safe verification:
+
+```bash
+pytest -m "not live"
+```
+
+Opt-in live NotebookLM E2E verification, which spends quota and requires an
+authenticated `nlm` CLI:
+
+```bash
+IDR_LIVE_E2E=1 IDR_REQUIRE_LIVE=1 pytest -m live tests/test_live_idr_e2e.py
+```
+
+Proof-site render check:
+
+```bash
+python3 site/build_goal_site.py
+python3 -m http.server 5181 --directory site
+```
+
+Expected artifacts:
+
+- `~/.local/share/idr/runs/<run_id>/report.html` for live or mock `idr` runs.
+- `site/goal_site.html` for the local proof site.
+- `reports/voice/report.html` and `reports/messaging/report.html` as worked examples.
+
+See [TESTING.md](TESTING.md) for the full test matrix and live-run safety notes,
+and [VERIFICATION.md](VERIFICATION.md) for the latest evidence ledger.
+
+Useful environment variables:
+
+| Variable | Purpose |
+| --- | --- |
+| `IDR_MOCK=1` | Run without `agy`, NotebookLM, network, or auth. |
+| `IDR_RUNS_DIR=/tmp/idr-runs` | Write run artifacts outside the default user data directory. |
+| `ASKQ_SCRIPT=/path/to/askq.py` | Override the `askq` script used by `idr run`. |
+| `IDR_REQUIRE_LIVE=1` | Fail closed if a live NotebookLM step falls back or fails. |
+| `IDR_LIVE_E2E=1` | Enable the opt-in pytest live E2E test. |
 
 ## Repository Layout
 

@@ -1,6 +1,6 @@
 # GOAL — Interactive Deep Research, supervised, with proof — COMPLETE
 
-**Live site (pushed):** http://100.120.120.120:5107/ · **B-side baseline:** http://100.120.120.120:5105/
+**Live site (pushed):** http://100.120.120.120:5181/ · **B-side baseline:** http://100.120.120.120:5105/
 **Screenshot proof:** ~/Desktop/goal_site_render.png (rendered from the live vcvm URL)
 
 ## Completion criteria — status
@@ -8,7 +8,7 @@
 2. ✅ **Example B (messaging-automation stack):** NotebookLM deep pass done, deep_ok=true, **111 sources**, detailed report.html + comparison table.
 3. ✅ Both runs proven (deep_ok / report.html valid).
 4. ✅ Cross-engine: NotebookLM (B primary, 111 src; A fast pass) + 3 independent web engines (A R1/R2/R3/R4) — converged.
-5. ✅ Website presents both outputs + Gedankenverlauf (rounds) + Q&A (askq), pushed live to vcvm:5107, screenshot-verified.
+5. ✅ Website presents both outputs + Gedankenverlauf (rounds) + Q&A (askq), pushed live to vcvm:5181, screenshot-verified.
 
 ## Proof ledger
 | Example | Notebook | deep_ok | sources | report.html | rounds | no-better-proof |
