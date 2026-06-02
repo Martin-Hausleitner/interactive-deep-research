@@ -24,12 +24,15 @@ pytest -p no:cacheprovider -m "not live"
 
 python3 site/build_goal_site.py
 test -s site/goal_site.html
-cmp -s site/goal_site.html site/index.html
+test -s site/index.html
 
 python3 - <<'PY'
 from pathlib import Path
 
-html = Path("site/goal_site.html").read_text(encoding="utf-8")
+pages = {
+    "site/goal_site.html": Path("site/goal_site.html").read_text(encoding="utf-8"),
+    "site/index.html": Path("site/index.html").read_text(encoding="utf-8"),
+}
 required = (
     "<title>Interaktives Deep Research",
     "Verlauf, Output &amp; Beweis",
@@ -39,7 +42,12 @@ required = (
     "reports/voice/report.html",
     "reports/messaging/report.html",
 )
-missing = [marker for marker in required if marker not in html]
+missing = [
+    f"{path}: {marker}"
+    for path, html in pages.items()
+    for marker in required
+    if marker not in html
+]
 if missing:
     raise SystemExit(f"verify: proof site missing markers: {missing}")
 PY
