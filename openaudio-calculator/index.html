@@ -1,0 +1,125 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OpenAudio S2 Pro (Fish) — Hardware, Kosten & Durchsatz-Kalkulator · Fokus Deutsch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070912;--card:#121627;--card2:#0e1220;--ink:#eef0fa;--muted:#959bbb;--accent:#8a9bff;--accent2:#5ee0c4;--good:#4ade80;--warn:#fbbf24;--bad:#fb7185;--line:#252a45}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(1300px 700px at 78% -12%,#1b2348 0,transparent 55%),#070912;color:var(--ink);font-family:Inter,-apple-system,sans-serif;line-height:1.6}
+.wrap{max-width:1060px;margin:0 auto;padding:38px 22px 110px}
+.kicker{color:var(--accent);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:11.5px}
+h1{font-family:"Space Grotesk";font-size:38px;line-height:1.08;margin:.2em 0;background:linear-gradient(92deg,#fff,#9fb0ff 60%,#5ee0c4);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+h2{font-family:"Space Grotesk";font-size:23px;margin:0 0 .4em;border-left:4px solid var(--accent);padding-left:12px}
+.lead{color:var(--muted);max-width:760px}
+.card{background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--line);border-radius:18px;padding:24px 26px;margin:20px 0;box-shadow:0 14px 40px rgba(0,0,0,.3)}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+th,td{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding:10px 12px;text-align:left}th{background:#1b203a;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+td:last-child,th:last-child{border-right:0}tr:last-child td{border-bottom:0}tbody tr:nth-child(even) td{background:#0c1020}
+strong,b{color:#fff;font-weight:800}.hl{color:#5ee0c4;font-weight:800}.warn{color:#fbbf24;font-weight:700}.bad{color:#fb7185;font-weight:700}
+.presets{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:14px 0}
+.preset{background:#11142a;border:1px solid var(--line);border-radius:14px;padding:14px 16px;cursor:pointer;transition:.15s}
+.preset.active{border-color:var(--accent2);box-shadow:0 0 0 1px var(--accent2) inset;background:#0e1c1f}
+.preset h3{margin:.1em 0;font-family:"Space Grotesk";font-size:16px}.preset .sub{color:var(--muted);font-size:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.slider{margin:16px 0}.slider label{display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px}.slider label b{font-family:"JetBrains Mono";color:var(--accent2)}
+input[type=range]{width:100%;accent-color:#8a9bff;height:6px}
+.out{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.metric{background:#0e1326;border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.metric .v{font-family:"Space Grotesk";font-size:30px;color:var(--accent2);font-weight:700}.metric .l{color:var(--muted);font-size:12.5px}
+.big{grid-column:1/-1;background:linear-gradient(180deg,#0e1c1f,#0c1622);border-color:#1f5048}
+.note{color:var(--muted);font-size:12px}.est{background:#2a2410;color:#fcd34d;border:1px solid #6b5a1f;border-radius:6px;padding:1px 7px;font-size:11px;font-weight:700}
+a{color:var(--accent)}footer{color:var(--muted);font-size:12px;text-align:center;margin-top:40px;border-top:1px solid var(--line);padding-top:18px}
+.pill{background:#0f2a1c;color:var(--good);border:1px solid #2f6b46;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:700}
+</style></head><body><div class="wrap">
+<div class="kicker">Open-Source Voice Cloning · Self-Hosting</div>
+<h1>OpenAudio S2 Pro (Fish) — Hardware, Kosten &amp; Durchsatz</h1>
+<div class="lead">Was für Hardware brauchst du, was kostet sie, wie lange dauert eine Generierung — und ein interaktiver <b>Durchsatz-/Kosten-Kalkulator</b> für deine <span class="hl">2× Titan RTX (24 GB)</span> und die <span class="hl">16-Core-VM (24 GB RAM, CPU-only)</span>. <b>Fokus: Deutsch.</b> <span class="pill" id="datastate">✓ kalibriert mit Live-Recherche · Stand Juni 2026</span></div>
+
+<section class="card"><h2>🖥️ Hardware-Anforderungen</h2>
+<table id="hwtable"><thead><tr><th>Aufgabe</th><th>VRAM</th><th>RTF / Speed</th><th>Auf deiner HW</th></tr></thead>
+<tbody>
+<tr><td><b>Inferenz S2-Pro (~5B)</b></td><td>min 12 GB · <b>24 GB empfohlen</b> · ~17 GB real beobachtet</td><td>RTF <b>0,195 (H200)</b> · ~0,14 (4090) · ~0,3–0,4 (3060/Turing)</td><td class="hl">Titan RTX 24 GB: <b>passt</b> (fp16 via <code>--half</code>)</td></tr>
+<tr><td><b>16 GB-Karte unquantisiert</b></td><td class="bad">passt NICHT (Issue #1168)</td><td>—</td><td>NF4 4-bit ≈16 GB / FP8 ≈20 GB <span class="est">est.</span></td></tr>
+<tr><td><b>Fine-Tuning (LoRA r8/α16)</b></td><td>24 GB, via batch/grad-accum einstellbar</td><td>~niedrige einstellige GPU-h (kl. Datensatz) <span class="est">est.</span></td><td class="hl">2× Titan ideal</td></tr>
+<tr><td><b>CPU-only (16C/24 GB)</b></td><td>RAM ~16 GB</td><td id="rtf_cpu" class="bad">~10–50× langsamer als Echtzeit <span class="est">est.</span></td><td class="warn">nur S1-mini (0,5B) praktikabel — <b>S2-Pro nicht</b></td></tr>
+</tbody></table>
+<p class="note" id="hwnote">Quellen: docs.fish.audio (24 GB empf., ~10× <code>--compile</code> auf 4090), HF fishaudio/s2-pro (RTF 0,195 H200, ~100 ms TTFA, 3000+ tok/s), GitHub #1168 (16 GB reicht nicht), emelia.io (Consumer-RTF, Schätzungen). <b>Lizenz:</b> Fish Audio Research License (non-commercial) — laut Vorgabe egal, Hauptsache Open Source.</p></section>
+
+<section class="card"><h2>🎓 Training & Daten · 🌍 Sprachen</h2>
+<div class="grid2">
+<div><h3 style="font-family:Space Grotesk">Voice-Cloning / Training</h3>
+<ul id="trainlist">
+<li><b>Zero-Shot-Klon:</b> <span class="hl">~10–30 s</span> sauberes Referenz-Audio (mehr = besser)</li>
+<li><b>Fine-Tuning (LoRA, rank 8 / alpha 16):</b> reale Referenz = <b>55 h</b> Datensatz, nur <b>7,1 M</b> trainierbare Parameter (von 4,6 B), Fast-AR-only; danach LoRA→Base mergen</li>
+<li><b>GPU-Stunden:</b> kleiner Datensatz ≈ niedrige einstellige GPU-h auf 24 GB <span class="est">Schätzung</span></li>
+<li><b>Pretraining-Kontext:</b> Basismodell auf 2 M+ h Audio</li></ul></div>
+<div><h3 style="font-family:Space Grotesk">Sprachen (80+)</h3>
+<p id="langs"><b>Tier 1:</b> EN · ZH · JA. <b>Tier 2 (inkl. <span class="hl">Deutsch</span>):</b> KO · ES · PT · AR · RU · FR · DE. Long-tail: NL · IT · PL · SV · DA · FI · CS · UK …<br><span class="warn">DE-Hinweis:</span> Deutsch voll unterstützt, Qualität knapp unter Tier-1; <b>Emotions-Steuerung</b> aktuell am stärksten für EN/ZH/JA, in DE noch limitiert.</p></div>
+</div></section>
+
+<section class="card"><h2>🧮 Durchsatz- & Kosten-Kalkulator</h2>
+<div class="presets" id="presets"></div>
+<div class="grid2">
+<div>
+ <div class="slider"><label>Ø Audio-Länge <b><span id="lenv">10</span> s</b></label><input type="range" id="len" min="1" max="60" value="10"></div>
+ <div class="slider"><label>RTF (Generierungszeit ÷ Audiodauer) <b><span id="rtfv">0.25</span>×</b></label><input type="range" id="rtf" min="0.05" max="10" step="0.05" value="0.25"></div>
+ <div class="slider"><label>Parallele Streams / Batch <b><span id="parv">2</span></b></label><input type="range" id="par" min="1" max="8" value="2"></div>
+ <div class="slider"><label>GPU-Anzahl <b><span id="gpuv">2</span></b></label><input type="range" id="gpu" min="1" max="8" value="2"></div>
+ <div class="slider"><label>Betrieb pro Tag <b><span id="hrsv">8</span> h</b></label><input type="range" id="hrs" min="1" max="24" value="8"></div>
+ <div class="slider"><label>Strompreis <b><span id="elev">0.30</span> €/kWh</b></label><input type="range" id="ele" min="0.10" max="0.60" step="0.01" value="0.30"></div>
+ <div class="slider"><label>Leistung je GPU <b><span id="powv">280</span> W</b></label><input type="range" id="pow" min="50" max="450" step="10" value="280"></div>
+</div>
+<div class="out">
+ <div class="metric"><div class="v" id="o_clip">–</div><div class="l">Generierungszeit / Clip</div></div>
+ <div class="metric"><div class="v" id="o_min">–</div><div class="l">Audios / Minute (gesamt)</div></div>
+ <div class="metric"><div class="v" id="o_hr">–</div><div class="l">Audios / Stunde (gesamt)</div></div>
+ <div class="metric"><div class="v" id="o_day">–</div><div class="l">Audios / Tag (bei Betrieb)</div></div>
+ <div class="metric"><div class="v" id="o_audioh">–</div><div class="l">Stunden Audio / Tag</div></div>
+ <div class="metric"><div class="v" id="o_cost1k">–</div><div class="l">Stromkosten / 1000 Audios</div></div>
+ <div class="metric big"><div class="v" id="o_perg">–</div><div class="l">Audios / Stunde <b>pro Titan</b> · Tageskosten Strom: <span id="o_daycost">–</span></div></div>
+</div></div>
+<p class="note">Modell: Durchsatz = Parallelität ÷ (Audiolänge × RTF) Clips/s je GPU, × GPU-Anzahl. Strom = GPU-Anzahl × Watt × Stunden × €/kWh. RTF/Watt aus den Presets (deine HW) — alles per Slider überschreibbar.</p>
+</section>
+
+<footer>Open-Source · Lizenz egal (Hauptsache OSS) · Fokus Deutsch · generiert <span id="now"></span> · Teil von <a href="http://100.120.120.120:5181/">interactive-deep-research</a></footer>
+</div>
+<script>
+// HW-Presets (RTF/Watt) — werden mit Recherche-Zahlen kalibriert
+const PRESETS=[
+ {id:"titan1",name:"1× Titan RTX",sub:"24 GB · fp16 (--half)",rtf:0.30,gpu:1,pow:280,par:2},
+ {id:"titan2",name:"2× Titan RTX",sub:"2×24 GB · deine HW",rtf:0.30,gpu:2,pow:280,par:2},
+ {id:"titan2c",name:"2× Titan + sglang/--compile",sub:"~10× schneller",rtf:0.04,gpu:2,pow:300,par:3},
+ {id:"cpuvm",name:"16-Core CPU-VM",sub:"24 GB · CPU · nur S1-mini",rtf:20,gpu:1,pow:150,par:1},
+];
+const $=id=>document.getElementById(id);
+const ids=["len","rtf","par","gpu","hrs","ele","pow"];
+function setPreset(p){ $("rtf").value=p.rtf; $("gpu").value=p.gpu; $("pow").value=p.pow; $("par").value=p.par;
+  document.querySelectorAll(".preset").forEach(e=>e.classList.toggle("active",e.dataset.id===p.id)); calc(); }
+function fmt(n){ if(!isFinite(n))return "–"; if(n>=1000)return Math.round(n).toLocaleString("de-DE"); if(n>=10)return n.toFixed(0); if(n>=1)return n.toFixed(1); return n.toFixed(2);}
+function calc(){
+ const len=+$("len").value, rtf=+$("rtf").value, par=+$("par").value, gpu=+$("gpu").value, hrs=+$("hrs").value, ele=+$("ele").value, pow=+$("pow").value;
+ ["len","rtf","par","gpu","hrs","ele","pow"].forEach(k=>$(k+"v").textContent = (k==="rtf"?(+$(k).value).toFixed(2):(k==="ele"?(+$(k).value).toFixed(2):$(k).value)));
+ const genClip = len*rtf/par;              // s pro Clip (mit Batch)
+ const perGpuPerSec = par/(len*rtf);       // Clips/s je GPU
+ const totPerSec = perGpuPerSec*gpu;
+ const perMin=totPerSec*60, perHr=totPerSec*3600, perDay=perHr*hrs;
+ const audioHrPerDay=perDay*len/3600;
+ const kW=gpu*pow/1000, costHr=kW*ele, cost1k=perHr>0?(1000/perHr)*costHr:0, dayCost=costHr*hrs;
+ const perGpuHr=perHr/gpu;
+ $("o_clip").textContent=fmt(genClip)+" s";
+ $("o_min").textContent=fmt(perMin);
+ $("o_hr").textContent=fmt(perHr);
+ $("o_day").textContent=fmt(perDay);
+ $("o_audioh").textContent=fmt(audioHrPerDay)+" h";
+ $("o_cost1k").textContent=cost1k.toFixed(2)+" €";
+ $("o_perg").textContent=fmt(perGpuHr)+" / h";
+ $("o_daycost").textContent=dayCost.toFixed(2)+" €";
+}
+const pc=$("presets");
+PRESETS.forEach(p=>{const d=document.createElement("div");d.className="preset";d.dataset.id=p.id;
+ d.innerHTML=`<h3>${p.name}</h3><div class="sub">${p.sub}</div><div class="sub">RTF ${p.rtf}× · ${p.pow} W</div>`;
+ d.onclick=()=>setPreset(p);pc.appendChild(d);});
+ids.forEach(k=>$(k).addEventListener("input",calc));
+$("now").textContent=new Date().toISOString().slice(0,10);
+setPreset(PRESETS[1]); // 2× Titan RTX default
+</script></body></html>
