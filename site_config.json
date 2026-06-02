@@ -1,0 +1,60 @@
+{
+  "examples": [
+    {
+      "tag": "Beispiel A · Audio",
+      "title": "Open-Source Voice Cloning — bester DE+EN-Stack",
+      "run_id": "20260602-015821-def4",
+      "verdict": "🏆 Lizenz NICHT ausschlaggebend (Hauptsache Open Source): bester Echtheits-/Emotions-Stack = OpenAudio S1/S2 (Fish-Speech) — #1 auf der TTS-Arena, reichste Emotion-Tags, nativ DE (89,4/100). CosyVoice 3.0 (Apache) = stärkste Alternative + einzige publizierte DE-Head-to-Head. IndexTTS-2 bleibt raus (kein Deutsch).",
+      "status": "✅ 7 Runden · Lizenz-egal-Re-Scoring · Echtheit/Emotion-Benchmarks laufen"
+    },
+    {
+      "tag": "Beispiel B · Existing",
+      "title": "Cross-Channel Messaging-Automation — bester Self-Build-Stack",
+      "run_id": "20260602-015302-149e",
+      "verdict": "🏆 Self-Build: Matrix + Mautrix-Bridges + GoLogin + Claude Computer Use (~$30–60/mo, niedrigstes Bann-Risiko unofficial). Günstigste kommerzielle: Waalaxy; Burner-Rotation: HeyReach; native Multichannel <0.1% Bann: La Growth Machine.",
+      "status": "✅ Deep done · 111 Quellen · Report fertig"
+    }
+  ],
+  "rounds": [
+    {
+      "round": "B·R1",
+      "note": "Plan + Rückfrage beantwortet (Burner + unofficial OSS) → Deep-Pass gestartet."
+    },
+    {
+      "round": "A·R1",
+      "note": "Voice-Cloning-Plan gestartet (XTTS-v2/F5/Fish/StyleTTS2/… DE+EN); Baseline = 5105 B-Seite."
+    },
+    {
+      "round": "A·R1",
+      "note": "agy-Brief: XTTS-v2/F5/Fish/GPT-SoVITS/CosyVoice2/Zonos/Kokoro/MaskGCT/StyleTTS2/Spark/OpenVoice/Orpheus. Rückfrage (RT vs offline) → max Fidelity/offline gewählt."
+    },
+    {
+      "round": "A·R2",
+      "note": "Deutsch-spezifische Evidenz: DE-Benchmarks fehlen fast völlig. Einziges Modell mit publizierter DE-Eval, die XTTS-v2 schlägt = CosyVoice2-EU (hi-paris, Apache-2.0, 1000h DE)."
+    },
+    {
+      "round": "A·R3",
+      "note": "Lizenz-Realität: XTTS-v2 (Coqui tot, CPML), Fish/OpenAudio (NC), F5-DE (CC-BY-NC) sind kommerziell raus. Modern bester DE+EN-Stack: Chatterbox Multilingual (MIT) > CosyVoice2-EU (Apache) > Qwen3-TTS (Apache)."
+    },
+    {
+      "round": "B·R2",
+      "note": "Deep-Pass fertig (deep_ok, 111 Quellen). Vergleichstabelle mit Self-Build vs kommerziell, Bann-Risiken & Preisen erstellt."
+    },
+    {
+      "round": "A·R4",
+      "note": "Adversariale Konvergenz: neue Funde OmniVoice (Apache, SIM-o 0.812) & CosyVoice 3 (Apache) — Upgrades, kein neues Paradigma. KEIN Modell schlägt das Set für DE+EN entscheidend → Beweis erbracht (Konfidenz ~85%)."
+    },
+    {
+      "round": "A·R5 (NotebookLM Deep)",
+      "note": "Echter NotebookLM Deep-Pass (deep_ok, 65 Quellen): unabhängige Engine wählt CosyVoice 3.0 als #1 DE+EN (Apache), Chatterbox ML (MIT) dahinter, Fish S2 Pro non-commercial, XTTS-v2 disqualifiziert. Bestätigt die Web-Runden → cross-engine-Konvergenz."
+    },
+    {
+      "round": "A·R6 (Emotion)",
+      "note": "Emotions-/Expressivitäts-Check: CosyVoice 3 gewinnt für expressives DE-Cloning (instruct + [laughter]/[breath]). SOTA-Emotion-Modell IndexTTS-2 disqualifiziert (kein Deutsch). Bestätigt Gesamtsieger."
+    },
+    {
+      "round": "A·R7 (Lizenz egal)",
+      "note": "User: Lizenz egal, Hauptsache Open Source. Lizenz-Kriterium entfernt + Echtheit/Emotion/Benchmark höher gewichtet → Scorecard kürt OpenAudio S1/S2 (Fish, 89,4/100) vor CosyVoice 3.0. Authentizitäts-Benchmark-Deep-Research (SIM-o/MOS/WER/Emotion) zur Verfeinerung gestartet."
+    }
+  ]
+}
