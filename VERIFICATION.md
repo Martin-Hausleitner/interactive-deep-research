@@ -135,6 +135,8 @@ Observed result:
 Remote HEAD: refs/heads/main
 Remote branches: main only
 origin/HEAD -> origin/main
+Branch protection: required status check `test`, strict up-to-date checks,
+force pushes disabled, branch deletion disabled
 ```
 
 Release readiness:
