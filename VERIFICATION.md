@@ -13,8 +13,17 @@ CI-safe suite:
 Observed result:
 
 ```text
-25 passed, 1 deselected
+27 passed, 1 deselected
 verify: ok
+```
+
+GitHub Actions CI:
+
+```text
+Run: 26856120643
+SHA: 0e5af03f1738ab506b1da488f918379dba0c1a8f
+Conclusion: success
+Log evidence: 27 passed, 1 deselected; verify: ok
 ```
 
 Live NotebookLM E2E:
@@ -38,21 +47,21 @@ Proof-site render:
 
 ```bash
 PYTHONDONTWRITEBYTECODE=1 SITE_BUILD_TS="2026-06-03 00:00" python3 site/build_goal_site.py
-cp site/goal_site.html site/index.html
+./scripts/build_pages_artifact.sh _site
 ```
 
 Observed result:
 
 ```text
 SITE .../site/goal_site.html 76580 bytes
+pages artifact: _site
 ```
 
 Browser validation:
 
 ```bash
-python3 -m http.server 5181 --directory site
-playwright screenshot --viewport-size=1440,1200 \
-  http://127.0.0.1:5181/goal_site.html /tmp/idr-proof-site.png
+python3 -m http.server 5191 --directory _site
+Google Chrome --headless --screenshot=/tmp/idr-pages-artifact.png http://127.0.0.1:5191/
 ```
 
 Observed result:
@@ -61,6 +70,26 @@ Observed result:
 title='Interaktives Deep Research — Verlauf, Output & Beweis'
 h1='Verlauf, Output & Beweis'
 hasPipeline=True hasVoice=True hasMessaging=True bodyLength=39189
+```
+
+GitHub Pages remote deployment:
+
+```text
+Run: 26856120640
+SHA: 0e5af03f1738ab506b1da488f918379dba0c1a8f
+URL: https://martin-hausleitner.github.io/interactive-deep-research/
+Conclusion: success
+Artifact: index.html, goal_site.html, reports/, audio/, openaudio-calculator/
+```
+
+Remote validation:
+
+```text
+HTTP 200
+title='Interaktives Deep Research — Verlauf, Output & Beweis'
+hasPipeline=True hasVoice=True hasMessaging=True
+reports/voice/report.html HTTP 200
+screenshot=/tmp/idr-pages-remote.png
 ```
 
 Repository hygiene:
@@ -76,18 +105,18 @@ Public hygiene:
 
 Observed result: no private host/IP, local-path, account, or local-file URL hits
 and no common token-shaped secret hits in README, docs, skills, tests, reports,
-proof-site files, or CI config.
+proof-site files, scorecard data, scripts, or CI config.
 
-GitHub branch:
+GitHub repository:
 
 ```bash
-gh repo view Martin-Hausleitner/interactive-deep-research --json defaultBranchRef,nameWithOwner,isPrivate
+gh repo view Martin-Hausleitner/interactive-deep-research --json defaultBranchRef,nameWithOwner,isPrivate,visibility,homepageUrl
 ```
 
 Observed result:
 
 ```json
-{"defaultBranchRef":{"name":"main"},"isPrivate":true,"nameWithOwner":"Martin-Hausleitner/interactive-deep-research"}
+{"defaultBranchRef":{"name":"main"},"homepageUrl":"https://martin-hausleitner.github.io/interactive-deep-research/","isPrivate":false,"nameWithOwner":"Martin-Hausleitner/interactive-deep-research","visibility":"PUBLIC"}
 ```
 
 ## Notes
