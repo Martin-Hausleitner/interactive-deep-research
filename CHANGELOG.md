@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- Added CI-safe required-live fail-closed contracts for missing NotebookLM
+  notebook IDs, query failures, deep-pass failures, and deep-pass `--force`
+  startup behavior.
+
 ## v0.1.0 - 2026-06-03
 
 Release readiness verified with:

@@ -158,7 +158,7 @@ def test_release_and_security_docs_are_public_ready():
     verification = read("VERIFICATION.md")
 
     assert "## v0.1.0 - 2026-06-03" in changelog
-    assert "## Unreleased" not in changelog
+    assert changelog.index("## v0.1.0 - 2026-06-03") > changelog.index("## Unreleased")
     assert "Release readiness" in verification
     assert "Target release: v0.1.0" in verification
     assert "private vulnerability reporting" in security

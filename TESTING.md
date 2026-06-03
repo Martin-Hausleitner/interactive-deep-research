@@ -23,6 +23,8 @@ Coverage:
 - `IDR_MOCK=1 idr run` through the `askq` bridge with an isolated answer stub.
 - `nlm query` JSON answer parsing.
 - Notebook ID extraction.
+- Required-live fail-closed behavior for missing NotebookLM notebook IDs, query
+  failures, deep-pass failures, and deep-pass `--force` startup.
 - `askq` non-interactive JSON mode, `ASKQ_ANSWER`, choices, custom logs, and
   no-question usage errors.
 - `scorecard` Markdown, HTML, stdin, malformed JSON, and schema errors.
