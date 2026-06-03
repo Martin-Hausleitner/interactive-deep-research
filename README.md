@@ -4,14 +4,30 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 
-Deterministic, token-frugal deep research with one human clarification step.
-NotebookLM does the heavy research and synthesis; this repository provides the
-local orchestration, question bridge, scorecard utility, packaged skills, and
-self-contained HTML report rendering.
+Interactive Deep Research is a deterministic, token-frugal research pipeline
+with exactly one human clarification step. NotebookLM does the heavy research
+and synthesis; this repository provides the local orchestration, question
+bridge, scorecard utility, packaged skills, proof site, and self-contained HTML
+report rendering.
+
+> **Feature status:** See the [Feature Matrix](docs/FEATURE_MATRIX.md) for the
+> current Done/Ready/Blocked/Planned grid, maturity notes, evidence files, and
+> next steps.
 
 The core idea is simple: keep the orchestrator rigid and cheap, delegate the
 research reasoning to NotebookLM, then render the final report locally with
 0 formatting tokens.
+
+## At A Glance
+
+| What | How it works |
+| --- | --- |
+| Pitch | Run a structured research sprint with one human question, then produce a local `report.html`. |
+| Core loop | `idr plan` creates the run and question; `idr resume` folds in the answer and finishes the report. |
+| Mock path | `IDR_MOCK=1` exercises the full artifact contract without `agy`, NotebookLM, login, or network. |
+| Live path | `nlm` + NotebookLM run the fast and deep passes; `IDR_REQUIRE_LIVE=1` makes proof runs fail closed. |
+| Proof | `reports/voice/`, `reports/messaging/`, and `site/` provide tracked examples and a Pages artifact. |
+| Skills | `interactive-deep-research`, `integrative-deep-research`, `askq`, and `deep-research-scorecard`. |
 
 ## Pipeline
 
@@ -166,6 +182,28 @@ The repository includes two rendered proof examples:
 - Cross-channel messaging stack:
   `reports/messaging/`, scorecard spec `data/messaging_scorecard.json`.
 
+## Mock Vs Live
+
+Use mock mode for CI, documentation checks, local smoke tests, and contributor
+work that should not depend on auth, quota, or the network:
+
+```bash
+IDR_MOCK=1 idr plan "Test topic"
+IDR_MOCK=1 idr resume <run_id> --answer "Self-hosted only."
+```
+
+Use live mode when proving the real NotebookLM path. Required-live mode rejects
+silent fallback behavior, including missing notebook IDs, malformed query JSON,
+and deep-pass failures:
+
+```bash
+IDR_REQUIRE_LIVE=1 idr plan "<small synthetic topic>"
+IDR_REQUIRE_LIVE=1 idr resume <run_id> --answer "<synthetic answer>"
+```
+
+Default verification stays mock-safe. The live E2E is opt-in because it requires
+authenticated `nlm`, network access, and NotebookLM quota.
+
 The proof site generator lives in `site/`:
 
 ```bash
@@ -273,6 +311,8 @@ the run. Tests in this repo avoid the default user log.
 ```text
 interactive-deep-research/
 ├── README.md
+├── docs/
+│   └── FEATURE_MATRIX.md
 ├── install.sh
 ├── scripts/
 │   └── verify.sh
