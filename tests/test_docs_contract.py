@@ -52,6 +52,8 @@ def test_readme_documents_pipeline_and_skill_invocation_with_mermaid():
         "Failure Modes",
         "IDR_REQUIRE_LIVE=1",
         "IDR_MOCK=1",
+        "Current release: `v0.1.0`",
+        "git checkout v0.1.0",
     ):
         assert phrase in text
 
@@ -146,6 +148,24 @@ def test_pages_workflow_builds_and_deploys_proof_site_artifact():
         "site/audio",
     ):
         assert public_path in build_script
+
+
+def test_release_and_security_docs_are_public_ready():
+    changelog = read("CHANGELOG.md")
+    security = read("SECURITY.md")
+    contributing = read("CONTRIBUTING.md")
+    goal = read("GOAL.md")
+    verification = read("VERIFICATION.md")
+
+    assert "## v0.1.0 - 2026-06-03" in changelog
+    assert "## Unreleased" not in changelog
+    assert "Release readiness" in verification
+    assert "Target release: v0.1.0" in verification
+    assert "private vulnerability reporting" in security
+    assert "Responsible Use" in security
+    assert "SECURITY.md" in contributing
+    assert "v0.1.0 Release Goal" in goal
+    assert "Status: achieved" in goal
 
 
 def test_layout_has_no_tracked_root_site_duplicates_or_bytecode():

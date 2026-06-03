@@ -137,6 +137,15 @@ Remote branches: main only
 origin/HEAD -> origin/main
 ```
 
+Release readiness:
+
+```text
+Target release: v0.1.0
+Status: ready to tag after this ledger update lands on main and CI/Pages pass
+Release basis: public repository, default branch main, live E2E pass, CI pass,
+Pages pass, remote proof-site HTTP 200, and public-artifact hygiene pass
+```
+
 ## Notes
 
 - The live E2E is opt-in and intentionally excluded from default CI.

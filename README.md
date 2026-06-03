@@ -73,6 +73,19 @@ Install the packaged skills and CLI symlinks:
 By default this copies skills to `~/.claude/skills` and links drivers into
 `~/.local/bin`. Override with `CLAUDE_SKILLS_DIR` or `BIN_DIR` if needed.
 
+Current release: `v0.1.0`. This is a source-installed CLI/skill bundle; no
+package-manager distribution is published for `v0.1.0`.
+
+Install the release from source:
+
+```bash
+git clone https://github.com/Martin-Hausleitner/interactive-deep-research.git
+cd interactive-deep-research
+git checkout v0.1.0
+./install.sh
+./scripts/verify.sh
+```
+
 ## Quickstart
 
 Preferred phased flow for agent environments:

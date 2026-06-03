@@ -1,6 +1,15 @@
 # Changelog
 
-## Unreleased
+## v0.1.0 - 2026-06-03
+
+Release readiness verified with:
+
+- Public GitHub repository with default branch `main`.
+- GitHub Pages proof site deployed from `main`.
+- CI-safe verifier passing on `main`.
+- Opt-in live NotebookLM E2E passing on `main` with `IDR_REQUIRE_LIVE=1`.
+- No tracked or local Python bytecode, root proof-site duplicates, private
+  machine markers, or common token-shaped secrets in public artifacts.
 
 - Added `scripts/verify.sh` as the one-command local/CI verifier for syntax,
   non-live tests, deterministic proof-site rendering, layout/bytecode hygiene,

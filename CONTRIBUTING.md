@@ -33,6 +33,10 @@ IDR_LIVE_E2E=1 pytest -m live tests/test_live_idr_e2e.py
 
 - Do not commit `__pycache__`, `.pyc`, local run directories, logs, browser
   profiles, credentials, or personal notes.
+- Do not open public issues for vulnerabilities, leaked-sensitive-data findings,
+  or credentials. Use the private security reporting path in `SECURITY.md`.
+- Do not use IDR outputs or proof examples to violate platform terms, privacy
+  law, anti-abuse controls, or consent boundaries.
 - Keep proof-site build inputs under `site/`; do not reintroduce root duplicates.
 - For changes under `site/`, `reports/`, or public examples, rebuild the proof
   site, run `./scripts/build_pages_artifact.sh _site`, and include local plus
