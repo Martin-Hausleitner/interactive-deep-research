@@ -75,7 +75,8 @@ Observed result: no tracked bytecode, no local bytecode, and no root-level proof
 Public hygiene:
 
 Observed result: no private host/IP, local-path, account, or local-file URL hits
-in README, docs, skills, tests, reports, proof-site files, or CI config.
+and no common token-shaped secret hits in README, docs, skills, tests, reports,
+proof-site files, or CI config.
 
 GitHub branch:
 

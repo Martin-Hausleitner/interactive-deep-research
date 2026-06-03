@@ -5,6 +5,8 @@
 - Added `scripts/verify.sh` as the one-command local/CI verifier for syntax,
   non-live tests, deterministic proof-site rendering, layout/bytecode hygiene,
   whitespace checks, and public-artifact private-marker scans.
+- Extended `scripts/verify.sh` with common token-shape checks for public
+  artifacts.
 - Removed duplicated proof-site inputs from the repository root; `site/` is the
   canonical source for proof-site build data.
 - Removed tracked Python bytecode artifacts from the Git index.

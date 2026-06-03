@@ -163,7 +163,8 @@ Mock and CI-safe verification:
 ```
 
 This runs syntax checks, the non-live pytest suite, deterministic proof-site
-rendering, whitespace checks, layout/bytecode hygiene, and private-marker scans.
+rendering, whitespace checks, layout/bytecode hygiene, private-marker scans, and
+common token-shape checks.
 
 Opt-in live NotebookLM E2E verification, which spends quota and requires an
 authenticated `nlm` CLI:

@@ -89,6 +89,12 @@ def test_verify_script_is_documented_and_used_by_ci():
     assert "git diff --check" in script_text
     assert "local Python bytecode artifacts" in script_text
     assert "private machine marker" in script_text
+    assert "secret_patterns" in script_text
+    assert "possible secret token" in script_text
+    assert "grep -n -E" in script_text
+    assert "sk-" in script_text
+    assert "ghp_" in script_text
+    assert '"AK""IA' in script_text
     assert "grep" in script_text
     assert " rg " not in script_text
 

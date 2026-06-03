@@ -10,7 +10,11 @@ Keep changes deterministic, testable, and free of personal data.
 ```
 
 Run the verifier before opening a PR. It mirrors default CI and also checks
-layout, proof-site determinism, bytecode hygiene, and private machine markers.
+layout, proof-site determinism, bytecode hygiene, private machine markers, and
+common token-shaped secrets.
+
+The built-in checks are repo hygiene gates, not a full DLP system. Run your
+normal secret scanner before publishing security-sensitive changes.
 
 Use `IDR_MOCK=1` for normal development:
 

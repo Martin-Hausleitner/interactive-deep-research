@@ -14,7 +14,8 @@ The repository has two test tiers:
 The verifier runs syntax checks, `PYTHONDONTWRITEBYTECODE=1 pytest -p
 no:cacheprovider -m "not live"`, deterministic proof-site rendering with a fixed
 `SITE_BUILD_TS`, `git diff --check`, layout dedupe checks, local/tracked bytecode
-checks, and private machine marker scans. Default CI calls the same script.
+checks, private machine marker scans, and common token-shape checks. Default CI
+calls the same script.
 
 Coverage:
 
@@ -29,7 +30,7 @@ Coverage:
 - Proof-site rebuild from tracked repo artifacts.
 - README/Skill documentation contract: Mermaid pipeline + skill invocation,
   privacy/failure-mode sections, install coverage, layout dedupe, and no private
-  machine markers in public artifacts.
+  machine markers or common token-shaped secrets in public artifacts.
 - CI workflow contract: GitHub-owned actions must use Node-24-ready major
   versions so default CI stays ahead of hosted-runner deprecations.
 

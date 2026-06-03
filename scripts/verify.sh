@@ -82,18 +82,35 @@ private_markers=(
   "tail""net"
 )
 
+secret_patterns=(
+  "sk-"'[A-Za-z0-9_-]{20,}'
+  "ghp_"'[A-Za-z0-9_]{20,}'
+  "AK""IA[0-9A-Z]{16}"
+)
+
+public_files() {
+  find README.md TESTING.md VERIFICATION.md CONTRIBUTING.md GOAL.md CHANGELOG.md \
+    .github skills tests reports site openaudio-calculator scripts \
+    \( -path 'site/audio/*' -o -name '*.wav' -o -name '*.flac' -o -name '*.mp3' -o -name '*.aac' \) -prune \
+    -o -type f -print0
+}
+
 for marker in "${private_markers[@]}"; do
   while IFS= read -r -d '' file; do
     if grep -n -F "$marker" "$file"; then
       echo "verify: private machine marker found in public artifacts" >&2
       exit 1
     fi
-  done < <(
-    find README.md TESTING.md VERIFICATION.md CONTRIBUTING.md GOAL.md CHANGELOG.md \
-      .github skills tests reports site openaudio-calculator scripts \
-      \( -path 'site/audio/*' -o -name '*.wav' -o -name '*.flac' -o -name '*.mp3' -o -name '*.aac' \) -prune \
-      -o -type f -print0
-  )
+  done < <(public_files)
+done
+
+for pattern in "${secret_patterns[@]}"; do
+  while IFS= read -r -d '' file; do
+    if grep -n -E "$pattern" "$file"; then
+      echo "verify: possible secret token found in public artifacts" >&2
+      exit 1
+    fi
+  done < <(public_files)
 done
 
 echo "verify: ok"
