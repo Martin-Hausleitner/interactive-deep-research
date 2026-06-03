@@ -130,6 +130,7 @@ def test_pages_workflow_builds_and_deploys_proof_site_artifact():
     assert "url: ${{ steps.deployment.outputs.page_url }}" in pages
     assert "./scripts/build_pages_artifact.sh _site" in pages
     assert "actions/configure-pages@v6" in pages
+    assert "enablement: true" in pages
     assert "actions/upload-pages-artifact@v5" in pages
     assert "path: _site" in pages
     assert "actions/deploy-pages@v5" in pages
