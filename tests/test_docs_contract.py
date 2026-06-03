@@ -117,6 +117,36 @@ def test_ci_uses_node24_ready_github_actions():
         assert int(match.group(1)) >= 6
 
 
+def test_pages_workflow_builds_and_deploys_proof_site_artifact():
+    pages = read(".github/workflows/pages.yml")
+    build_script = read("scripts/build_pages_artifact.sh")
+    verify = read("scripts/verify.sh")
+
+    assert "branches: [main]" in pages
+    assert "contents: read" in pages
+    assert "pages: write" in pages
+    assert "id-token: write" in pages
+    assert "name: github-pages" in pages
+    assert "url: ${{ steps.deployment.outputs.page_url }}" in pages
+    assert "./scripts/build_pages_artifact.sh _site" in pages
+    assert "actions/configure-pages@v6" in pages
+    assert "actions/upload-pages-artifact@v5" in pages
+    assert "path: _site" in pages
+    assert "actions/deploy-pages@v5" in pages
+    assert "scripts/build_pages_artifact.sh" in verify
+    assert "pages/reports/voice/report.html" in verify
+    assert "pages/openaudio-calculator/index.html" in verify
+
+    for public_path in (
+        "site/index.html",
+        "site/goal_site.html",
+        "reports",
+        "openaudio-calculator",
+        "site/audio",
+    ):
+        assert public_path in build_script
+
+
 def test_layout_has_no_tracked_root_site_duplicates_or_bytecode():
     tracked = subprocess_git_ls_files()
     forbidden_roots = {

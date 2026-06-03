@@ -147,6 +147,12 @@ python3 site/build_goal_site.py
 open site/goal_site.html
 ```
 
+Live proof site after Pages deploy:
+
+```text
+https://martin-hausleitner.github.io/interactive-deep-research/
+```
+
 Serve the proof site locally:
 
 ```bash
@@ -180,10 +186,18 @@ python3 site/build_goal_site.py
 python3 -m http.server 5181 --directory site
 ```
 
+Build the exact GitHub Pages upload artifact:
+
+```bash
+./scripts/build_pages_artifact.sh _site
+```
+
 Expected artifacts:
 
 - `~/.local/share/idr/runs/<run_id>/report.html` for live or mock `idr` runs.
 - `site/goal_site.html` for the local proof site.
+- `_site/index.html` plus `_site/reports/`, `_site/audio/`, and
+  `_site/openaudio-calculator/` for the Pages artifact.
 - `reports/voice/report.html` and `reports/messaging/report.html` as worked examples.
 
 See [TESTING.md](TESTING.md) for the full test matrix and live-run safety notes,

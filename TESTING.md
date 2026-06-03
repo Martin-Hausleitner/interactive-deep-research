@@ -81,3 +81,29 @@ http://127.0.0.1:5181/goal_site.html
 
 The title must be `Interaktives Deep Research — Verlauf, Output & Beweis`, and
 the page should show both worked examples plus the Pipeline-Flow section.
+
+Exact Pages artifact:
+
+```bash
+./scripts/build_pages_artifact.sh _site
+python3 -m http.server 5181 --directory _site
+```
+
+Then open:
+
+```text
+http://127.0.0.1:5181/
+```
+
+Expected: HTTP 200, the same proof-site title, both worked examples, the
+Pipeline-Flow section, `reports/voice/report.html`,
+`reports/messaging/report.html`, `audio/`, and `openaudio-calculator/`.
+
+After GitHub Pages deploys, verify the published URL:
+
+```text
+https://martin-hausleitner.github.io/interactive-deep-research/
+```
+
+Expected: HTTP 200, title `Interaktives Deep Research — Verlauf, Output &
+Beweis`, both worked examples, and the Pipeline-Flow section.

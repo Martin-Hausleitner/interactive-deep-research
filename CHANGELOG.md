@@ -5,6 +5,8 @@
 - Added `scripts/verify.sh` as the one-command local/CI verifier for syntax,
   non-live tests, deterministic proof-site rendering, layout/bytecode hygiene,
   whitespace checks, and public-artifact private-marker scans.
+- Added a GitHub Pages deploy workflow and reusable Pages artifact builder for
+  the proof site, reports, audio examples, and OpenAudio calculator.
 - Extended `scripts/verify.sh` with common token-shape checks for public
   artifacts.
 - Removed duplicated proof-site inputs from the repository root; `site/` is the

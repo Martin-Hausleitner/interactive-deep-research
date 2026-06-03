@@ -274,6 +274,8 @@ footer{{color:var(--muted);font-size:12.5px;text-align:center;margin-top:48px;pa
 </div></body></html>"""
     out = os.path.join(GOAL, "goal_site.html")
     open(out, "w", encoding="utf-8").write(page)
+    index = os.path.join(GOAL, "index.html")
+    open(index, "w", encoding="utf-8").write(page)
     print("SITE", out, len(page), "bytes")
 
 if __name__ == "__main__":

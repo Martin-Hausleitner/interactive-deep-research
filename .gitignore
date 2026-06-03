@@ -9,6 +9,7 @@ cache/
 *.log
 *.err
 *.out
+_site/
 
 # OS
 .DS_Store

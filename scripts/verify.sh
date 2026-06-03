@@ -20,11 +20,18 @@ PYTHONPYCACHEPREFIX="$tmp_pycache" python3 -B -m py_compile \
   site/build_goal_site.py \
   site/build_audios.py
 
+bash -n scripts/verify.sh scripts/build_pages_artifact.sh
+
 pytest -p no:cacheprovider -m "not live"
 
 python3 site/build_goal_site.py
 test -s site/goal_site.html
 test -s site/index.html
+scripts/build_pages_artifact.sh "$tmp_pycache/pages"
+test -s "$tmp_pycache/pages/index.html"
+test -s "$tmp_pycache/pages/reports/voice/report.html"
+test -s "$tmp_pycache/pages/reports/messaging/report.html"
+test -s "$tmp_pycache/pages/openaudio-calculator/index.html"
 
 python3 - <<'PY'
 from pathlib import Path

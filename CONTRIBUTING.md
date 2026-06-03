@@ -34,6 +34,9 @@ IDR_LIVE_E2E=1 pytest -m live tests/test_live_idr_e2e.py
 - Do not commit `__pycache__`, `.pyc`, local run directories, logs, browser
   profiles, credentials, or personal notes.
 - Keep proof-site build inputs under `site/`; do not reintroduce root duplicates.
+- For changes under `site/`, `reports/`, or public examples, rebuild the proof
+  site, run `./scripts/build_pages_artifact.sh _site`, and include local plus
+  remote Pages verification evidence after merge.
 - Keep `idr` output JSON stable unless README, tests, and skill docs are updated
   in the same change.
 - Prefer `IDR_RUNS_DIR` in tests so local user state is not mutated.

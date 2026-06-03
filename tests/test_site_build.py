@@ -20,8 +20,10 @@ def test_proof_site_builds_from_repo_artifacts():
     )
     assert "SITE" in result.stdout
     page = ROOT / "site" / "goal_site.html"
+    index = ROOT / "site" / "index.html"
     html = page.read_text(encoding="utf-8")
     assert "<title>Interaktives Deep Research" in html
     assert "Voice Cloning" in html
     assert "Cross-Channel Messaging" in html
     assert "Pipeline-Flow" in html
+    assert index.read_text(encoding="utf-8") == html
