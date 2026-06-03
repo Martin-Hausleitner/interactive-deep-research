@@ -45,6 +45,8 @@ def test_live_notebooklm_plan_resume_report(tmp_path):
     plan_payload = json.loads(plan.stdout)
     assert plan_payload["notebook_id"]
     assert plan_payload["question"].strip().endswith("?")
+    run_dir = Path(plan_payload["rundir"])
+    assert run_dir.is_dir()
 
     resume = subprocess.run(
         [sys.executable, str(IDR), "resume", plan_payload["run_id"], "--answer", answer],
@@ -56,8 +58,22 @@ def test_live_notebooklm_plan_resume_report(tmp_path):
         check=True,
     )
     resume_payload = json.loads(resume.stdout)
+    assert resume_payload["notebook_id"] == plan_payload["notebook_id"]
+
     report = Path(resume_payload["report"])
     assert report.exists()
+    assert report.parent == run_dir
+
+    state = json.loads((run_dir / "state.json").read_text(encoding="utf-8"))
+    assert state["phase"] == "done"
+    assert state["mock"] is False
+    assert state["notebook_id"] == plan_payload["notebook_id"]
+    assert state["deep"]["ok"] is True
+    for key in ("overview", "comparison", "recommendation"):
+        content_path = run_dir / "content" / f"{key}.md"
+        assert content_path.exists()
+        assert content_path.read_text(encoding="utf-8").strip()
+
     html = report.read_text(encoding="utf-8")
     assert topic in html
     assert "Overview" in html

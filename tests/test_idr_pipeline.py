@@ -18,11 +18,13 @@ def load_idr():
     return module
 
 
-def run_idr(args, tmp_path):
+def run_idr(args, tmp_path, extra_env=None):
     env = os.environ.copy()
     env["IDR_MOCK"] = "1"
     env["IDR_RUNS_DIR"] = str(tmp_path / "runs")
     env["PYTHONDONTWRITEBYTECODE"] = "1"
+    if extra_env:
+        env.update(extra_env)
     return subprocess.run(
         [sys.executable, str(IDR_PATH), *args],
         cwd=ROOT,
@@ -93,6 +95,36 @@ def test_mock_plan_resume_report_e2e(tmp_path):
     assert state["mock"] is True
     for key in ("overview", "comparison", "recommendation"):
         assert (Path(plan["rundir"]) / "content" / f"{key}.md").exists()
+
+
+def test_run_command_uses_askq_bridge_and_generates_report(tmp_path):
+    askq_stub = tmp_path / "askq_stub.py"
+    askq_stub.write_text(
+        "import json\n"
+        "import sys\n"
+        "assert sys.argv[1].endswith('?')\n"
+        "assert '--context' in sys.argv\n"
+        "print(json.dumps({'answer': 'Prefer deterministic OSS evidence.'}))\n",
+        encoding="utf-8",
+    )
+    askq_stub.chmod(0o755)
+
+    result = json.loads(
+        run_idr(
+            ["run", "Full mock run through the askq bridge"],
+            tmp_path,
+            {"ASKQ_SCRIPT": str(askq_stub)},
+        ).stdout
+    )
+
+    report = Path(result["report"])
+    assert report.exists()
+    state = json.loads((report.parent / "state.json").read_text(encoding="utf-8"))
+    assert state["phase"] == "done"
+    assert state["answer"] == "Prefer deterministic OSS evidence."
+    html = report.read_text(encoding="utf-8")
+    assert "Full mock run through the askq bridge" in html
+    assert "Prefer deterministic OSS evidence." in html
 
 
 def test_report_command_regenerates_existing_run(tmp_path):

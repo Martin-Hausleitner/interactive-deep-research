@@ -22,6 +22,11 @@ PRIVATE_MARKERS = (
     "vc" + "vm",
     "tail" + "net",
 )
+SECRET_PATTERNS = (
+    re.compile("sk-" + r"[A-Za-z0-9_-]{20,}"),
+    re.compile("ghp_" + r"[A-Za-z0-9_]{20,}"),
+    re.compile("AK" + "IA" + r"[0-9A-Z]{16}"),
+)
 
 
 def read(path: str) -> str:
@@ -135,7 +140,7 @@ def test_proof_site_is_rendered_repo_relative_and_public_safe():
     assert html == index
 
 
-def test_public_artifacts_do_not_contain_private_machine_markers():
+def test_public_artifacts_do_not_contain_private_machine_markers_or_secret_shapes():
     paths = [
         "README.md",
         "TESTING.md",
@@ -143,10 +148,13 @@ def test_public_artifacts_do_not_contain_private_machine_markers():
         "CONTRIBUTING.md",
         "GOAL.md",
         "CHANGELOG.md",
+        "install.sh",
         ".github/workflows/ci.yml",
         "openaudio-calculator/index.html",
     ]
     paths.extend(f"skills/{skill}/SKILL.md" for skill in SKILLS)
+    paths.extend(str(path.relative_to(ROOT)) for path in (ROOT / "data").glob("*.json"))
+    paths.extend(str(path.relative_to(ROOT)) for path in (ROOT / "scripts").glob("*.sh"))
     paths.extend(str(path.relative_to(ROOT)) for path in (ROOT / "tests").glob("*.py"))
     paths.extend(str(path.relative_to(ROOT)) for path in (ROOT / "reports").rglob("*.html"))
     paths.extend(str(path.relative_to(ROOT)) for path in (ROOT / "site").glob("*.html"))
@@ -154,7 +162,9 @@ def test_public_artifacts_do_not_contain_private_machine_markers():
     hits = []
     for path in paths:
         text = read(path)
-        if any(marker in text for marker in PRIVATE_MARKERS):
+        if any(marker in text for marker in PRIVATE_MARKERS) or any(
+            pattern.search(text) for pattern in SECRET_PATTERNS
+        ):
             hits.append(path)
     assert hits == []
 

@@ -20,6 +20,7 @@ calls the same script.
 Coverage:
 
 - `IDR_MOCK=1` plan -> question -> resume -> report.
+- `IDR_MOCK=1 idr run` through the `askq` bridge with an isolated answer stub.
 - `nlm query` JSON answer parsing.
 - Notebook ID extraction.
 - `askq` non-interactive JSON mode, `ASKQ_ANSWER`, choices, custom logs, and
@@ -30,7 +31,8 @@ Coverage:
 - Proof-site rebuild from tracked repo artifacts.
 - README/Skill documentation contract: Mermaid pipeline + skill invocation,
   privacy/failure-mode sections, install coverage, layout dedupe, and no private
-  machine markers or common token-shaped secrets in public artifacts.
+  machine markers or common token-shaped secrets in public artifacts, including
+  scorecard data and install/verification scripts.
 - CI workflow contract: GitHub-owned actions must use Node-24-ready major
   versions so default CI stays ahead of hosted-runner deprecations.
 
@@ -58,7 +60,8 @@ Expected evidence:
 - Test output shows `tests/test_live_idr_e2e.py` passed.
 - The test's temporary run directory contains `state.json`, three
   `content/*.md` files, and `report.html`.
-- `state.json` has `phase: "done"` and a real `notebook_id`.
+- `state.json` has `phase: "done"`, `mock: false`, `deep.ok: true`, and the
+  same real `notebook_id` returned by `idr plan`.
 
 Do not enable live E2E in default CI unless credentials and quotas are explicitly
 provisioned.

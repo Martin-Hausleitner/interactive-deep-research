@@ -90,7 +90,7 @@ secret_patterns=(
 
 public_files() {
   find README.md TESTING.md VERIFICATION.md CONTRIBUTING.md GOAL.md CHANGELOG.md \
-    .github skills tests reports site openaudio-calculator scripts \
+    install.sh .github skills tests data reports site openaudio-calculator scripts \
     \( -path 'site/audio/*' -o -name '*.wav' -o -name '*.flac' -o -name '*.mp3' -o -name '*.aac' \) -prune \
     -o -type f -print0
 }

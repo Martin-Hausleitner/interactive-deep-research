@@ -31,6 +31,10 @@
 - Added scorecard spec validation with clean stderr errors and tests.
 - Expanded CI-safe CLI coverage for `askq` env/log behavior, `scorecard`
   stdin and malformed specs, IDR report regeneration, and `install.sh` smoke.
+- Added CI-safe coverage for the successful `idr run` path through the `askq`
+  bridge.
+- Strengthened opt-in live E2E assertions for persisted state, deep-pass status,
+  same-notebook continuity, and non-empty content artifacts.
 - Added documentation and public-artifact contract tests for README Mermaid
   diagrams, packaged-skill docs, layout dedupe, proof-site rendering, and
   private machine marker hygiene.
@@ -38,3 +42,5 @@
   documentation contract test.
 - Removed internal handoff/cache artifacts and private infrastructure references
   from tracked public docs and proof-site outputs.
+- Expanded public-artifact hygiene checks to include scorecard data and
+  install/verification scripts.
