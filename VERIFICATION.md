@@ -20,8 +20,9 @@ verify: ok
 GitHub Actions CI:
 
 ```text
-Run: 26856120643
-SHA: 0e5af03f1738ab506b1da488f918379dba0c1a8f
+Run: 26856251600
+Branch: main
+SHA: de264255019b2e69e14045611c8c60f4ab2ac74f
 Conclusion: success
 Log evidence: 27 passed, 1 deselected; verify: ok
 ```
@@ -32,15 +33,23 @@ Live NotebookLM E2E:
 PYTHONDONTWRITEBYTECODE=1 \
 IDR_LIVE_E2E=1 \
 IDR_REQUIRE_LIVE=1 \
-IDR_LIVE_TOPIC="Compact OSS documentation and E2E test strategy for a deterministic NotebookLM-backed CLI pipeline" \
-IDR_LIVE_ANSWER="Prioritize CI-safe mock tests, one opt-in live NotebookLM test, clear verification docs, and no personal data." \
-pytest -m live tests/test_live_idr_e2e.py -q
+IDR_LIVE_TOPIC="Compact public OSS release checklist for a deterministic NotebookLM-backed CLI pipeline" \
+IDR_LIVE_ANSWER="Prioritize public proof-site evidence, CI-safe mock tests, one live E2E proof, branch hygiene, and no personal data." \
+pytest -q -s -m live tests/test_live_idr_e2e.py --basetemp /tmp/idr-live-current
 ```
 
 Observed result:
 
 ```text
-1 passed in 672.33s (0:11:12)
+Date: 2026-06-03
+Branch: main
+SHA: de264255019b2e69e14045611c8c60f4ab2ac74f
+Run id: 20260603-023238-bb7f
+Notebook ID: bebfe750-5de9-41f5-a707-29a0ed73971d
+State proof: mock=false, phase=done, deep.ok=true, same notebook_id from plan/resume
+Artifacts: state.json, content/overview.md, content/comparison.md, content/recommendation.md, report.html
+Content sizes: overview=3448 bytes, comparison=3745 bytes, recommendation=2751 bytes, report=15558 bytes
+Test result: 1 passed in 651.95s (0:10:51)
 ```
 
 Proof-site render:
@@ -75,8 +84,9 @@ hasPipeline=True hasVoice=True hasMessaging=True bodyLength=39189
 GitHub Pages remote deployment:
 
 ```text
-Run: 26856120640
-SHA: 0e5af03f1738ab506b1da488f918379dba0c1a8f
+Run: 26856251583
+Branch: main
+SHA: de264255019b2e69e14045611c8c60f4ab2ac74f
 URL: https://martin-hausleitner.github.io/interactive-deep-research/
 Conclusion: success
 Artifact: index.html, goal_site.html, reports/, audio/, openaudio-calculator/
@@ -111,12 +121,20 @@ GitHub repository:
 
 ```bash
 gh repo view Martin-Hausleitner/interactive-deep-research --json defaultBranchRef,nameWithOwner,isPrivate,visibility,homepageUrl
+git ls-remote --heads origin
+git branch -r --verbose
 ```
 
 Observed result:
 
 ```json
 {"defaultBranchRef":{"name":"main"},"homepageUrl":"https://martin-hausleitner.github.io/interactive-deep-research/","isPrivate":false,"nameWithOwner":"Martin-Hausleitner/interactive-deep-research","visibility":"PUBLIC"}
+```
+
+```text
+Remote HEAD: refs/heads/main
+Remote branches: main only
+origin/HEAD -> origin/main
 ```
 
 ## Notes

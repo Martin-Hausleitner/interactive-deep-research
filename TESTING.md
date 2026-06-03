@@ -62,6 +62,10 @@ Expected evidence:
   `content/*.md` files, and `report.html`.
 - `state.json` has `phase: "done"`, `mock: false`, `deep.ok: true`, and the
   same real `notebook_id` returned by `idr plan`.
+- Record the exact git branch and SHA used for the live run.
+- Record that `IDR_REQUIRE_LIVE=1` was set and `IDR_MOCK` was unset.
+- Record the live `run_id`, `notebook_id`, artifact list, content sizes, and
+  report proof in `VERIFICATION.md`.
 
 Do not enable live E2E in default CI unless credentials and quotas are explicitly
 provisioned.
