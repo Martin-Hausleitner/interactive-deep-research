@@ -25,6 +25,10 @@ Coverage:
 - Notebook ID extraction.
 - Required-live fail-closed behavior for missing NotebookLM notebook IDs, query
   failures, deep-pass failures, and deep-pass `--force` startup.
+- Mock E2E state continuity: same notebook handle from plan to resume, persisted
+  content paths, and report regeneration from isolated `IDR_RUNS_DIR` artifacts.
+- `idr run` bridge failure paths for missing `ASKQ_SCRIPT` and malformed
+  non-JSON `askq` stdout.
 - `askq` non-interactive JSON mode, `ASKQ_ANSWER`, choices, custom logs, and
   no-question usage errors.
 - `scorecard` Markdown, HTML, stdin, malformed JSON, and schema errors.
@@ -32,9 +36,9 @@ Coverage:
 - `idr report <run_id>` regeneration from existing run content.
 - Proof-site rebuild from tracked repo artifacts.
 - README/Skill documentation contract: Mermaid pipeline + skill invocation,
-  privacy/failure-mode sections, install coverage, layout dedupe, and no private
-  machine markers or common token-shaped secrets in public artifacts, including
-  scorecard data and install/verification scripts.
+  source-release install notes, privacy/failure-mode sections, install coverage,
+  layout dedupe, and no private machine markers or common token-shaped secrets
+  in public artifacts, including scorecard data and install/verification scripts.
 - CI workflow contract: GitHub-owned actions must use Node-24-ready major
   versions so default CI stays ahead of hosted-runner deprecations.
 

@@ -24,6 +24,8 @@ def test_live_notebooklm_plan_resume_report(tmp_path):
     env["IDR_REQUIRE_LIVE"] = "1"
     env["IDR_RUNS_DIR"] = str(tmp_path / "runs")
     env["PYTHONDONTWRITEBYTECODE"] = "1"
+    assert "IDR_MOCK" not in env
+    assert env["IDR_REQUIRE_LIVE"] == "1"
     topic = os.environ.get(
         "IDR_LIVE_TOPIC",
         "Compact OSS documentation and E2E test strategy for a deterministic NotebookLM-backed CLI pipeline",
@@ -69,12 +71,23 @@ def test_live_notebooklm_plan_resume_report(tmp_path):
     assert state["mock"] is False
     assert state["notebook_id"] == plan_payload["notebook_id"]
     assert state["deep"]["ok"] is True
+    assert state["report"] == str(report)
+    assert state["answer"] == answer
+    assert state["question"] == plan_payload["question"]
     for key in ("overview", "comparison", "recommendation"):
         content_path = run_dir / "content" / f"{key}.md"
         assert content_path.exists()
-        assert content_path.read_text(encoding="utf-8").strip()
+        content = content_path.read_text(encoding="utf-8").strip()
+        assert content
+        assert "nlm query failed" not in content
+        assert "Traceback" not in content
+        assert "mock fallback" not in content
+        assert "##" in content or "|" in content
+        assert state["content"][key] == str(content_path)
 
     html = report.read_text(encoding="utf-8")
     assert topic in html
     assert "Overview" in html
     assert "Recommendation" in html
+    assert "nlm query failed" not in html
+    assert "mock fallback" not in html

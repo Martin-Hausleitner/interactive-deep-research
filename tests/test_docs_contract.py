@@ -33,17 +33,87 @@ def read(path: str) -> str:
     return (ROOT / path).read_text(encoding="utf-8")
 
 
+def section(text: str, heading: str) -> str:
+    pattern = rf"^## {re.escape(heading)}\n(.*?)(?=^## |\Z)"
+    match = re.search(pattern, text, flags=re.DOTALL | re.MULTILINE)
+    assert match is not None
+    return match.group(1)
+
+
+def mermaid_blocks(text: str) -> list[str]:
+    return re.findall(r"```mermaid\n(.*?)\n```", text, flags=re.DOTALL)
+
+
+def assert_ordered(text: str, phrases: tuple[str, ...]) -> None:
+    last = -1
+    for phrase in phrases:
+        idx = text.find(phrase)
+        assert idx > last, phrase
+        last = idx
+
+
 def test_readme_documents_pipeline_and_skill_invocation_with_mermaid():
     text = read("README.md")
-    mermaid_blocks = re.findall(r"```mermaid\n(.*?)\n```", text, flags=re.DOTALL)
-    assert len(mermaid_blocks) >= 2
-    assert any("NotebookLM FAST pass" in block and "report.html" in block for block in mermaid_blocks)
-    assert any(
-        "interactive-deep-research" in block
-        and "integrative-deep-research" in block
-        and "deep-research-scorecard" in block
-        for block in mermaid_blocks
+    assert len(mermaid_blocks(text)) == 2
+
+    pipeline_blocks = mermaid_blocks(section(text, "Pipeline"))
+    assert len(pipeline_blocks) == 1
+    pipeline = pipeline_blocks[0]
+    assert_ordered(
+        pipeline,
+        (
+            "idr plan TOPIC",
+            "agy seed",
+            "NotebookLM FAST pass",
+            "Poll status + import",
+            "ONE clarifying question",
+            "human answer",
+            "idr resume RUN --answer ...",
+            "NotebookLM DEEP pass",
+            "Fixed query angles",
+            "Self-contained report.html",
+        ),
     )
+    for phrase in (
+        "agy seed",
+        "--auto-import source discovery",
+        "Poll status + import",
+        "ONE clarifying question",
+        "returns JSON question",
+        "chat relay for plan/resume",
+        "idr run terminal path",
+        "askq",
+        "NotebookLM DEEP pass",
+        "--force --auto-import",
+        "Fixed query angles",
+        "0 LLM tokens",
+    ):
+        assert phrase in pipeline
+
+    skill_blocks = mermaid_blocks(section(text, "Skills And CLIs"))
+    assert len(skill_blocks) == 1
+    skill_flow = skill_blocks[0]
+    for phrase in (
+        "source release v0.1.0",
+        "./install.sh",
+        "umbrella playbook",
+        "idr plan TOPIC",
+        "JSON run_id + notebook_id + question",
+        "state.json + seed.md",
+        "awaiting answer",
+        "idr resume RUN --answer ...",
+        "content/*.md + report.html",
+        "idr run TOPIC",
+        "terminal path via askq",
+        "idr report RUN",
+        "regenerate report.html",
+        "one-question JSON bridge",
+        "weighted Σ/100 ranking",
+        "~/.local/share/idr/runs/",
+        "~/.askq/history.jsonl",
+        "Markdown or HTML scorecard fragment",
+    ):
+        assert phrase in skill_flow
     for phrase in (
         "Quickstart",
         "proof site",
@@ -68,6 +138,60 @@ def test_packaged_skills_have_oss_documentation_contract():
         assert "## Privacy / No PII" in text
         assert "Failure" in text or "Exit Behavior" in text
         assert "```bash" in text or "```mermaid" in text
+        assert "./install.sh" in text
+        assert "git checkout v0.1.0" in text
+        assert "~/.local/bin" in text
+        assert "CLAUDE_SKILLS_DIR" in text
+        assert "BIN_DIR" in text
+        assert "v0.1.0" in text
+        assert "no package-manager distribution" in text
+        assert "SECURITY.md" in text
+
+
+def test_idr_skill_docs_pin_mock_live_and_output_contracts():
+    interactive = read("skills/interactive-deep-research/SKILL.md")
+    integrative = read("skills/integrative-deep-research/SKILL.md")
+
+    for text in (interactive, integrative):
+        assert "IDR_MOCK=1" in text
+        assert "IDR_REQUIRE_LIVE=1" in text
+        assert "IDR_RUNS_DIR" in text
+        assert "ASKQ_ANSWER" in text
+        assert "idr plan" in text
+        assert "idr resume" in text
+        assert "report.html" in text
+        assert "NotebookLM" in text
+        assert "--force" in text
+
+    assert "stdout" in integrative
+    assert "JSON `{run_id, rundir, notebook_id, question}`" in integrative
+    assert "| `idr run` | JSON `{run_id, report, notebook_id}`" in integrative
+    assert "Do not combine `IDR_REQUIRE_LIVE=1` with `IDR_MOCK=1`" in integrative
+
+
+def test_askq_and_scorecard_skill_docs_cover_cli_flags_and_validation():
+    askq = read("skills/askq/SKILL.md")
+    for phrase in (
+        "--question TEXT",
+        "ASKQ_ANSWER=TEXT",
+        "--choices \"a|b|c\"",
+        "pipe- or comma-separated",
+        "--id ID",
+        "--context TEXT",
+        "--no-log",
+    ):
+        assert phrase in askq
+
+    scorecard = read("skills/deep-research-scorecard/SKILL.md")
+    for phrase in (
+        "`scale` must be numeric and greater than `0`",
+        "criterion keys must be unique",
+        "at least one criterion weight must be positive",
+        "negative weights are rejected",
+        "score keys must match declared criteria",
+        "missing scores are allowed and treated as `0`",
+    ):
+        assert phrase in scorecard
 
 
 def test_install_and_ci_cover_all_packaged_skills():

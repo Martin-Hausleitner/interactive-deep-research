@@ -20,6 +20,21 @@ CLI: `idr` on PATH, or:
 python3 ~/.claude/skills/integrative-deep-research/scripts/idr.py
 ```
 
+Install the full `v0.1.0` source bundle from the repository root:
+
+```bash
+git clone https://github.com/Martin-Hausleitner/interactive-deep-research.git
+cd interactive-deep-research
+git checkout v0.1.0
+./install.sh
+```
+
+The installer copies packaged skills to `~/.claude/skills` and links `idr`,
+`askq`, and `scorecard` into `~/.local/bin` by default. Override with
+`CLAUDE_SKILLS_DIR` or `BIN_DIR` if needed. Use a tagged source checkout for
+reproducible installs; no package-manager distribution is published for
+`v0.1.0`.
+
 Run artifacts live in:
 
 ```text
@@ -31,11 +46,11 @@ Run artifacts live in:
 ```mermaid
 flowchart TD
     A["idr plan TOPIC"] --> B["agy seed"]
-    B --> C["NotebookLM fast pass"]
-    C --> D["status + import"]
-    D --> E["one question"]
+    B --> C["NotebookLM fast pass<br/>--auto-import"]
+    C --> D["status + import<br/>sources available"]
+    D --> E["one question<br/>askq or chat relay"]
     E --> F["idr resume RUN --answer ..."]
-    F --> G["NotebookLM deep pass<br/>same notebook, --force"]
+    F --> G["NotebookLM deep pass<br/>same notebook, --force --auto-import"]
     G --> H["fixed query angles"]
     H --> I["report.html"]
 ```
@@ -80,12 +95,23 @@ IDR_MOCK=1 idr resume <run_id> --answer "self-hosted only"
 
 `--mock` is equivalent for `plan` and `run`.
 
+Live proof mode:
+
+```bash
+IDR_REQUIRE_LIVE=1 idr plan "<small synthetic topic>"
+IDR_REQUIRE_LIVE=1 idr resume <run_id> --answer "<synthetic answer>"
+```
+
+`IDR_REQUIRE_LIVE=1` is for proof runs. It prevents silent degradation to mock
+text when NotebookLM startup, query, or deep research fails.
+
 ## Output Contract
 
 | Command | stdout | Main files |
 | --- | --- | --- |
 | `idr plan` | JSON `{run_id, rundir, notebook_id, question}` | `state.json`, `seed.md`, optional `agy_brief.md` |
 | `idr resume` | JSON `{run_id, report, notebook_id}` | `content/*.md`, `report.html`, updated `state.json` |
+| `idr run` | JSON `{run_id, report, notebook_id}` | same as plan + resume, with `askq` bridge |
 | `idr report` | JSON `{report}` | regenerated `report.html` |
 
 Live verification should set `IDR_REQUIRE_LIVE=1`; this turns missing notebook
@@ -121,6 +147,7 @@ original topic/brief. `nlm` needs an authenticated NotebookLM session for live r
 | `IDR_MOCK=1` | Stub `agy` and NotebookLM; full plan/resume/report flow runs offline. |
 | `IDR_RUNS_DIR=/tmp/idr-runs` | Override the run artifact directory. Use this in tests. |
 | `ASKQ_SCRIPT=/path/to/askq.py` | Override the question bridge used by `idr run`. |
+| `ASKQ_ANSWER=...` | Non-interactive answer inherited by `askq` when `idr run` calls it. |
 | `IDR_REQUIRE_LIVE=1` | Fail closed on live NotebookLM failures instead of falling back to mock text. |
 | `IDR_LIVE_E2E=1` | Used by pytest to enable the opt-in live NotebookLM E2E. |
 | `IDR_LIVE_TOPIC`, `IDR_LIVE_ANSWER` | Override the synthetic live E2E topic/answer. |
@@ -132,6 +159,9 @@ credentials, personal data, private customer material, account IDs, or internal
 hostnames into topics, human answers, NotebookLM notebooks, `askq` logs, run
 state, content files, or rendered reports. If a live run requires sensitive
 context, keep it outside the repository and do not commit the run directory.
+
+For vulnerability reporting and responsible-use boundaries, follow the
+repository `SECURITY.md`.
 
 ## Gotchas
 

@@ -17,10 +17,15 @@ research reasoning to NotebookLM, then render the final report locally with
 
 ```mermaid
 flowchart TD
-    A["agy seed<br/>local scoping brief"] --> B["NotebookLM FAST pass<br/>--auto-import source discovery"]
+    P["idr plan TOPIC"] --> A["agy seed<br/>local scoping brief"]
+    A --> B["NotebookLM FAST pass<br/>--auto-import source discovery"]
     B --> C["Poll status + import<br/>ensure sources landed"]
-    C --> D["ONE clarifying question<br/>askq or chat relay"]
-    D --> E["NotebookLM DEEP pass<br/>--force --auto-import<br/>same notebook, answer as context"]
+    C --> D["ONE clarifying question<br/>returns JSON question"]
+    D --> H["human answer<br/>chat relay for plan/resume"]
+    D -.-> Q["askq<br/>idr run terminal path<br/>JSON question bridge"]
+    Q -.-> H
+    H --> R["idr resume RUN --answer ..."]
+    R --> E["NotebookLM DEEP pass<br/>--force --auto-import<br/>same notebook, answer as context"]
     E --> F["Fixed query angles<br/>overview / comparison table / recommendation"]
     F --> G["Self-contained report.html<br/>local render, Mermaid, 0 LLM tokens"]
 ```
@@ -49,10 +54,18 @@ Why this shape:
 
 ```mermaid
 flowchart LR
-    U["interactive-deep-research<br/>umbrella playbook"] --> I["integrative-deep-research<br/>idr plan/resume/run/report"]
+    X["source release v0.1.0<br/>./install.sh"] --> U["interactive-deep-research<br/>umbrella playbook"]
+    U --> I["integrative-deep-research<br/>idr"]
+    I --> P["idr plan TOPIC<br/>JSON run_id + notebook_id + question"]
+    P --> N["state.json + seed.md<br/>awaiting answer"]
+    N --> R["idr resume RUN --answer ...<br/>content/*.md + report.html"]
+    I --> T["idr run TOPIC<br/>terminal path via askq"]
+    I --> G["idr report RUN<br/>regenerate report.html"]
     U --> A["askq<br/>one-question JSON bridge"]
     U --> S["deep-research-scorecard<br/>weighted Σ/100 ranking"]
-    I --> R["~/.local/share/idr/runs/&lt;run_id&gt;/report.html"]
+    R --> O["~/.local/share/idr/runs/&lt;run_id&gt;/report.html"]
+    G --> O
+    T --> O
     A --> H["~/.askq/history.jsonl"]
     S --> M["Markdown or HTML scorecard fragment"]
 ```

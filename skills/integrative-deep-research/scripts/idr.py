@@ -206,7 +206,10 @@ def _nlm_query(notebook_id: str, prompt: str, mock_text: str) -> str:
         return mock_text
     code, out, err = _run(["nlm", "query", "notebook", notebook_id, prompt], timeout=300)
     if code == 0 and out.strip():
-        return _query_answer(out)
+        answer = _query_answer(out)
+        if _require_live() and answer == out.strip():
+            raise RuntimeError("nlm query returned malformed JSON in required-live mode")
+        return answer
     if _require_live():
         raise RuntimeError(f"nlm query failed in required-live mode: {err.strip()[:240]}")
     return mock_text + f"\n\n> _(nlm query failed: {err.strip()[:160]})_"
@@ -364,9 +367,11 @@ def cmd_run_interactive(topic: str) -> dict:
     if code != 0:
         raise RuntimeError(f"askq failed: {err.strip()[:240] or out.strip()[:240]}")
     try:
-        answer = json.loads(out).get("answer") or topic
+        answer = json.loads(out).get("answer")
     except json.JSONDecodeError:
         raise RuntimeError("could not parse askq JSON output")
+    if not isinstance(answer, str) or not answer.strip():
+        raise RuntimeError("askq JSON output did not contain a non-empty answer")
     return cmd_resume(plan["run_id"], answer)
 
 

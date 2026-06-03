@@ -20,6 +20,20 @@ CLI: `askq` on PATH, or:
 python3 ~/.claude/skills/askq/scripts/askq.py
 ```
 
+Install from the `v0.1.0` source bundle:
+
+```bash
+git clone https://github.com/Martin-Hausleitner/interactive-deep-research.git
+cd interactive-deep-research
+git checkout v0.1.0
+./install.sh
+```
+
+The installer copies this skill to `~/.claude/skills` and links `askq` into
+`~/.local/bin` by default. Override with `CLAUDE_SKILLS_DIR` or `BIN_DIR` if
+needed. There is no package-manager distribution for `v0.1.0`; use the tagged
+source checkout when reproducing a release install.
+
 ## Usage
 
 ```bash
@@ -53,6 +67,9 @@ Do not enter secrets, credentials, personal data, private customer data, or othe
 sensitive content into `askq`. The default history file is intentionally simple
 and local, but it is still persistent.
 
+For vulnerability reporting and responsible-use boundaries, follow the
+repository `SECURITY.md`.
+
 For sensitive or test questions:
 
 ```bash
@@ -65,10 +82,14 @@ rm -f ~/.askq/history.jsonl
 
 | Name | Effect |
 | --- | --- |
+| positional question | The question text. If omitted, use `--question` or stdin first line. |
+| `--question TEXT` | Alternative question text flag. |
 | `--answer TEXT` | Non-interactive answer; returns immediately. |
 | `ASKQ_ANSWER=TEXT` | Env equivalent of `--answer` when the flag is absent. |
-| `--choices "a|b|c"` | Displays options; answer is returned verbatim. |
+| `--choices "a|b|c"` | Displays pipe- or comma-separated options; answer is returned verbatim. |
 | `--timeout N` | Timeout for stdin in pipe/non-TTY mode; exits `2` if exceeded. |
+| `--id ID` | Stable question id; defaults to a random short id. |
+| `--context TEXT` | One-line context shown on stderr above the question. |
 | `--log PATH` | Append JSONL history to a custom file. |
 | `--no-log` | Disable history logging for this question. |
 

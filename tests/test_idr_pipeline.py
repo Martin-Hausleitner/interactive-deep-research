@@ -71,6 +71,7 @@ def test_extract_notebook_id_from_common_shapes():
 def test_mock_plan_resume_report_e2e(tmp_path):
     plan = json.loads(run_idr(["plan", "Test deterministic IDR pipeline"], tmp_path).stdout)
     assert plan["run_id"]
+    assert plan["notebook_id"].startswith("mock-nb-")
     assert plan["question"].endswith("?")
     assert Path(plan["rundir"]).is_dir()
 
@@ -85,6 +86,7 @@ def test_mock_plan_resume_report_e2e(tmp_path):
             tmp_path,
         ).stdout
     )
+    assert resume["notebook_id"] == plan["notebook_id"]
     report = Path(resume["report"])
     assert report.exists()
     html = report.read_text(encoding="utf-8")
@@ -95,8 +97,12 @@ def test_mock_plan_resume_report_e2e(tmp_path):
     state = json.loads((Path(plan["rundir"]) / "state.json").read_text(encoding="utf-8"))
     assert state["phase"] == "done"
     assert state["mock"] is True
+    assert state["notebook_id"] == plan["notebook_id"]
+    assert state["report"] == str(report)
     for key in ("overview", "comparison", "recommendation"):
-        assert (Path(plan["rundir"]) / "content" / f"{key}.md").exists()
+        content_path = Path(plan["rundir"]) / "content" / f"{key}.md"
+        assert content_path.exists()
+        assert state["content"][key] == str(content_path)
 
 
 def test_run_command_uses_askq_bridge_and_generates_report(tmp_path):
@@ -192,6 +198,38 @@ def test_required_live_query_failure_does_not_fallback(monkeypatch):
         idr._nlm_query("notebook-id", "prompt", "mock fallback")
 
 
+def test_required_live_rejects_malformed_query_stdout(monkeypatch):
+    idr = load_idr()
+    monkeypatch.delenv("IDR_MOCK", raising=False)
+    monkeypatch.setenv("IDR_REQUIRE_LIVE", "1")
+    monkeypatch.setattr(idr, "_run", lambda cmd, timeout=300: (0, "not json", ""))
+
+    with pytest.raises(RuntimeError, match="malformed JSON"):
+        idr._nlm_query("notebook-id", "prompt", "mock fallback")
+
+
+def test_required_live_rejects_query_json_without_answer(monkeypatch):
+    idr = load_idr()
+    monkeypatch.delenv("IDR_MOCK", raising=False)
+    monkeypatch.setenv("IDR_REQUIRE_LIVE", "1")
+    monkeypatch.setattr(idr, "_run", lambda cmd, timeout=300: (0, "{}", ""))
+
+    with pytest.raises(RuntimeError, match="malformed JSON"):
+        idr._nlm_query("notebook-id", "prompt", "mock fallback")
+
+
+def test_non_required_live_query_failure_records_mock_fallback(monkeypatch):
+    idr = load_idr()
+    monkeypatch.delenv("IDR_MOCK", raising=False)
+    monkeypatch.delenv("IDR_REQUIRE_LIVE", raising=False)
+    monkeypatch.setattr(idr, "_run", lambda cmd, timeout=300: (1, "", "temporary query failure"))
+
+    answer = idr._nlm_query("notebook-id", "prompt", "mock fallback")
+
+    assert answer.startswith("mock fallback")
+    assert "nlm query failed: temporary query failure" in answer
+
+
 def test_required_live_rejects_deep_failure(tmp_path, monkeypatch):
     idr = load_idr()
     idr.RUNS_DIR = str(tmp_path / "runs")
@@ -244,6 +282,29 @@ def test_deep_research_imports_then_starts_with_force(monkeypatch):
     assert "--force" in start_cmd
 
 
+def test_deep_research_retries_start_once_after_transient_failure(monkeypatch):
+    idr = load_idr()
+    monkeypatch.delenv("IDR_MOCK", raising=False)
+    calls = []
+
+    def fake_run(cmd, timeout=600):
+        calls.append(cmd)
+        if cmd[:3] == ["nlm", "research", "import"]:
+            return 0, "imported", ""
+        if len([call for call in calls if call[:3] == ["nlm", "research", "start"]]) == 1:
+            return 1, "", "read operation timed out"
+        return 0, "started", ""
+
+    monkeypatch.setattr(idr, "_run", fake_run)
+    result = idr._nlm_deep_research("query", "notebook-id")
+
+    starts = [call for call in calls if call[:3] == ["nlm", "research", "start"]]
+    assert result["ok"] is True
+    assert [attempt["code"] for attempt in result["attempts"]] == [1, 0]
+    assert len(starts) == 2
+    assert all("--force" in call for call in starts)
+
+
 def test_run_fails_when_askq_script_missing(tmp_path):
     result = run_idr_no_check(
         ["run", "test topic"],
@@ -252,3 +313,54 @@ def test_run_fails_when_askq_script_missing(tmp_path):
     )
     assert result.returncode == 1
     assert "askq failed" in result.stderr
+
+
+def test_run_fails_when_askq_outputs_invalid_json(tmp_path):
+    askq_stub = tmp_path / "bad_askq.py"
+    askq_stub.write_text("print('not json')\n", encoding="utf-8")
+    askq_stub.chmod(0o755)
+
+    result = run_idr_no_check(
+        ["run", "test topic"],
+        tmp_path,
+        {"IDR_MOCK": "1", "ASKQ_SCRIPT": str(askq_stub)},
+    )
+
+    assert result.returncode == 1
+    assert "could not parse askq JSON output" in result.stderr
+
+
+def test_run_fails_when_askq_json_has_no_answer(tmp_path):
+    askq_stub = tmp_path / "empty_askq.py"
+    askq_stub.write_text("print('{}')\n", encoding="utf-8")
+    askq_stub.chmod(0o755)
+
+    result = run_idr_no_check(
+        ["run", "test topic"],
+        tmp_path,
+        {"IDR_MOCK": "1", "ASKQ_SCRIPT": str(askq_stub)},
+    )
+
+    assert result.returncode == 1
+    assert "non-empty answer" in result.stderr
+    runs_dir = tmp_path / "runs"
+    reports = list(runs_dir.glob("*/report.html")) if runs_dir.exists() else []
+    assert reports == []
+
+
+def test_run_fails_when_askq_json_has_blank_answer(tmp_path):
+    askq_stub = tmp_path / "blank_askq.py"
+    askq_stub.write_text("import json\nprint(json.dumps({'answer': '   '}))\n", encoding="utf-8")
+    askq_stub.chmod(0o755)
+
+    result = run_idr_no_check(
+        ["run", "test topic"],
+        tmp_path,
+        {"IDR_MOCK": "1", "ASKQ_SCRIPT": str(askq_stub)},
+    )
+
+    assert result.returncode == 1
+    assert "non-empty answer" in result.stderr
+    runs_dir = tmp_path / "runs"
+    reports = list(runs_dir.glob("*/report.html")) if runs_dir.exists() else []
+    assert reports == []

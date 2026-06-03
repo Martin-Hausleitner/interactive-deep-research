@@ -20,6 +20,20 @@ CLI: `scorecard` on PATH, or:
 python3 ~/.claude/skills/deep-research-scorecard/scripts/scorecard.py
 ```
 
+Install from the `v0.1.0` source bundle:
+
+```bash
+git clone https://github.com/Martin-Hausleitner/interactive-deep-research.git
+cd interactive-deep-research
+git checkout v0.1.0
+./install.sh
+```
+
+The installer copies this skill to `~/.claude/skills` and links `scorecard` into
+`~/.local/bin` by default. Override with `CLAUDE_SKILLS_DIR` or `BIN_DIR` if
+needed. There is no package-manager distribution for `v0.1.0`; use the tagged
+source checkout when reproducing a release install.
+
 ## When To Use
 
 Use this after research has identified credible candidates and decision criteria:
@@ -66,9 +80,13 @@ Markdown output contains a ranked table and winner explanation. HTML output emit
 
 - stdout is the rendered scorecard only.
 - malformed JSON or an invalid spec exits non-zero with a concise stderr error.
+- `scale` must be numeric and greater than `0`.
 - `criteria` must be a non-empty list with `key`, `label`, and numeric `weight`.
+- criterion keys must be unique.
+- at least one criterion weight must be positive; negative weights are rejected.
 - `candidates` must be a non-empty list with `name` and `scores`.
 - every score must be numeric and within `0..scale`.
+- score keys must match declared criteria.
 - missing scores are allowed and treated as `0`; use this deliberately.
 
 ## Privacy / No PII
@@ -77,6 +95,9 @@ Use public, non-sensitive evidence in scorecard specs. Do not include private
 customer names, personal identifiers, credentials, account IDs, or proprietary
 research notes in `note`, `link`, or candidate names when the scorecard will be
 committed or rendered into a public report.
+
+For vulnerability reporting and responsible-use boundaries, follow the
+repository `SECURITY.md`.
 
 ## Failure Modes
 

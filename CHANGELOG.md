@@ -5,6 +5,9 @@
 - Added CI-safe required-live fail-closed contracts for missing NotebookLM
   notebook IDs, query failures, deep-pass failures, and deep-pass `--force`
   startup behavior.
+- Hardened post-release docs/tests for README Mermaid pipeline and skill
+  invocation contracts, source-install skill docs, mock state continuity,
+  malformed `askq` bridge output, and live E2E harness expectations.
 
 ## v0.1.0 - 2026-06-03
 
