@@ -141,7 +141,11 @@ Release readiness:
 
 ```text
 Target release: v0.1.0
-Status: ready to tag after this ledger update lands on main and CI/Pages pass
+Status: published
+Release URL: https://github.com/Martin-Hausleitner/interactive-deep-research/releases/tag/v0.1.0
+Tag object: a10100066eb0505803db9728cc3a5b8f0b7ba140
+Release SHA: 2e5dc6643350ce4a366b879de1ca9d3d32293af6
+GitHub Release: draft=false, prerelease=false, published 2026-06-03T00:54:30Z
 Release basis: public repository, default branch main, live E2E pass, CI pass,
 Pages pass, remote proof-site HTTP 200, and public-artifact hygiene pass
 ```
