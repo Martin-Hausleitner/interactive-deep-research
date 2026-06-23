@@ -51,3 +51,21 @@
 - **Datenschutz:** OSS + lokal (DIY/ofauth) >> Closed-Web-Service (der deine Login-Daten sieht). Niemals OF-Passwort in einen fremden Web-Dienst eingeben.
 
 > 🤖 Manager-IDR · WebSearch-verifiziert (Links oben) · keine erfundenen Tools/Stars · NotebookLM-MCP war offline → reine Web-Recherche.
+
+---
+
+## 4. Nachtrag (2026-06-23) — Können OSS-Scraper das EIGENE Creator-Vault? + Modifikations-Aufwand
+
+**Klare Antwort: Die OSS-Scraper (OF-Scraper & Co.) können das eigene Creator-Vault NICHT out-of-the-box.**
+- **Beleg:** OF-Scraper Issue [#515](https://github.com/datawhores/OF-Scraper/issues/515) — ein Creator meldet: man kriegt zwar Inhalte die **Fans gesendet** haben, aber **nicht die eigenen** zurück. Die Scraper sind **fan-side** gebaut (abonnieren → Posts-/Messages-API), nicht für die **Vault-Listen-API** des Creators.
+- Kein bekannter Fork deckt gezielt das Creator-Vault ab (geprüft: datawhores/OF-Scraper, ofdl/ofdl, TrendingTechnology/onlyfans-scraper, Frangus90, Hashirama/OFDL, [Voldrix/onlyfans-dl-2](https://github.com/Voldrix/onlyfans-dl-2) — alle fan-side).
+
+**Modifikations-Aufwand (wenn man's trotzdem in einen Scraper baut):**
+- Die Auth/Session-Infra der Scraper ist wiederverwendbar, ABER das Vault ist eine **andere API-Fläche**: man muss die **Vault-Listen-Endpoints** ansteuern (`/api2/v2/vault/lists` + Vault-Media; das sind OnlyFans' eigene undokumentierte Endpoints). Ein neues Modul (Vault-Liste paginieren → Media-IDs → CDN-URLs → Download). **Aufwand ~0,5–2 Tage** für jemand der den Scraper-Code kennt.
+
+**→ Billiger/schneller als Scraper-Modifikation: DIY über die offizielle-ish Creator-API.**
+- [onlyfansapi.com](https://onlyfansapi.com/blog/onlyfans-api-update-webhooks-media-vault-no-code-integrations) hat **Media-Vault-Endpoints** (Vault-Listen + Media, `/api/{account}/media/vault`) — explizit **für Creator, das EIGENE Material**. Genau die API-Familie nutzt auch ofauth/die Bridge.
+- Damit ist ein **kleines Script (Stunden, nicht Tage)** möglich: Vault-Listen abfragen → Media-URLs → lokal laden. **Gratis-Tier/eigener Key, kein Fan-Side-Umweg, kein Scraper-Umbau.**
+- No-Code-Alternativen (bezahlt, Closed): [stevesie.com OnlyFans API](https://stevesie.com/apps/onlyfans-api) (→ CSV), [Apify clearpath/onlyfans-downloader](https://apify.com/clearpath/onlyfans-downloader/api), [of-api.com](https://www.of-api.com/documentation).
+
+**Fazit-Update:** Scraper-Repos zu **modifizieren lohnt sich NICHT** fürs eigene Vault (falsche Architektur, 0,5–2 Tage). Der **DIY-Weg über onlyfansapi.com/ofauth Vault-Endpoints** (Stunden, gratis, dein Key) bleibt der 👑 Gewinner.
