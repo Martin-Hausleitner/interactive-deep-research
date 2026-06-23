@@ -69,3 +69,23 @@
 - No-Code-Alternativen (bezahlt, Closed): [stevesie.com OnlyFans API](https://stevesie.com/apps/onlyfans-api) (→ CSV), [Apify clearpath/onlyfans-downloader](https://apify.com/clearpath/onlyfans-downloader/api), [of-api.com](https://www.of-api.com/documentation).
 
 **Fazit-Update:** Scraper-Repos zu **modifizieren lohnt sich NICHT** fürs eigene Vault (falsche Architektur, 0,5–2 Tage). Der **DIY-Weg über onlyfansapi.com/ofauth Vault-Endpoints** (Stunden, gratis, dein Key) bleibt der 👑 Gewinner.
+
+---
+
+## 5. KOSTEN-Update (2026-06-23) — ofauth = €2/GB → der GRATIS-Weg gewinnt
+
+**Operator-Korrektur:** die **ofauth-API kostet ~€2/GB**. Für ein großes Vault → teuer. Damit ist der API-Weg NICHT der billigste. Neue, kosten-bewusste Rangfolge:
+
+| Weg | Kosten | Vault (eigenes)? | Bewertung |
+|---|---|---|---|
+| 👑 **Session-basiertes DIY** (eigene OnlyFans-Session → CDN direkt) | **GRATIS** (nur Bandbreite) | ✅ (Vault-Endpoints) | **bester Preis** |
+| ofauth / onlyfansapi.com DIY | **~€2/GB** | ✅ | nur für KLEINE Vaults ok |
+| Vault Downloader (Chrome-Ext) | €20 + **kaputt** (zeigt Vault nicht an, Operator getestet) + Closed | ✅ (theoretisch) | ❌ raus |
+
+**Warum Session-basiert gratis ist:** [OF-Scraper](https://of-scraper.gitbook.io/of-scraper/getting-started/auth) nutzt **deine eigenen Auth-Header** (`sess`-Cookie, `x-bc`-Token, `auth_id`, `user_agent`) → spricht OnlyFans DIREKT an + lädt von deren **CDN** → **kein API-Middleman, kein €2/GB**. Das harte Problem (OnlyFans-Request-Signierung) ist in OF-Scraper bereits **gelöst**.
+- **Einschränkung:** OF-Scraper ist **fan-side** (lädt abonnierte/empfangene Inhalte, [#515](https://github.com/datawhores/OF-Scraper/issues/515): eigenes Vault nicht out-of-the-box).
+- **Der gratis Fix:** dieselbe Session-Auth auf die **Vault-Listen-Endpoints** (`/api2/v2/vault/lists` + Vault-Media) zeigen → eigenes Vault gratis von der CDN. Entweder als kleiner **Fork/Patch von OF-Scraper** (nutzt dessen Auth/Signing wieder) oder als **eigenständiges Session-Script**.
+
+**Fastest-to-try (Comet/Browser):** im eingeloggten OnlyFans-Tab (Comet) DevTools → Network → das Vault lädt via `/api2/v2/vault/...`; die Media-CDN-URLs sieht man dort → mit eigener Session abgreifen + bulk laden. Robust + wiederholbar = das Session-Script.
+
+**👑 Finale Empfehlung (kosten-bewusst):** **Session-basiertes DIY-Vault-Script (gratis)** — reuse OF-Scrapers Auth, Vault-Endpoints, CDN-Direkt-Download. Kein €2/GB, kein €20-Tool, dein eigenes Material, lokal.
